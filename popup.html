@@ -1,50 +1,100 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-</head>
-<body>
-    <style>
-      .container {
-        max-height: 600px;
-        min-height: 300px;
-        width: 250px;
-        border: 2px solid rgba(0,0,0,0.3);
-        border-radius: 2px;
-        background: white;
-      }
-      body {
-        font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
-        font-size: 100%;
-      }
-      #status {
-        /* avoid an excessively wide status text */
-        white-space: pre;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        max-width: 400px;
-      }
-      .patient-list {
-        max-height: 250px;
-        overflow-y: scroll;
-        overflow-x: hidden;
-        max-width: 100%;
-      }
-    </style>
-    <div class="container">
-        <div class="page-header">
-          <h3>Chromie Pop</h3>
-          <p id="status"></p>
-        </div>
-        <div class="form-group">
-            <input class="form-control" type="text" id="linkstext">
-        </div>
-        <div>
-          <button class="btn btn-primary" id="changelinks">Change</button>
-        </div>
-    </div>
-    <script src="/scripts/jquery.min.js" type="text/javascript"></script>
-    <script src="/scripts/extension.js" type="text/javascript"></script>
-</body>
-</html>
 
+<head>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css">
+</head>
+
+<body>
+  <style>
+    .container {
+      max-height: 600px;
+      width: 250px;
+      color: white;
+    }
+
+    body {
+      font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
+      font-size: 100%;
+    }
+
+    .patient-list {
+      max-height: 250px;
+      overflow-y: scroll;
+      overflow-x: hidden;
+      max-width: 100%;
+    }
+
+    .page-header {
+      background-color: #009688;
+      border-radius: 0;
+    }
+
+    .jumbotron-heading {
+      font-weight: 300;
+      font-size: 2.2rem;
+    }
+
+    .text-muted {
+      color: #dfdfdf!important;
+    }
+
+    .lead {
+      font-size: 1.25rem;
+      font-weight: 300;
+    }
+
+    .btn-primary {
+      background-color: #77b0ab;
+      border-color: #77b0ab;
+    }
+
+    .btn-primary:hover {
+      background-color: #86aeab;
+      border-color: #86aeab;
+    }
+
+    .btn-secondary,
+    .btn-secondary:hover {
+      color: #bafff9;
+      background-color: #35aa9f;
+      border-color: #35aa9f;
+    }
+  </style>
+  <div class="app">
+    <section class="jumbotron text-center page-header">
+      <div class="container">
+        <h1 class="jumbotron-heading">Whatsapp Bot</h1>
+        <p id="status" class="lead text-muted"></p>
+        <section class="allowed-actions">
+          <a href="#" class="btn btn-primary my-2" title="Start">Start</a>
+          <a href="#" class="btn btn-secondary my-2" title="Settings">
+            <i class="fas fa-sliders-h"></i>
+          </a>
+        </section>
+        <section class="jump-actions">
+          <a href="#" class="btn btn-secondary my-2" title="Jump to Whatsapp web" id="jump-to-whatsapp">
+              <i class="fab fa-whatsapp"></i>
+          </a>
+        </section>
+      </div>
+    </section>
+
+    <section class="container allowed-container my-3">
+      <div class="form-group">
+        <label for="content-input">New content</label>
+        <input class="form-control" type="text" id="content-input">
+      </div>
+      <div>
+        <button class="btn btn-primary" id="changelinks">Send</button>
+      </div>
+    </section>
+  </div>
+  <script src="/js/jquery-3.3.1.slim.min.js" type="text/javascript"></script>
+  <script src="/js/popper.min.js" type="text/javascript"></script>
+  <script src="/scripts/extension.js" type="text/javascript"></script>
+
+</body>
+
+</html>
