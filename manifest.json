@@ -1,16 +1,16 @@
 {
     "manifest_version": 2,
     "name": "Whatsapp chatbot",
-    "description": "This extension lets you manipulate the DOM",
+    "description": "We made the interface to build your own bot and engage users in Whatsapp App",
     "version": "1.0",
-    "homepage_url": "https://github.com/dvidsilva/chrome-ext-sample",
+    "homepage_url": "https://github.com/virtualcapitalofamerica/whatsapp-bot",
     "browser_action": {
         "default_icon": "favicon.png",
         "default_popup": "popup.html",
-        "default_title": "ChromiePop"
+        "default_title": "whatsapp-chatbot"
     },
     "content_scripts": [{
-        "matches": ["<all_urls>"],
+        "matches": ["*://web.whatsapp.com/*"],
         "all_frames": true,
         "js":      ["scripts/content.js"]
     }],

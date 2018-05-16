@@ -26,25 +26,44 @@ window.onload = function () {
   });
 }
 
-
 let startApp = () => {
-  var button = document.getElementById('changelinks');
-  document.getElementById('status').textContent = "Extension loaded";
+  document.getElementById('status').textContent = "Whatsapp chatbot loaded";
   $('.jump-actions').hide();
   $('.allowed-actions').show;
-  button.addEventListener('click', function (e) {
+  
+  registerEvents();
+}
+
+let registerEvents = ()=>{
+  let sendMessageButton = document.getElementById('send-message-button');
+  let startAppButton = document.getElementById('start-app-button');
+
+  sendMessageButton.addEventListener('click', function (e) {
     e.preventDefault()
-    $('#status').html('Clicked change links button');
-    var text = $('#content-input').val();
-    if (!text) {
-      $('#status').html('Invalid text provided');
-      return;
-    }
+    sendMessage();
+  });
+
+  startAppButton.addEventListener('click', function (e) {
+    e.preventDefault();
+
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-      chrome.tabs.sendMessage(tabs[0].id, { data: text }, function (response) {
-        $('#status').html('changed data in page');
-        console.log('success');
+      chrome.tabs.sendMessage(tabs[0].id, { data: { action: 'start', message: '' } }, function (response) {
+        $('#status').html('App started');
       });
+    });
+  })
+}
+
+let sendMessage = () => {
+  $('#status').html('Clicked change links button');
+  var text = $('#content-input').val();
+  if (!text) {
+    $('#status').html('Invalid text provided');
+    return;
+  }
+  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+    chrome.tabs.sendMessage(tabs[0].id, { data: { action: 'send', message: text } }, function (response) {
+      $('#status').html('changed data in page');
     });
   });
 }
