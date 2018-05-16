@@ -18,7 +18,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 });
 
 function writeMessage(args) {
-  if (args && args) {
+  if (args) {
     var input = document.querySelector('#main [contenteditable~=true]');
     if (input) {
       input.innerHTML = args.message;
@@ -44,7 +44,7 @@ let startListening = () => {
   startListeningNewMessagesActiveConversation();
 }
 
-let startListeningInactiveWhatsapp = () =>{
+let startListeningInactiveWhatsapp = () => {
 
 }
 
@@ -55,7 +55,24 @@ let startListeningNewMessagesActiveConversation = () => {
   // create an observer instance
   var observer = new MutationObserver(function (mutations) {
     mutations.forEach(function (mutation) {
-      console.log('Mutation type: ', mutation.type);
+
+      if (mutation.type === 'childList') {
+        if (mutation.addedNodes.length > 0) {
+          let newMessageIncomingContainer = mutation.addedNodes[0].querySelector('.message-in')
+          let newMessageOutcomingContainer = mutation.addedNodes[0].querySelector('.message-out')
+          let newMesageElement = undefined
+          let newMessage = ''
+          if (newMessageIncomingContainer) {
+            newMesageElement = newMessageIncomingContainer.querySelector('.selectable-text')
+            newMessage = newMesageElement.innerText || newMesageElement.textContent
+            console.log('Message incoming: ', newMessage)
+          } else if (newMessageOutcomingContainer){
+            newMesageElement = newMessageOutcomingContainer.querySelector('.selectable-text')
+            newMessage = newMesageElement.innerText || newMesageElement.textContent
+            console.log('Message incoming: ', newMessage)
+          }
+        }
+      }
     });
   });
 
