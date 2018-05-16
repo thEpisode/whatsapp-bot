@@ -1,30 +1,27 @@
+// Listen for new messages from extension
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   console.log(typeof request.data)
   let data = typeof request.data === 'object' ? request.data : JSON.parse(request.data || {})
 
-  console.log('Message received: ' + request.data.action);
-
   switch (data.action) {
-    case 'send':
-      writeMessage({ text: data.message });
+    case 'send-message':
+      writeMessage(data);
       sendMessage();
       break;
-    case 'start':
+    case 'start-listening':
       startListening();
     default:
       break;
   }
 
   sendResponse({ data: data, success: true });
-  console.log('-------------');
 });
 
 function writeMessage(args) {
-  if (args && args.text) {
-    console.log('Writting message: ' + args.text);
+  if (args && args) {
     var input = document.querySelector('#main [contenteditable~=true]');
     if (input) {
-      input.innerHTML = args.text;
+      input.innerHTML = args.message;
       input.dispatchEvent(new Event('input', { bubbles: true }));
     } else {
       console.warn('This tab is not a Whatsapp web application')
@@ -33,7 +30,6 @@ function writeMessage(args) {
 }
 
 function sendMessage(args) {
-  console.log('Sending message');
   var button = document.querySelector('button>span[data-icon="send"]').parentElement;
   if (button) {
     button.click();
@@ -42,8 +38,8 @@ function sendMessage(args) {
   }
 }
 
-
 let startListening = () => {
+  /// TODO: Test mutations and catch when a message is newest
   var target = document.querySelector('#main');
 
   // create an observer instance
