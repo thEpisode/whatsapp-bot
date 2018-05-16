@@ -39,6 +39,16 @@ function sendMessage(args) {
 }
 
 let startListening = () => {
+  startListeningInactiveWhatsapp();
+  startListeningNewMessagesOtherConversations();
+  startListeningNewMessagesActiveConversation();
+}
+
+let startListeningInactiveWhatsapp = () =>{
+
+}
+
+let startListeningNewMessagesActiveConversation = () => {
   /// TODO: Test mutations and catch when a message is newest
   var target = document.querySelector('#main');
 
@@ -51,7 +61,6 @@ let startListening = () => {
 
   // configuration of the observer:
   var config = {
-    attributes: true, 
     childList: true,
     subtree: true,
     characterData: true
@@ -59,4 +68,8 @@ let startListening = () => {
 
   // pass in the target node, as well as the observer options
   observer.observe(target, config);
+}
+
+let startListeningNewMessagesOtherConversations = () => {
+
 }
