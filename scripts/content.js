@@ -1,3 +1,5 @@
+var existAlert = false
+
 // Listen for new messages from extension
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   let data = typeof request.data === 'object' ? request.data : JSON.parse(request.data || {})
@@ -44,21 +46,31 @@ let startListening = () => {
 }
 
 let startListeningInactiveWhatsapp = () => {
+  var target = document.querySelector('#side');
 
+  setInterval(function (args) {
+    let existAlertIcon = document.querySelector('[data-icon="alert-computer"]')
+    
+    if (existAlert === false && existAlertIcon) {
+      existAlert = true;
+      console.warn('Please review your Whatsapp Web connection');
+    } else if(existAlert === true && !existAlert){
+      existAlert = false;
+    }
+  }, 1000)
 }
 
 let startListeningNewMessagesActiveConversation = () => {
-  /// TODO: Test mutations and catch when a message is newest
   var target = document.querySelector('#main');
 
-  // create an observer instance
+  // Listen if exist new message on active conversation
   var observer = new MutationObserver(function (mutations) {
     mutations.forEach(function (mutation) {
 
       if (mutation.type === 'childList') {
         if (mutation.addedNodes.length > 0) {
           let messageMutation = mutation.addedNodes.item(0)
-          
+
           if (messageMutation && messageMutation.nodeType === 1) {
             let newMessageIncomingContainer = messageMutation.querySelector('.message-in')
             let newMessageOutcomingContainer = messageMutation.querySelector('.message-out')
@@ -74,7 +86,6 @@ let startListeningNewMessagesActiveConversation = () => {
               console.log('Message outcoming: ', newMessage)
             }
           }
-
         }
       }
     });
