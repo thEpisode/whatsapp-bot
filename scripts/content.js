@@ -49,7 +49,7 @@ let startListeningInactiveWhatsapp = () => {
   var target = document.querySelector('#side');
 
   setInterval(function (args) {
-    let existAlertIcon = document.querySelector('[data-icon="alert-computer"]')
+    let existAlertIcon = document.querySelector('[data-icon="alert-computer"]') || document.querySelector('[data-icon="alert-phone"]')
     
     if (existAlert === false && existAlertIcon) {
       existAlert = true;
