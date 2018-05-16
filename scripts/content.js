@@ -1,6 +1,5 @@
 // Listen for new messages from extension
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-  console.log(typeof request.data)
   let data = typeof request.data === 'object' ? request.data : JSON.parse(request.data || {})
 
   switch (data.action) {
@@ -58,19 +57,24 @@ let startListeningNewMessagesActiveConversation = () => {
 
       if (mutation.type === 'childList') {
         if (mutation.addedNodes.length > 0) {
-          let newMessageIncomingContainer = mutation.addedNodes[0].querySelector('.message-in')
-          let newMessageOutcomingContainer = mutation.addedNodes[0].querySelector('.message-out')
-          let newMesageElement = undefined
-          let newMessage = ''
-          if (newMessageIncomingContainer) {
-            newMesageElement = newMessageIncomingContainer.querySelector('.selectable-text')
-            newMessage = newMesageElement.innerText || newMesageElement.textContent
-            console.log('Message incoming: ', newMessage)
-          } else if (newMessageOutcomingContainer){
-            newMesageElement = newMessageOutcomingContainer.querySelector('.selectable-text')
-            newMessage = newMesageElement.innerText || newMesageElement.textContent
-            console.log('Message incoming: ', newMessage)
+          let messageMutation = mutation.addedNodes.item(0)
+          
+          if (messageMutation && messageMutation.nodeType === 1) {
+            let newMessageIncomingContainer = messageMutation.querySelector('.message-in')
+            let newMessageOutcomingContainer = messageMutation.querySelector('.message-out')
+            let newMesageElement = undefined
+            let newMessage = ''
+            if (newMessageIncomingContainer) {
+              newMesageElement = newMessageIncomingContainer.querySelector('.selectable-text')
+              newMessage = newMesageElement.innerText || newMesageElement.textContent
+              console.log('Message incoming: ', newMessage)
+            } else if (newMessageOutcomingContainer) {
+              newMesageElement = newMessageOutcomingContainer.querySelector('.selectable-text')
+              newMessage = newMesageElement.innerText || newMesageElement.textContent
+              console.log('Message outcoming: ', newMessage)
+            }
           }
+
         }
       }
     });
