@@ -22,9 +22,10 @@ function createWindow() {
     }
   })
 
-  // and load the index.html of the app.
+  // and load the web of the app.
   mainWindow.loadURL('https://web.whatsapp.com')
 
+  // usefull if you need to load any script different or check something
   mainWindow.webContents.on('did-finish-load', function () {
     mainWindow.webContents.executeJavaScript(`console.log('message from backend')`)
   });
@@ -39,12 +40,11 @@ function createWindow() {
     mainWindow = null
   })
 
-  ipc.on('user-data', function (event, args) {
+  ipc.on('whatsapp-is-ready', function (event, args) {
     event.sender.send('setup-bridge')
   })
 
   ipc.on('setup-finished', function (event, args) {
-    //event.sender.send('send-message', args)
     event.sender.send('start-echo')
   })
 }
@@ -54,6 +54,7 @@ function createWindow() {
 // Some APIs can only be used after this event occurs.
 app.on('ready', createWindow)
 
+// https://developers.google.com/web/updates/2017/09/autoplay-policy-changes
 app.commandLine.appendSwitch('autoplay-policy', 'no-user-gesture-required');
 
 // Quit when all windows are closed.
@@ -72,6 +73,3 @@ app.on('activate', function () {
     createWindow()
   }
 })
-
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.
