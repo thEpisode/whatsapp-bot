@@ -25,7 +25,7 @@ function createWindow() {
   // and load the web of the app.
   mainWindow.loadURL('https://web.whatsapp.com')
 
-  // usefull if you need to load any script different or check something
+  // useful if you need to load any script different or check something
   mainWindow.webContents.on('did-finish-load', function () {
     mainWindow.webContents.executeJavaScript(`console.log('message from backend')`)
   });

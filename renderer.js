@@ -28,7 +28,7 @@ ipc.on('setup-bridge', function (event, arg) {
   ipc.send('setup-finished')
 })
 
-// Usefull to send a message from backend
+// Useful to send a message from backend
 ipc.on('send-message', function (event, arg) {
   sendMessage(arg.userId, arg.message)
 })
@@ -56,7 +56,7 @@ function parseAppObject(params) {
   }
 }
 
-// Usefull to clean all unread conversations
+// Useful to clean all unread conversations
 function openAllConversations() {
   var conversations = document.querySelectorAll('._2wP_Y>div>div')
   conversations.forEach((conversation) => {
