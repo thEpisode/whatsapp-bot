@@ -1,7 +1,6 @@
 # Whatsapp bot
 
-## What is it?
-This is an Electron app containing Whatsapp web and is using React methods to do an echo.
+This is an Electron app containing Whatsapp web and is using React methods to do an echo. This is very simple but useful to start developing our Whatsapp chatbot
 
 ## Getting started
 
