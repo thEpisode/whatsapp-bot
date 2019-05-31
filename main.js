@@ -6,7 +6,7 @@ const ipc = require('electron').ipcMain
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
 
-function createWindow() {
+function createWindow () {
 
   session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
     details.requestHeaders['User-Agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36 OPR/57.0.3098.116';
@@ -18,6 +18,7 @@ function createWindow() {
     height: 600,
     webPreferences: {
       nodeIntegration: false,
+      contextIsolation: false,
       preload: __dirname + '/renderer.js'
     }
   })
