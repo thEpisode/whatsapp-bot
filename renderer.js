@@ -5,17 +5,17 @@ console.log('rendered loaded')
 
 // Check every second if app is ready to start
 var isReadyInterval = setInterval(function () {
-  let searchInputElements = document.querySelectorAll('.jN-F5')
+  let searchInputElements = document.querySelector('._3La1s')
 
   // Is ready to works
-  if (searchInputElements.length > 0) {
+  if (searchInputElements.childElementCount > 0) {
     clearInterval(isReadyInterval)
     start()
   }
 }, 1000)
 
 // Send a message to main.js notifying is ready to use
-function start() {
+function start () {
   ipc.send('whatsapp-is-ready')
 }
 
@@ -49,15 +49,74 @@ ipc.on('start-echo', function (event, args) {
 })
 
 // Expose Whatsapp app to window
-function parseAppObject(params) {
+function parseAppObject (params) {
   if (window.Store === undefined) {
-    webpackJsonp([], { "bcihgfbdeb": (x, y, z) => window.Store = z('"bcihgfbdeb"') }, "bcihgfbdeb");
-    webpackJsonp([], { "cbagcefdge": (x, y, z) => window.Store.Wap = z('"cbagcefdge"') }, "cbagcefdge");
+    (function () {
+      function getStore (modules) {
+        let foundCount = 0;
+        let neededObjects = [
+          { id: "Store", conditions: (module) => (module.Chat && module.Msg) ? module : null },
+          { id: "MediaCollection", conditions: (module) => (module.default && module.default.prototype && module.default.prototype.processFiles !== undefined) ? module.default : null },
+          { id: "ChatClass", conditions: (module) => (module.default && module.default.prototype && module.default.prototype.Collection !== undefined && module.default.prototype.Collection === "Chat") ? module : null },
+          { id: "MediaProcess", conditions: (module) => (module.BLOB) ? module : null },
+          { id: "Wap", conditions: (module) => (module.createGroup) ? module : null },
+          { id: "ServiceWorker", conditions: (module) => (module.default && module.default.killServiceWorker) ? module : null },
+          { id: "State", conditions: (module) => (module.STATE && module.STREAM) ? module : null },
+          { id: "WapDelete", conditions: (module) => (module.sendConversationDelete && module.sendConversationDelete.length == 2) ? module : null },
+          { id: "Conn", conditions: (module) => (module.default && module.default.ref && module.default.refTTL) ? module.default : null },
+          { id: "WapQuery", conditions: (module) => (module.queryExist) ? module : ((module.default && module.default.queryExist) ? module.default : null) },
+          { id: "CryptoLib", conditions: (module) => (module.decryptE2EMedia) ? module : null },
+          { id: "OpenChat", conditions: (module) => (module.default && module.default.prototype && module.default.prototype.openChat) ? module.default : null },
+          { id: "UserConstructor", conditions: (module) => (module.default && module.default.prototype && module.default.prototype.isServer && module.default.prototype.isUser) ? module.default : null },
+          { id: "SendTextMsgToChat", conditions: (module) => (module.sendTextMsgToChat) ? module.sendTextMsgToChat : null },
+          { id: "SendSeen", conditions: (module) => (module.sendSeen) ? module.sendSeen : null }
+        ];
+        for (let idx in modules) {
+          if ((typeof modules[idx] === "object") && (modules[idx] !== null)) {
+            let first = Object.values(modules[idx])[0];
+            if ((typeof first === "object") && (first.exports)) {
+              for (let idx2 in modules[idx]) {
+                let module = modules(idx2);
+                if (!module) {
+                  continue;
+                }
+                neededObjects.forEach((needObj) => {
+                  if (!needObj.conditions || needObj.foundedModule)
+                    return;
+                  let neededModule = needObj.conditions(module);
+                  if (neededModule !== null) {
+                    foundCount++;
+                    needObj.foundedModule = neededModule;
+                  }
+                });
+                if (foundCount == neededObjects.length) {
+                  break;
+                }
+              }
+
+              let neededStore = neededObjects.find((needObj) => needObj.id === "Store");
+              window.Store = neededStore.foundedModule ? neededStore.foundedModule : {};
+              neededObjects.splice(neededObjects.indexOf(neededStore), 1);
+              neededObjects.forEach((needObj) => {
+                if (needObj.foundedModule) {
+                  window.Store[needObj.id] = needObj.foundedModule;
+                }
+              });
+              window.Store.ChatClass.default.prototype.sendMessage = function (e) {
+                return window.Store.SendTextMsgToChat(this, ...arguments);
+              }
+              return window.Store;
+            }
+          }
+        }
+      }
+      webpackJsonp([], { 'parasite': (x, y, z) => getStore(z) }, ['parasite']);
+    })();
   }
 }
 
 // Useful to clean all unread conversations
-function openAllConversations() {
+function openAllConversations () {
   var conversations = document.querySelectorAll('._2wP_Y>div>div')
   conversations.forEach((conversation) => {
     triggerMouseEvent(conversation, "mouseover");
@@ -68,7 +127,7 @@ function openAllConversations() {
 }
 
 // Maybe to get links or history
-function openConversation(name) {
+function openConversation (name) {
   let conversation = document.querySelector(`span[title="${name}"]`)
 
   // "Human" behavior
@@ -79,13 +138,13 @@ function openConversation(name) {
 }
 
 // Simulate a mouse event
-function triggerMouseEvent(node, eventType) {
+function triggerMouseEvent (node, eventType) {
   let clickEvent = document.createEvent('MouseEvents');
   clickEvent.initEvent(eventType, true, true);
   node.dispatchEvent(clickEvent);
 }
 
-function sendMessage(id, msgReceived) {
+function sendMessage (id, msgReceived) {
   if (!id) {
     return
   }
@@ -103,7 +162,8 @@ function sendMessage(id, msgReceived) {
     temp.id = Chats[chat].__x_id._serialized;
     if (temp.id.search(contact) != -1 && temp.id.search('g.us') == -1) {
       // Clean unread message
-      Chats[chat].sendSeen(1)
+      // Chats[chat].sendSeen(1) // it seems sendSeen changed.
+      sendSeen(chat)
       // Send the message
       Chats[chat].sendMessage(message);
       return true
@@ -112,7 +172,7 @@ function sendMessage(id, msgReceived) {
 }
 
 // Verify if is a message
-function isChatMessage(message) {
+function isChatMessage (message) {
   if (message.__x_isSentByMe) {
     return false;
   }
@@ -126,7 +186,7 @@ function isChatMessage(message) {
 }
 
 
-function getUnreadChats() {
+function getUnreadChats () {
   let Chats = Store.Chat.models;
   let Output = [];
 
@@ -134,7 +194,7 @@ function getUnreadChats() {
     if (isNaN(chat)) {
       continue;
     };
-    
+
     let messages = Chats[chat].msgs.models
     let unreadMessage = {}
     unreadMessage.contact = Chats[chat].__x_formattedTitle || ''
@@ -165,3 +225,28 @@ function getUnreadChats() {
 
   return Output;
 }
+
+function getChat (id, done) {
+  id = typeof id == "string" ? id : id._serialized;
+  const found = window.Store.Chat.get(id);
+  if (done !== undefined) done(found);
+  return found;
+}
+
+function sendSeen (id, done) {
+  var chat = getChat(id);
+  if (chat !== undefined) {
+    if (done !== undefined) {
+      Store.SendSeen(Store.Chat.models[0], false).then(function () {
+        done(true);
+      });
+      return true;
+    } else {
+      Store.SendSeen(Store.Chat.models[0], false);
+      return true;
+    }
+  }
+  if (done !== undefined) done();
+  return false;
+};
+
