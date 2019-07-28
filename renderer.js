@@ -130,7 +130,7 @@ function openAllConversations() {
 // Maybe to get links or history
 function openConversation(name) {
   let conversation = document.querySelector(`span[title="${name}"]`)
-debugger
+
   // "Human" behavior
   triggerMouseEvent(conversation, "mouseover");
   triggerMouseEvent(conversation, "mousedown");
@@ -155,24 +155,39 @@ function sendMessage(id, msgReceived) {
   let chatsModels = Store.Chat.models
   let contact = id
   const message = `Welcome to *Virtual capital of America*, at this moment I haven't a brain and my father is working hard to give me artificial intelligence, if you are interested on my services please visit https://www.virtualcapitalofamerica.com. Your message: " _${msgReceived}_ "`;
+
+  sendPresenceAvailable()
+
   for (chatModel in chatsModels) {
     if (isNaN(chatModel)) {
       continue;
     }
 
-    var chat = {}
-
+    let chat = {}
     chat.contact = chatsModels[chatModel].__x_formattedTitle;
     chat.id = chatsModels[chatModel].__x_id._serialized;
+
     if (chat.id.search(contact) != -1 && chat.id.search('g.us') == -1) {
       // Clean unread message
       sendSeen(chatsModels[chatModel])
       openConversation(chat.contact)
       // Send the message
       chatsModels[chatModel].sendMessage(message);
+      // Also works
+      //Store.SendTextMsgToChat(chatsModels[chatModel], '<<MESSAGE>>')
+
+      sendPresenceUnavailable()
       return true
     }
   }
+}
+
+function sendPresenceAvailable(params) {
+  Store.WapQuery.sendPresenceAvailable()
+}
+
+function sendPresenceUnavailable(params) {
+  Store.WapQuery.sendPresenceUnavailable()
 }
 
 // Verify if is a message
