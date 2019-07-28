@@ -1,8 +1,6 @@
-const ipc = require('electron').ipcRenderer
-
-class Bot {
-  constructor({ messageTemplate, conversationSelector }) {
-    this.messageTemplate = messageTemplate
+class BotController {
+  constructor({ ipc, conversationSelector }) {
+    this.ipc = ipc
     this.conversationSelector = conversationSelector
 
     this.parseAppObject()
@@ -52,7 +50,7 @@ class Bot {
    */
   whatsappIsReady() {
     // Return to code-behind telling whatsapp is ready to work
-    ipc.send('whatsapp-is-ready')
+    this.ipc.send('whatsapp-is-ready')
   }
 
   /**
@@ -169,9 +167,9 @@ class Bot {
   /**
    * Send a message with "Human" behavior like state seen, online/offline, and more
    * @param {String} id Id serialized of conversation
-   * @param {String} messageToSend Message you want to send
+   * @param {String} flow Messages you want to send
    */
-  async sendMessage(id, messageToSend) {
+  async sendMessage(id, flow) {
     if (!id) {
       return
     }
@@ -190,8 +188,6 @@ class Bot {
     chat.contact = chatModel.__x_formattedTitle;
     chat.id = chatModel.__x_id._serialized;
 
-    const _message = this.messageTemplate.replace('{{1}}', messageToSend)
-
     // Clean coming message
     await this.timeout(this.random(300, 1000))
     this.openConversation(chat.contact)
@@ -199,16 +195,20 @@ class Bot {
 
     // Send to conversation "typing..." state
     await this.timeout(this.random(800, 2000));
-    this.sendChatstateComposing(chat.id)
+
 
     // Send the message
-    await this.timeout(this.random(500, _message.length * 80));
-    //chatModel.sendMessage(message);
-    // Also works
-    Store.SendTextMsgToChat(chatModel, _message)
+    for (const message of flow) {
+      this.sendChatstateComposing(chat.id)
+      await this.timeout(this.random(500, message.length * 80));
+      //chatModel.sendMessage(message);
+      // Also works
+      Store.SendTextMsgToChat(chatModel, message)
 
-    // Stop the sending of conversation "typing..." state
-    this.sendChatstatePaused(chat.id)
+      // Stop the sending of conversation "typing..." state
+      await this.timeout(this.random(300, 650));
+      this.sendChatstatePaused(chat.id)
+    }
 
     // Set offline state
     await this.timeout(this.random(300, 850));
@@ -331,4 +331,4 @@ class Bot {
   }
 }
 
-module.exports = Bot
+module.exports = BotController

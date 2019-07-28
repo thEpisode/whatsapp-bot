@@ -7,7 +7,6 @@ const ipc = require('electron').ipcMain
 let mainWindow
 
 function createWindow() {
-
   session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
     details.requestHeaders['User-Agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36 OPR/57.0.3098.116';
     callback({ cancel: false, requestHeaders: details.requestHeaders });
@@ -19,7 +18,7 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: false,
-      preload: __dirname + '/renderer.js'
+      preload: __dirname + '/src/core/renderer.js'
     }
   })
 
@@ -43,12 +42,12 @@ function createWindow() {
     mainWindow = null
   })
 
-  ipc.on('whatsapp-is-ready', function (event, args) {
-    event.sender.send('start-echo')
+  ipc.on('whatsapp-is-ready', function (event, args) {debugger
+    mainWindow.webContents.send('bot-ready')
   })
 
-  ipc.on('setup-finished', function (event, args) {
-    
+  mainWindow.webContents.on('whatsapp-is-ready', function (event, args) {debugger
+    mainWindow.webContents.send('bot-ready')
   })
 }
 
