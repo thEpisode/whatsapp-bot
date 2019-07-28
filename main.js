@@ -29,7 +29,7 @@ function createWindow() {
   // useful if you need to load any script different or check something
   mainWindow.webContents.on('did-finish-load', function () {
     mainWindow.webContents.executeJavaScript(`console.log('message from backend')`)
-debugger
+
     mainWindow.webContents.send('initialize-bot')
   });
   // Open the DevTools.

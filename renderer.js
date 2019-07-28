@@ -11,16 +11,20 @@ class Bot {
     this.messageTemplate = messageTemplate
     this.conversationSelector = conversationSelector
 
-    // If Whatsapp app is not parsed to use outside from sandbox
     this.parseAppObject()
   }
 
+  /**
+   * Initial point process
+   */
   startEngine() {
     this.whatsappValidator()
   }
 
+  /**
+   * Check every second if the application is loaded and ready
+   */
   whatsappValidator() {
-    // Check every second if app is ready to start
     var isReadyInterval = setInterval(() => {
       let searchInputElements = document.querySelector('.app')
 
@@ -32,21 +36,35 @@ class Bot {
     }, 1000)
   }
 
+  /**
+   * Generate an await timeout
+   * @param {Number} ms How many need to wait
+   */
   timeout(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
+  /**
+   * Return a pseudorandom number between boundaries
+   * @param {Number} from Set the start of boundaries
+   * @param {Number} to Set the end of boundaries
+   */
   random(from, to) {
     return Math.floor(Math.random() * to) + from;
   }
 
-  // Send a message to main.js notifying is ready to use
+  /**
+   * Send a message to main.js notifying is ready to use
+   */
   whatsappIsReady() {
+    // Return to code-behind telling whatsapp is ready to work
     ipc.send('whatsapp-is-ready')
   }
 
-  // Expose Whatsapp app to window
-  parseAppObject(params) {
+  /**
+   * If Whatsapp app is not parsed to use outside from sandbox and expose Whatsapp app to window
+   */
+  parseAppObject() {
     if (window.Store !== undefined) {
       return
     }
@@ -114,7 +132,9 @@ class Bot {
     })()
   }
 
-  // Useful to clean all unread conversations
+  /**
+   * Useful to clean all unread conversations
+   */
   openAllConversations() {
     var conversations = document.querySelectorAll(conversationSelector)
     conversations.forEach((conversation) => {
@@ -125,7 +145,10 @@ class Bot {
     });
   }
 
-  // Maybe to get links or history
+  /**
+   * To simulate "Human" behavior is important open the conversation
+   * @param {String} name Is the contact name you want to open
+   */
   openConversation(name) {
     let conversation = document.querySelector(`span[title="${name}"]`)
 
@@ -136,7 +159,11 @@ class Bot {
     this.triggerMouseEvent(conversation, "click");
   }
 
-  // Simulate a mouse event
+  /**
+   * Simulate "Natural" click event workflow
+   * @param {Object} node DOM element you want to trigger the event
+   * @param {String} eventType Is the name of event you want to trigger
+   */
   triggerMouseEvent(node, eventType) {
     if (!node) { return }
 
@@ -145,7 +172,12 @@ class Bot {
     node.dispatchEvent(clickEvent);
   }
 
-  async sendMessage(id, msgReceived) {
+  /**
+   * Send a message with "Human" behavior like state seen, online/offline, and more
+   * @param {String} id Id serialized of conversation
+   * @param {String} messageToSend Message you want to send
+   */
+  async sendMessage(id, messageToSend) {
     if (!id) {
       return
     }
@@ -164,7 +196,7 @@ class Bot {
     chat.contact = chatModel.__x_formattedTitle;
     chat.id = chatModel.__x_id._serialized;
 
-    const _message = messageTemplate.replace('{{1}}', msgReceived)
+    const _message = messageTemplate.replace('{{1}}', messageToSend)
 
     // Clean coming message
     await this.timeout(this.random(300, 1000))
@@ -189,23 +221,51 @@ class Bot {
     this.sendPresenceUnavailable()
   }
 
+  /**
+   * Set state of composing message (Typing...)
+   * @param {String} chatIdSerialized Is the id serialized of conversation target
+   */
   sendChatstateComposing(chatIdSerialized) {
     Store.WapQuery.sendChatstateComposing(chatIdSerialized)
   }
 
+  /**
+   * Set the state of stop typing
+   * @param {String} chatIdSerialized Is the id serialized of conversation target
+   */
   sendChatstatePaused(chatIdSerialized) {
     Store.WapQuery.sendChatstateComposing(chatIdSerialized)
   }
 
+  /**
+   * Set the state as available (online)
+   */
   sendPresenceAvailable() {
     Store.WapQuery.sendPresenceAvailable()
   }
 
+  /**
+   * Set the state as unavailable (offline)
+   */
   sendPresenceUnavailable() {
     Store.WapQuery.sendPresenceUnavailable()
   }
 
-  // Verify if is a message
+  /**
+   * Set the state of messages are seen
+   * @param {Object} chat Is a conversation
+   * @param {Function} next Callback to notify process completition
+   */
+  sendChatStateSeen(chat, next) {
+    Store.SendSeen(chat, true).then(() => {
+      next(true)
+    })
+  }
+
+  /**
+   * Verify if is a real message, not notification, sent by me or user message
+   * @param {Object} message Is the incoming message you want to validate
+   */
   isChatMessage(message) {
     if (message.__x_isSentByMe) {
       return false
@@ -219,6 +279,9 @@ class Bot {
     return true
   }
 
+  /**
+   * Get all unread chats of Whatsapp
+   */
   getUnreadChats() {
     const chats = Store.Chat.models
     let output = []
@@ -259,6 +322,11 @@ class Bot {
     return output;
   }
 
+  /**
+   * Return the chat you want
+   * @param {String} id Id of chat
+   * @param {Function} next Callback to notify found chat
+   */
   getChat(id, next) {
     id = typeof id == "string" ? id : id._serialized
     const found = window.Store.Chat.get(id)
@@ -267,12 +335,6 @@ class Bot {
 
     return found
   }
-
-  sendChatStateSeen(chat, next) {
-    Store.SendSeen(chat, true).then(() => {
-      next(true)
-    })
-  }
 }
 
 // Useful to send a message from backend
@@ -280,7 +342,9 @@ class Bot {
   sendMessage(args.userId, args.message)
 }) */
 
-// Every second check if has any message unread, if is true return the same message
+/** 
+ * Every second check if has any message unread, if is true return the same message
+ */
 ipc.on('start-echo', function (event, args) {
   setInterval(() => {
     let unreadChats = bot.getUnreadChats()
@@ -295,6 +359,9 @@ ipc.on('start-echo', function (event, args) {
   }, 1000)
 })
 
+/**
+ * When bot is ready start the engine
+ */
 ipc.on('initialize-bot', (event, args) => {
   bot = new Bot(messageTemplate, conversationSelector)
   bot.startEngine()
