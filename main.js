@@ -6,7 +6,7 @@ const ipc = require('electron').ipcMain
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
 
-function createWindow () {
+function createWindow() {
 
   session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
     details.requestHeaders['User-Agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36 OPR/57.0.3098.116';
@@ -29,6 +29,8 @@ function createWindow () {
   // useful if you need to load any script different or check something
   mainWindow.webContents.on('did-finish-load', function () {
     mainWindow.webContents.executeJavaScript(`console.log('message from backend')`)
+debugger
+    mainWindow.webContents.send('initialize-bot')
   });
   // Open the DevTools.
   mainWindow.webContents.openDevTools()
@@ -42,11 +44,11 @@ function createWindow () {
   })
 
   ipc.on('whatsapp-is-ready', function (event, args) {
-    event.sender.send('setup-bridge')
+    event.sender.send('start-echo')
   })
 
   ipc.on('setup-finished', function (event, args) {
-    event.sender.send('start-echo')
+    
   })
 }
 

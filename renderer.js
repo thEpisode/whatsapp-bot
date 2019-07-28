@@ -1,65 +1,56 @@
 const ipc = require('electron').ipcRenderer
 const conversationSelector = '._2UaNq'
+
 let messageTemplate = `Welcome to *Virtual capital of America*, at this moment I haven't a brain and my father is working hard to give me artificial intelligence, if you are interested on my services please visit https://www.virtualcapitalofamerica.com. Your message: " _{{1}}_ "`;
+let bot = {}
 
 console.log('rendered loaded')
 
-function timeout(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
+class Bot {
+  constructor({ messageTemplate, conversationSelector }) {
+    this.messageTemplate = messageTemplate
+    this.conversationSelector = conversationSelector
 
-function random(from, to) {
-  return Math.floor(Math.random() * to) + from;
-}
-
-// Check every second if app is ready to start
-var isReadyInterval = setInterval(function () {
-  let searchInputElements = document.querySelector('.app')
-
-  // Is ready to works
-  if (searchInputElements && searchInputElements.childElementCount > 0) {
-    clearInterval(isReadyInterval)
-    start()
+    // If Whatsapp app is not parsed to use outside from sandbox
+    this.parseAppObject()
   }
-}, 1000)
 
-// Send a message to main.js notifying is ready to use
-function start() {
-  ipc.send('whatsapp-is-ready')
-}
+  startEngine() {
+    this.whatsappValidator()
+  }
 
-// Setting up initial code to start bot
-ipc.on('setup-bridge', function (event, arg) {
-  // If Whatsapp app is not parsed to use outside from sandbox
-  parseAppObject()
-  //openAllConversations()
+  whatsappValidator() {
+    // Check every second if app is ready to start
+    var isReadyInterval = setInterval(() => {
+      let searchInputElements = document.querySelector('.app')
 
-  ipc.send('setup-finished')
-})
+      // Is ready to works
+      if (searchInputElements && searchInputElements.childElementCount > 0) {
+        clearInterval(isReadyInterval)
+        this.whatsappIsReady()
+      }
+    }, 1000)
+  }
 
-// Useful to send a message from backend
-ipc.on('send-message', function (event, arg) {
-  sendMessage(arg.userId, arg.message)
-})
+  timeout(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
 
-// Every second check if has any message unread, if is true return the same message
-ipc.on('start-echo', function (event, args) {
-  setInterval(() => {
-    let unread = getUnreadChats()
+  random(from, to) {
+    return Math.floor(Math.random() * to) + from;
+  }
 
-    if (unread && unread.length > 0) {
-      unread.map((chat) => {
-        chat.messages.map((message) => {
-          sendMessage(chat.id, message.message)
-        })
-      })
+  // Send a message to main.js notifying is ready to use
+  whatsappIsReady() {
+    ipc.send('whatsapp-is-ready')
+  }
+
+  // Expose Whatsapp app to window
+  parseAppObject(params) {
+    if (window.Store !== undefined) {
+      return
     }
-  }, 1000)
-})
 
-// Expose Whatsapp app to window
-function parseAppObject(params) {
-  if (window.Store === undefined) {
     (function () {
       function getStore(modules) {
         let foundCount = 0;
@@ -120,170 +111,192 @@ function parseAppObject(params) {
         }
       }
       webpackJsonp([], { 'parasite': (x, y, z) => getStore(z) }, ['parasite']);
-    })();
-  }
-}
-
-// Useful to clean all unread conversations
-function openAllConversations() {
-  var conversations = document.querySelectorAll(conversationSelector)
-  conversations.forEach((conversation) => {
-    triggerMouseEvent(conversation, "mouseover");
-    triggerMouseEvent(conversation, "mousedown");
-    triggerMouseEvent(conversation, "mouseup");
-    triggerMouseEvent(conversation, "click");
-  });
-}
-
-// Maybe to get links or history
-function openConversation(name) {
-  let conversation = document.querySelector(`span[title="${name}"]`)
-
-  // "Human" behavior
-  triggerMouseEvent(conversation, "mouseover");
-  triggerMouseEvent(conversation, "mousedown");
-  triggerMouseEvent(conversation, "mouseup");
-  triggerMouseEvent(conversation, "click");
-}
-
-// Simulate a mouse event
-function triggerMouseEvent(node, eventType) {
-  if (!node) { return }
-
-  let clickEvent = document.createEvent('MouseEvents');
-  clickEvent.initEvent(eventType, true, true);
-  node.dispatchEvent(clickEvent);
-}
-
-async function sendMessage(id, msgReceived) {
-  if (!id) {
-    return
+    })()
   }
 
-  let chatsModels = Store.Chat.models
-  let contact = id
+  // Useful to clean all unread conversations
+  openAllConversations() {
+    var conversations = document.querySelectorAll(conversationSelector)
+    conversations.forEach((conversation) => {
+      this.triggerMouseEvent(conversation, "mouseover");
+      this.triggerMouseEvent(conversation, "mousedown");
+      this.triggerMouseEvent(conversation, "mouseup");
+      this.triggerMouseEvent(conversation, "click");
+    });
+  }
 
+  // Maybe to get links or history
+  openConversation(name) {
+    let conversation = document.querySelector(`span[title="${name}"]`)
 
-  sendPresenceAvailable()
+    // "Human" behavior
+    this.triggerMouseEvent(conversation, "mouseover");
+    this.triggerMouseEvent(conversation, "mousedown");
+    this.triggerMouseEvent(conversation, "mouseup");
+    this.triggerMouseEvent(conversation, "click");
+  }
 
-  for (chatModel in chatsModels) {
-    if (isNaN(chatModel)) {
-      continue;
+  // Simulate a mouse event
+  triggerMouseEvent(node, eventType) {
+    if (!node) { return }
+
+    let clickEvent = document.createEvent('MouseEvents');
+    clickEvent.initEvent(eventType, true, true);
+    node.dispatchEvent(clickEvent);
+  }
+
+  async sendMessage(id, msgReceived) {
+    if (!id) {
+      return
     }
+
+    const chatsModels = Store.Chat.models
+
+    this.sendPresenceAvailable()
+
+    let chatModel = chatsModels.find(chat => {
+      return chat.__x_id._serialized.search(id) >= 0 && chat.__x_id._serialized.search('g.us') === -1
+    })
+
+    if (!chatModel) { return }
 
     let chat = {}
-    chat.contact = chatsModels[chatModel].__x_formattedTitle;
-    chat.id = chatsModels[chatModel].__x_id._serialized;
+    chat.contact = chatModel.__x_formattedTitle;
+    chat.id = chatModel.__x_id._serialized;
 
-    if (chat.id.search(contact) != -1 && chat.id.search('g.us') == -1) {
-      const _message = messageTemplate.replace('{{1}}', msgReceived)
+    const _message = messageTemplate.replace('{{1}}', msgReceived)
 
-      // Clean coming message
-      await timeout(random(300, 1000))
-      openConversation(chat.contact)
-      sendChatStateSeen(chatsModels[chatModel])
+    // Clean coming message
+    await this.timeout(this.random(300, 1000))
+    this.openConversation(chat.contact)
+    this.sendChatStateSeen(chatModel)
 
-      // Send to conversation "typing..." state
-      await timeout(random(800, 2000));
-      sendChatstateComposing(chat.id)
+    // Send to conversation "typing..." state
+    await this.timeout(this.random(800, 2000));
+    this.sendChatstateComposing(chat.id)
 
-      // Send the message
-      await timeout(random(500, _message.length * 80));
-      //chatsModels[chatModel].sendMessage(message);
-      // Also works
-      Store.SendTextMsgToChat(chatsModels[chatModel], _message)
+    // Send the message
+    await this.timeout(this.random(500, _message.length * 80));
+    //chatModel.sendMessage(message);
+    // Also works
+    Store.SendTextMsgToChat(chatModel, _message)
 
-      // Stop the sending of conversation "typing..." state
-      sendChatstatePaused(chat.id)
+    // Stop the sending of conversation "typing..." state
+    this.sendChatstatePaused(chat.id)
 
-      // Set offline state
-      await timeout(random(300, 850));
-      sendPresenceUnavailable()
-      return true
+    // Set offline state
+    await this.timeout(this.random(300, 850));
+    this.sendPresenceUnavailable()
+  }
+
+  sendChatstateComposing(chatIdSerialized) {
+    Store.WapQuery.sendChatstateComposing(chatIdSerialized)
+  }
+
+  sendChatstatePaused(chatIdSerialized) {
+    Store.WapQuery.sendChatstateComposing(chatIdSerialized)
+  }
+
+  sendPresenceAvailable() {
+    Store.WapQuery.sendPresenceAvailable()
+  }
+
+  sendPresenceUnavailable() {
+    Store.WapQuery.sendPresenceUnavailable()
+  }
+
+  // Verify if is a message
+  isChatMessage(message) {
+    if (message.__x_isSentByMe) {
+      return false
     }
+    if (message.__x_isNotification) {
+      return false
+    }
+    if (!message.__x_isUserCreatedType) {
+      return false
+    }
+    return true
   }
-}
 
-function sendChatstateComposing(chatIdSerialized) {
-  Store.WapQuery.sendChatstateComposing(Store.Chat.models[0].__x_id._serialized)
-}
+  getUnreadChats() {
+    const chats = Store.Chat.models
+    let output = []
 
-function sendChatstatePaused(chatIdSerialized) {
-  Store.WapQuery.sendChatstateComposing(Store.Chat.models[0].__x_id._serialized)
-}
+    for (const chat in chats) {
+      if (isNaN(chat)) {
+        continue
+      }
 
-function sendPresenceAvailable() {
-  Store.WapQuery.sendPresenceAvailable()
-}
+      let messages = chats[chat].msgs.models
+      let unreadMessage = {}
+      unreadMessage.contact = chats[chat].__x_formattedTitle || ''
+      unreadMessage.id = chats[chat].__x_id._serialized || ''
+      unreadMessage.messages = []
 
-function sendPresenceUnavailable() {
-  Store.WapQuery.sendPresenceUnavailable()
-}
+      for (let i = messages.length - 1; i >= 0; i--) {
+        if (!messages[i].__x_isNewMsg) {
+          break
+        } else {
+          if (!this.isChatMessage(messages[i])) {
+            continue
+          }
 
-// Verify if is a message
-function isChatMessage(message) {
-  if (message.__x_isSentByMe) {
-    return false;
-  }
-  if (message.__x_isNotification) {
-    return false;
-  }
-  if (!message.__x_isUserCreatedType) {
-    return false;
-  }
-  return true;
-}
-
-function getUnreadChats() {
-  let Chats = Store.Chat.models;
-  let Output = [];
-
-  for (chat in Chats) {
-    if (isNaN(chat)) {
-      continue;
-    };
-
-    let messages = Chats[chat].msgs.models
-    let unreadMessage = {}
-    unreadMessage.contact = Chats[chat].__x_formattedTitle || ''
-    unreadMessage.id = Chats[chat].__x_id._serialized || ''
-    unreadMessage.messages = []
-
-    for (let i = messages.length - 1; i >= 0; i--) {
-      if (!messages[i].__x_isNewMsg) {
-        break
-      } else {
-        if (!isChatMessage(messages[i])) {
-          continue
+          messages[i].__x_isNewMsg = false;
+          unreadMessage.messages.push({
+            message: messages[i].__x_body,
+            timestamp: messages[i].__x_t,
+            type: messages[i].__x_type,
+            e: messages[i]
+          })
         }
-
-        messages[i].__x_isNewMsg = false;
-        unreadMessage.messages.push({
-          message: messages[i].__x_body,
-          timestamp: messages[i].__x_t,
-          type: messages[i].__x_type,
-          e: messages[i]
-        })
+      }
+      if (unreadMessage.messages.length > 0) {
+        output.push(unreadMessage);
       }
     }
-    if (unreadMessage.messages.length > 0) {
-      Output.push(unreadMessage);
-    }
+
+    return output;
   }
 
-  return Output;
+  getChat(id, next) {
+    id = typeof id == "string" ? id : id._serialized
+    const found = window.Store.Chat.get(id)
+
+    if (next !== undefined) { next(found) }
+
+    return found
+  }
+
+  sendChatStateSeen(chat, next) {
+    Store.SendSeen(chat, true).then(() => {
+      next(true)
+    })
+  }
 }
 
-function getChat(id, next) {
-  id = typeof id == "string" ? id : id._serialized;
-  const found = window.Store.Chat.get(id);
-  if (next !== undefined) next(found);
-  return found;
-}
+// Useful to send a message from backend
+/* ipc.on('send-message', function (event, args) {
+  sendMessage(args.userId, args.message)
+}) */
 
-function sendChatStateSeen(chat, next) {
-  Store.SendSeen(chat, true).then(function () {
-    next(true);
-  });
-};
+// Every second check if has any message unread, if is true return the same message
+ipc.on('start-echo', function (event, args) {
+  setInterval(() => {
+    let unreadChats = bot.getUnreadChats()
+
+    if (unreadChats && unreadChats.length > 0) {
+      unreadChats.map((chat) => {
+        chat.messages.map((message) => {
+          bot.sendMessage(chat.id, message.message)
+        })
+      })
+    }
+  }, 1000)
+})
+
+ipc.on('initialize-bot', (event, args) => {
+  bot = new Bot(messageTemplate, conversationSelector)
+  bot.startEngine()
+})
 
