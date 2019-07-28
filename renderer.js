@@ -4,6 +4,14 @@ const conversationSelector = '._2UaNq'
 
 console.log('rendered loaded')
 
+function timeout(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function random(from, to) {
+  return Math.floor(Math.random() * to) + from;
+}
+
 // Check every second if app is ready to start
 var isReadyInterval = setInterval(function () {
   let searchInputElements = document.querySelector('.app')
@@ -147,7 +155,7 @@ function triggerMouseEvent(node, eventType) {
   node.dispatchEvent(clickEvent);
 }
 
-function sendMessage(id, msgReceived) {
+async function sendMessage(id, msgReceived) {
   if (!id) {
     return
   }
@@ -168,25 +176,45 @@ function sendMessage(id, msgReceived) {
     chat.id = chatsModels[chatModel].__x_id._serialized;
 
     if (chat.id.search(contact) != -1 && chat.id.search('g.us') == -1) {
-      // Clean unread message
-      sendSeen(chatsModels[chatModel])
+      // Clean coming message
+      await timeout(random(300, 1000))
       openConversation(chat.contact)
-      // Send the message
-      chatsModels[chatModel].sendMessage(message);
-      // Also works
-      //Store.SendTextMsgToChat(chatsModels[chatModel], '<<MESSAGE>>')
+      sendChatStateSeen(chatsModels[chatModel])
 
+      // Send to conversation "typing..." state
+      await timeout(random(800, 2000));
+      sendChatstateComposing(chat.id)
+
+      // Send the message
+      await timeout(random(500, message.length * 80));
+      //chatsModels[chatModel].sendMessage(message);
+      // Also works
+      Store.SendTextMsgToChat(chatsModels[chatModel], message)
+
+      // Stop the sending of conversation "typing..." state
+      sendChatstatePaused(chat.id)
+
+      // Set offline state
+      await timeout(random(300, 850));
       sendPresenceUnavailable()
       return true
     }
   }
 }
 
-function sendPresenceAvailable(params) {
+function sendChatstateComposing(chatIdSerialized) {
+  Store.WapQuery.sendChatstateComposing(Store.Chat.models[0].__x_id._serialized)
+}
+
+function sendChatstatePaused(chatIdSerialized) {
+  Store.WapQuery.sendChatstateComposing(Store.Chat.models[0].__x_id._serialized)
+}
+
+function sendPresenceAvailable() {
   Store.WapQuery.sendPresenceAvailable()
 }
 
-function sendPresenceUnavailable(params) {
+function sendPresenceUnavailable() {
   Store.WapQuery.sendPresenceUnavailable()
 }
 
@@ -251,8 +279,8 @@ function getChat(id, next) {
   return found;
 }
 
-function sendSeen(chat, next) {
-  Store.SendSeen(chat, false).then(function (data) {
+function sendChatStateSeen(chat, next) {
+  Store.SendSeen(chat, true).then(function () {
     next(true);
   });
 };
