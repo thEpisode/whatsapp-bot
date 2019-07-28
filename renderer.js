@@ -1,6 +1,6 @@
-// More information on: https://gist.github.com/sjcotto/41ab50ed18dd25c05b96fb3b30876713
 const ipc = require('electron').ipcRenderer
 const conversationSelector = '._2UaNq'
+let messageTemplate = `Welcome to *Virtual capital of America*, at this moment I haven't a brain and my father is working hard to give me artificial intelligence, if you are interested on my services please visit https://www.virtualcapitalofamerica.com. Your message: " _{{1}}_ "`;
 
 console.log('rendered loaded')
 
@@ -162,7 +162,7 @@ async function sendMessage(id, msgReceived) {
 
   let chatsModels = Store.Chat.models
   let contact = id
-  const message = `Welcome to *Virtual capital of America*, at this moment I haven't a brain and my father is working hard to give me artificial intelligence, if you are interested on my services please visit https://www.virtualcapitalofamerica.com. Your message: " _${msgReceived}_ "`;
+
 
   sendPresenceAvailable()
 
@@ -176,6 +176,8 @@ async function sendMessage(id, msgReceived) {
     chat.id = chatsModels[chatModel].__x_id._serialized;
 
     if (chat.id.search(contact) != -1 && chat.id.search('g.us') == -1) {
+      const _message = messageTemplate.replace('{{1}}', msgReceived)
+
       // Clean coming message
       await timeout(random(300, 1000))
       openConversation(chat.contact)
@@ -186,10 +188,10 @@ async function sendMessage(id, msgReceived) {
       sendChatstateComposing(chat.id)
 
       // Send the message
-      await timeout(random(500, message.length * 80));
+      await timeout(random(500, _message.length * 80));
       //chatsModels[chatModel].sendMessage(message);
       // Also works
-      Store.SendTextMsgToChat(chatsModels[chatModel], message)
+      Store.SendTextMsgToChat(chatsModels[chatModel], _message)
 
       // Stop the sending of conversation "typing..." state
       sendChatstatePaused(chat.id)
