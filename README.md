@@ -12,7 +12,7 @@ This is an Electron app containing Whatsapp web and is using React methods to do
 
 ## Disclaimer
 
-Do not use this code to send spam. **Remember:** Users could report you.
+Do not use this code to send spam. **Remember:** Users could report you and you will be banned.
 
 ## License
 

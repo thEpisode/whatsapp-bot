@@ -1,21 +1,22 @@
 // More information on: https://gist.github.com/sjcotto/41ab50ed18dd25c05b96fb3b30876713
 const ipc = require('electron').ipcRenderer
+const conversationSelector = '._2UaNq'
 
 console.log('rendered loaded')
 
 // Check every second if app is ready to start
 var isReadyInterval = setInterval(function () {
-  let searchInputElements = document.querySelector('._3La1s')
+  let searchInputElements = document.querySelector('.app')
 
   // Is ready to works
-  if (searchInputElements.childElementCount > 0) {
+  if (searchInputElements && searchInputElements.childElementCount > 0) {
     clearInterval(isReadyInterval)
     start()
   }
 }, 1000)
 
 // Send a message to main.js notifying is ready to use
-function start () {
+function start() {
   ipc.send('whatsapp-is-ready')
 }
 
@@ -49,10 +50,10 @@ ipc.on('start-echo', function (event, args) {
 })
 
 // Expose Whatsapp app to window
-function parseAppObject (params) {
+function parseAppObject(params) {
   if (window.Store === undefined) {
     (function () {
-      function getStore (modules) {
+      function getStore(modules) {
         let foundCount = 0;
         let neededObjects = [
           { id: "Store", conditions: (module) => (module.Chat && module.Msg) ? module : null },
@@ -116,8 +117,8 @@ function parseAppObject (params) {
 }
 
 // Useful to clean all unread conversations
-function openAllConversations () {
-  var conversations = document.querySelectorAll('._2wP_Y>div>div')
+function openAllConversations() {
+  var conversations = document.querySelectorAll(conversationSelector)
   conversations.forEach((conversation) => {
     triggerMouseEvent(conversation, "mouseover");
     triggerMouseEvent(conversation, "mousedown");
@@ -127,9 +128,9 @@ function openAllConversations () {
 }
 
 // Maybe to get links or history
-function openConversation (name) {
+function openConversation(name) {
   let conversation = document.querySelector(`span[title="${name}"]`)
-
+debugger
   // "Human" behavior
   triggerMouseEvent(conversation, "mouseover");
   triggerMouseEvent(conversation, "mousedown");
@@ -138,41 +139,44 @@ function openConversation (name) {
 }
 
 // Simulate a mouse event
-function triggerMouseEvent (node, eventType) {
+function triggerMouseEvent(node, eventType) {
+  if (!node) { return }
+
   let clickEvent = document.createEvent('MouseEvents');
   clickEvent.initEvent(eventType, true, true);
   node.dispatchEvent(clickEvent);
 }
 
-function sendMessage (id, msgReceived) {
+function sendMessage(id, msgReceived) {
   if (!id) {
     return
   }
 
-  let Chats = Store.Chat.models
+  let chatsModels = Store.Chat.models
   let contact = id
   const message = `Welcome to *Virtual capital of America*, at this moment I haven't a brain and my father is working hard to give me artificial intelligence, if you are interested on my services please visit https://www.virtualcapitalofamerica.com. Your message: " _${msgReceived}_ "`;
-  for (chat in Chats) {
-    if (isNaN(chat)) {
+  for (chatModel in chatsModels) {
+    if (isNaN(chatModel)) {
       continue;
     }
 
-    var temp = {}
-    temp.contact = Chats[chat].__x__formattedTitle;
-    temp.id = Chats[chat].__x_id._serialized;
-    if (temp.id.search(contact) != -1 && temp.id.search('g.us') == -1) {
+    var chat = {}
+
+    chat.contact = chatsModels[chatModel].__x_formattedTitle;
+    chat.id = chatsModels[chatModel].__x_id._serialized;
+    if (chat.id.search(contact) != -1 && chat.id.search('g.us') == -1) {
       // Clean unread message
-      // Chats[chat].sendSeen(1) // it seems sendSeen changed.
-      sendSeen(chat)
+      sendSeen(chatsModels[chatModel])
+      openConversation(chat.contact)
       // Send the message
-      Chats[chat].sendMessage(message);
+      chatsModels[chatModel].sendMessage(message);
       return true
     }
   }
 }
 
 // Verify if is a message
-function isChatMessage (message) {
+function isChatMessage(message) {
   if (message.__x_isSentByMe) {
     return false;
   }
@@ -185,8 +189,7 @@ function isChatMessage (message) {
   return true;
 }
 
-
-function getUnreadChats () {
+function getUnreadChats() {
   let Chats = Store.Chat.models;
   let Output = [];
 
@@ -226,27 +229,16 @@ function getUnreadChats () {
   return Output;
 }
 
-function getChat (id, done) {
+function getChat(id, next) {
   id = typeof id == "string" ? id : id._serialized;
   const found = window.Store.Chat.get(id);
-  if (done !== undefined) done(found);
+  if (next !== undefined) next(found);
   return found;
 }
 
-function sendSeen (id, done) {
-  var chat = getChat(id);
-  if (chat !== undefined) {
-    if (done !== undefined) {
-      Store.SendSeen(Store.Chat.models[0], false).then(function () {
-        done(true);
-      });
-      return true;
-    } else {
-      Store.SendSeen(Store.Chat.models[0], false);
-      return true;
-    }
-  }
-  if (done !== undefined) done();
-  return false;
+function sendSeen(chat, next) {
+  Store.SendSeen(chat, false).then(function (data) {
+    next(true);
+  });
 };
 
