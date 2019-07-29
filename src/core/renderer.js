@@ -3,7 +3,7 @@ const BusinessController = require('../controllers/business/business.controller'
 
 let business = {}
 
-console.log('rendered loaded')
+console.log('rendered.js loaded, chatbot will be loaded')
 
 // Useful to send a message from backend
 /* ipc.on('send-message', function (event, args) {

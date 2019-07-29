@@ -21,6 +21,7 @@ class BusinessController {
 
   initializeEvents() {
     this.ipc.on('bot-ready', (event, args) => {
+      console.log('Whatsapp loaded and bot')
       this.startListening()
     })
   }
@@ -45,6 +46,7 @@ class BusinessController {
         })
       }
     }, 1000)
+    console.log('Bot listening for incoming conversations')
   }
 }
 

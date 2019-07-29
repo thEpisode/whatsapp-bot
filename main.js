@@ -27,7 +27,7 @@ function createWindow() {
 
   // useful if you need to load any script different or check something
   mainWindow.webContents.on('did-finish-load', function () {
-    mainWindow.webContents.executeJavaScript(`console.log('message from backend')`)
+    mainWindow.webContents.executeJavaScript(`console.log('Website loaded succesfully')`)
 
     mainWindow.webContents.send('initialize-bot')
   });
@@ -42,11 +42,11 @@ function createWindow() {
     mainWindow = null
   })
 
-  ipc.on('whatsapp-is-ready', function (event, args) {debugger
+  ipc.on('whatsapp-is-ready', function (event, args) {
     mainWindow.webContents.send('bot-ready')
   })
 
-  mainWindow.webContents.on('whatsapp-is-ready', function (event, args) {debugger
+  mainWindow.webContents.on('whatsapp-is-ready', function (event, args) {
     mainWindow.webContents.send('bot-ready')
   })
 }
