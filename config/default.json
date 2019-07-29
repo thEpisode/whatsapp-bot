@@ -20,8 +20,14 @@
         }
       ],
       "services": {
-        "preflight": "https://miretail.com.co/api/validate-account-chatbot",
-        "callback": "https://miretail.com.co/api/chatbot"
+        "preflight": {
+          "route": "https://www.miretail.com.co/api/validate-account-chatbot",
+          "method": "POST"
+        },
+        "callback": {
+          "route": "https://www.miretail.com.co/api/chatbot",
+          "method": "get"
+        }
       }
     },
     {
@@ -42,8 +48,14 @@
         }
       ],
       "services": {
-        "preflight": "https://miretail.com.co/api/validate-account-chatbot",
-        "callback": "https://miretail.com.co/api/chatbot"
+        "preflight": {
+          "route": "https://www.miretail.com.co/api/validate-account-chatbot",
+          "method": "POST"
+        },
+        "callback": {
+          "route": "https://www.miretail.com.co/api/chatbot",
+          "method": "get"
+        }
       }
     },
     {
@@ -61,8 +73,11 @@
         }
       ],
       "services": {
-        "preflight": "",
-        "callback": "https://www.miretail.com.co/api/chatbot"
+        "preflight": null,
+        "callback": {
+          "route": "https://www.miretail.com.co/api/chatbot",
+          "method": "get"
+        }
       }
     },
     {
@@ -83,8 +98,8 @@
         }
       ],
       "services": {
-        "preflight": "",
-        "callback": ""
+        "preflight": null,
+        "callback": null
       }
     }
   ]

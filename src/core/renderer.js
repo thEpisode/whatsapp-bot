@@ -15,7 +15,6 @@ console.log('rendered.js loaded, chatbot will be loaded')
  * When bot is ready start the engine
  */
 ipc.on('initialize-bot', (event, args) => {
-  console.log(config.BUSINESS_KEY_ACTIONS)
   business = new BusinessController({
     ipc,
     conversationSelector: '._2UaNq',

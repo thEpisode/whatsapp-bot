@@ -1,3 +1,5 @@
+const backend = require('../backend/backend.controller')
+
 class BotController {
   constructor({ ipc, conversationSelector }) {
     this.ipc = ipc
@@ -120,6 +122,9 @@ class BotController {
           }
         }
       }
+      if (!webpackJsonp) {
+        return
+      }
       webpackJsonp([], { 'parasite': (x, y, z) => getStore(z) }, ['parasite']);
     })()
   }
@@ -188,6 +193,7 @@ class BotController {
     let chat = {}
     chat.contact = chatModel.__x_formattedTitle;
     chat.id = chatModel.__x_id._serialized;
+    chat.user = chatModel.__x_id.user
 
     // Clean coming message
     await this.timeout(this.random(300, 1000))
@@ -199,12 +205,12 @@ class BotController {
 
 
     // Send the message
-    for (const message of flow) {
+    for (const flowItem of flow) {
       this.sendChatstateComposing(chat.id)
-      await this.timeout(this.random(500, message.length * 80));
+      await this.timeout(this.random(500, flowItem.message.length * 80));
       //chatModel.sendMessage(message);
       // Also works
-      Store.SendTextMsgToChat(chatModel, message)
+      Store.SendTextMsgToChat(chatModel, flowItem.message)
 
       // Stop the sending of conversation "typing..." state
       await this.timeout(this.random(300, 650));
@@ -290,6 +296,7 @@ class BotController {
       let unreadMessage = {}
       unreadMessage.contact = chats[chat].__x_formattedTitle || ''
       unreadMessage.id = chats[chat].__x_id._serialized || ''
+      unreadMessage.user = chats[chat].__x_id.user || ''
       unreadMessage.messages = []
 
       for (let i = messages.length - 1; i >= 0; i--) {

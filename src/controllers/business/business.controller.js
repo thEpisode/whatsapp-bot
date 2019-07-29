@@ -1,9 +1,10 @@
 const BotController = require('../bot/bot.controller')
+const backend = require('../backend/backend.controller')()
 const utilities = require('../../core/utilities.manager')()
 
 class BusinessController {
-  constructor({ ipc, conversationSelector, chatActions }) {
 
+  constructor({ ipc, conversationSelector, chatActions }) {
     this.ipc = ipc
     this.conversationSelector = conversationSelector
     this.chatActions = chatActions
@@ -45,14 +46,18 @@ class BusinessController {
     console.log('Bot listening for incoming conversations')
   }
 
-  messageHandler({ chat, messageModel }) {
+  async messageHandler({ chat, messageModel }) {
     let chatAction = {}
     const keyIncidence = this.chatActions.find(action => {
-      return messageModel.message.toLocaleLowerCase().match(action.key.toLocaleLowerCase())
+      if (messageModel.message.toLocaleLowerCase().match(action.key.toLocaleLowerCase())) {
+        return true
+      } else {
+        return false
+      }
     })
-    debugger
+
     if (keyIncidence) {
-      chatAction = utilities.searchers.object.findObject(keyIncidence, 'id', this.chatActions)
+      chatAction = utilities.searchers.object.findObject(keyIncidence.id, 'id', this.chatActions)
     } else {
       chatAction = utilities.searchers.object.findObject('no-key', 'id', this.chatActions)
     }
@@ -60,6 +65,18 @@ class BusinessController {
     if (!chatAction) {
       console.log(`No exist flow for this message: ${messageModel.message}`)
       return
+    }
+
+    if (chatAction.services && chatAction.services.preflight) {
+      const response = await backend.request({
+        route: chatAction.services.preflight.route,
+        method: chatAction.services.preflight.method,
+        parameters: { chat, messageModel }
+      })
+      debugger
+      if (!utilities.response.isValid(response)) {
+        chatAction.flow = [{ message: response.message }]
+      }
     }
 
     chatAction.flow.map(flowMessage => {

@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "config": "^3.2.2",
-    "crypto": "^1.0.1"
+    "crypto": "^1.0.1",
+    "request": "^2.88.0"
   }
 }

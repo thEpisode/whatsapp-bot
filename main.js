@@ -21,7 +21,9 @@ function createWindow() {
       preload: __dirname + '/src/core/renderer.js'
     }
   })
-
+  // To clear session an cache
+  //mainWindow.webContents.session.clearStorageData()
+  
   // and load the web of the app.
   mainWindow.loadURL('https://web.whatsapp.com')
 
