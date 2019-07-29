@@ -10,7 +10,7 @@
           "message": "Hi!, welcome to *Mi Retail*"
         },
         {
-          "message": "Your account with phone number _{{1}}_ has been activated."
+          "message": "Your account with phone number _{{INCOMING_PHONE}}_ has been activated."
         },
         {
           "message": "Please visit https://www.miretail.com.co to open your store"
@@ -21,11 +21,11 @@
       ],
       "services": {
         "preflight": {
-          "route": "https://www.miretail.com.co/api/validate-account-chatbot",
+          "route": "https://app.miretail.com.co/api/validate-account-chatbot",
           "method": "POST"
         },
         "callback": {
-          "route": "https://www.miretail.com.co/api/chatbot",
+          "route": "https://app.miretail.com.co/api/chatbot",
           "method": "get"
         }
       }
@@ -38,7 +38,7 @@
           "message": "Hola!, bienvenido a *Mi Retail*"
         },
         {
-          "message": "Tu cuenta con el número de teléfono _{{1}}_ ha sido activada"
+          "message": "Tu cuenta con el número de teléfono _{{INCOMING_PHONE}}_ ha sido activada"
         },
         {
           "message": "Por favor visita https://www.miretail.com.co para abrir tu tienda."
@@ -49,11 +49,11 @@
       ],
       "services": {
         "preflight": {
-          "route": "https://www.miretail.com.co/api/validate-account-chatbot",
+          "route": "https://app.miretail.com.co/api/validate-account-chatbot",
           "method": "POST"
         },
         "callback": {
-          "route": "https://www.miretail.com.co/api/chatbot",
+          "route": "https://app.miretail.com.co/api/chatbot",
           "method": "get"
         }
       }
@@ -69,13 +69,13 @@
           "message": "if you are interested on my services please visit https://www.miretail.com.co"
         },
         {
-          "message": "Your message: _{{1}}_"
+          "message": "Your message: _{{INCOMING_MESSAGE}}_"
         }
       ],
       "services": {
         "preflight": null,
         "callback": {
-          "route": "https://www.miretail.com.co/api/chatbot",
+          "route": "https://app.miretail.com.co/api/chatbot",
           "method": "get"
         }
       }
@@ -94,7 +94,7 @@
           "message": "If you are interested on my services please visit https://www.miretail.com.co"
         },
         {
-          "message": "Your message: _{{1}}_"
+          "message": "Your message: _{{INCOMING_MESSAGE}}_"
         }
       ],
       "services": {

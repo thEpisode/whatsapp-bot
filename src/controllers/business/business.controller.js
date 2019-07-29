@@ -73,14 +73,15 @@ class BusinessController {
         method: chatAction.services.preflight.method,
         parameters: { chat, messageModel }
       })
-      debugger
+      
       if (!utilities.response.isValid(response)) {
         chatAction.flow = [{ message: response.message }]
       }
     }
 
     chatAction.flow.map(flowMessage => {
-      flowMessage.message = flowMessage.message.replace('{{1}}', messageModel.message)
+      flowMessage.message = flowMessage.message.replace('{{INCOMING_MESSAGE}}', messageModel.message)
+      flowMessage.message = flowMessage.message.replace('{{INCOMING_PHONE}}', chat.user)
     })
 
     this.bot.sendMessage(chat.id, chatAction)
