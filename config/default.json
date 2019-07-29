@@ -3,8 +3,8 @@
   "BOT_VERSION": "0.0.0.1",
   "BUSINESS_KEY_ACTIONS": [
     {
-      "id": "activate",
-      "key": "activate account",
+      "id": "miretail_activate_account",
+      "key": "activate mi retail account",
       "flow": [
         {
           "message": "Hi!, welcome to *Mi Retail*"
@@ -31,8 +31,8 @@
       }
     },
     {
-      "id": "activate",
-      "key": "activar cuenta",
+      "id": "miretail_activar_cuenta",
+      "key": "activar cuenta mi retail",
       "flow": [
         {
           "message": "Hola!, bienvenido a *Mi Retail*"
