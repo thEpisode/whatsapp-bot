@@ -1,4 +1,5 @@
 const ipc = require('electron').ipcRenderer
+const config = require('config')
 const BusinessController = require('../controllers/business/business.controller')
 
 let business = {}
@@ -14,19 +15,11 @@ console.log('rendered.js loaded, chatbot will be loaded')
  * When bot is ready start the engine
  */
 ipc.on('initialize-bot', (event, args) => {
+  console.log(config.BUSINESS_KEY_ACTIONS)
   business = new BusinessController({
     ipc,
-    messageTemplate: '._2UaNq',
-    messageTemplates: [
-      {
-        id: 'echo',
-        flow: [
-          { message: `Hi!, welcome to *Virtual capital of America*` },
-          { message: `at the moment I'm a chatbot without brain and my father is working hard to give me artificial intelligence` },
-          { message: `if you are interested on my services please visit https://www.virtualcapitalofamerica.com.` },
-          { message: `Your message: " _{{1}}_ "` }
-        ]
-      }]
+    conversationSelector: '._2UaNq',
+    chatActions: config.BUSINESS_KEY_ACTIONS
   })
 })
 

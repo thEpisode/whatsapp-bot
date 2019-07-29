@@ -1,0 +1,91 @@
+{
+  "BOT_NAME": "WaBot",
+  "BOT_VERSION": "0.0.0.1",
+  "BUSINESS_KEY_ACTIONS": [
+    {
+      "id": "activate",
+      "key": "activate account",
+      "flow": [
+        {
+          "message": "Hi!, welcome to *Mi Retail*"
+        },
+        {
+          "message": "Your account with phone number _{{1}}_ has been activated."
+        },
+        {
+          "message": "Please visit https://www.miretail.com.co to open your store"
+        },
+        {
+          "message": "Do you have any other request?"
+        }
+      ],
+      "services": {
+        "preflight": "https://miretail.com.co/api/validate-account-chatbot",
+        "callback": "https://miretail.com.co/api/chatbot"
+      }
+    },
+    {
+      "id": "activate",
+      "key": "activar cuenta",
+      "flow": [
+        {
+          "message": "Hola!, bienvenido a *Mi Retail*"
+        },
+        {
+          "message": "Tu cuenta con el número de teléfono _{{1}}_ ha sido activada"
+        },
+        {
+          "message": "Por favor visita https://www.miretail.com.co para abrir tu tienda."
+        },
+        {
+          "message": "¿Tienes alguna otra petición?"
+        }
+      ],
+      "services": {
+        "preflight": "https://miretail.com.co/api/validate-account-chatbot",
+        "callback": "https://miretail.com.co/api/chatbot"
+      }
+    },
+    {
+      "id": "echo",
+      "key": "echo",
+      "flow": [
+        {
+          "message": "Hi!, welcome to *Mi Retail*"
+        },
+        {
+          "message": "if you are interested on my services please visit https://www.miretail.com.co"
+        },
+        {
+          "message": "Your message: _{{1}}_"
+        }
+      ],
+      "services": {
+        "preflight": "",
+        "callback": "https://www.miretail.com.co/api/chatbot"
+      }
+    },
+    {
+      "id": "no-key",
+      "key": "no-key",
+      "flow": [
+        {
+          "message": "Hi!, welcome to *Mi Retail*"
+        },
+        {
+          "message": "At the moment the action you give me is not known to me."
+        },
+        {
+          "message": "If you are interested on my services please visit https://www.miretail.com.co"
+        },
+        {
+          "message": "Your message: _{{1}}_"
+        }
+      ],
+      "services": {
+        "preflight": "",
+        "callback": ""
+      }
+    }
+  ]
+}

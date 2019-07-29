@@ -167,14 +167,15 @@ class BotController {
   /**
    * Send a message with "Human" behavior like state seen, online/offline, and more
    * @param {String} id Id serialized of conversation
-   * @param {String} flow Messages you want to send
+   * @param {Object} chatAction Is a flow you want to execute in the messages
    */
-  async sendMessage(id, flow) {
+  async sendMessage(id, chatAction) {
     if (!id) {
       return
     }
 
     const chatsModels = Store.Chat.models
+    const flow = chatAction.flow
 
     this.sendPresenceAvailable()
 

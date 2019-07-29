@@ -18,5 +18,9 @@
   "license": "CC0-1.0",
   "devDependencies": {
     "electron": "^4.0.2"
+  },
+  "dependencies": {
+    "config": "^3.2.2",
+    "crypto": "^1.0.1"
   }
 }

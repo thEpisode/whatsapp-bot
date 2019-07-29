@@ -1,11 +1,12 @@
 const BotController = require('../bot/bot.controller')
+const utilities = require('../../core/utilities.manager')()
 
 class BusinessController {
-  constructor({ ipc, conversationSelector, messageTemplates }) {
+  constructor({ ipc, conversationSelector, chatActions }) {
 
     this.ipc = ipc
     this.conversationSelector = conversationSelector
-    this.messageTemplates = messageTemplates
+    this.chatActions = chatActions
 
     this.initializeEvents()
     this.createBot()
@@ -36,17 +37,36 @@ class BusinessController {
       if (unreadChats && unreadChats.length > 0) {
         unreadChats.map((chat) => {
           chat.messages.map((messageModel) => {
-            const flow = this.messageTemplates[0].flow
-            const _messages = flow.map(flowMessage => {
-              return flowMessage.message.replace('{{1}}', messageModel.message)
-            })
-            
-            this.bot.sendMessage(chat.id, _messages)
+            this.messageHandler({ chat, messageModel })
           })
         })
       }
     }, 1000)
     console.log('Bot listening for incoming conversations')
+  }
+
+  messageHandler({ chat, messageModel }) {
+    let chatAction = {}
+    const keyIncidence = this.chatActions.find(action => {
+      return messageModel.message.toLocaleLowerCase().match(action.key.toLocaleLowerCase())
+    })
+    debugger
+    if (keyIncidence) {
+      chatAction = utilities.searchers.object.findObject(keyIncidence, 'id', this.chatActions)
+    } else {
+      chatAction = utilities.searchers.object.findObject('no-key', 'id', this.chatActions)
+    }
+
+    if (!chatAction) {
+      console.log(`No exist flow for this message: ${messageModel.message}`)
+      return
+    }
+
+    chatAction.flow.map(flowMessage => {
+      flowMessage.message = flowMessage.message.replace('{{1}}', messageModel.message)
+    })
+
+    this.bot.sendMessage(chat.id, chatAction)
   }
 }
 
