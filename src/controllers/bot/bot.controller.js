@@ -35,7 +35,7 @@ class BotController {
    * @param {Number} ms How many need to wait
    */
   timeout(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise(resolve => setTimeout(resolve, ms))
   }
 
   /**
@@ -44,7 +44,7 @@ class BotController {
    * @param {Number} to Set the end of boundaries
    */
   random(from, to) {
-    return Math.floor(Math.random() * to) + from;
+    return Math.floor(Math.random() * to) + from
   }
 
   /**
@@ -65,7 +65,7 @@ class BotController {
 
     (function () {
       function getStore(modules) {
-        let foundCount = 0;
+        let foundCount = 0
         let neededObjects = [
           { id: "Store", conditions: (module) => (module.Chat && module.Msg) ? module : null },
           { id: "MediaCollection", conditions: (module) => (module.default && module.default.prototype && module.default.prototype.processFiles !== undefined) ? module.default : null },
@@ -82,42 +82,42 @@ class BotController {
           { id: "UserConstructor", conditions: (module) => (module.default && module.default.prototype && module.default.prototype.isServer && module.default.prototype.isUser) ? module.default : null },
           { id: "SendTextMsgToChat", conditions: (module) => (module.sendTextMsgToChat) ? module.sendTextMsgToChat : null },
           { id: "SendSeen", conditions: (module) => (module.sendSeen) ? module.sendSeen : null }
-        ];
+        ]
         for (let idx in modules) {
           if ((typeof modules[idx] === "object") && (modules[idx] !== null)) {
-            let first = Object.values(modules[idx])[0];
+            let first = Object.values(modules[idx])[0]
             if ((typeof first === "object") && (first.exports)) {
               for (let idx2 in modules[idx]) {
-                let module = modules(idx2);
+                let module = modules(idx2)
                 if (!module) {
-                  continue;
+                  continue
                 }
                 neededObjects.forEach((needObj) => {
                   if (!needObj.conditions || needObj.foundedModule)
-                    return;
-                  let neededModule = needObj.conditions(module);
+                    return
+                  let neededModule = needObj.conditions(module)
                   if (neededModule !== null) {
-                    foundCount++;
-                    needObj.foundedModule = neededModule;
+                    foundCount++
+                    needObj.foundedModule = neededModule
                   }
-                });
+                })
                 if (foundCount == neededObjects.length) {
-                  break;
+                  break
                 }
               }
 
-              let neededStore = neededObjects.find((needObj) => needObj.id === "Store");
-              window.Store = neededStore.foundedModule ? neededStore.foundedModule : {};
-              neededObjects.splice(neededObjects.indexOf(neededStore), 1);
+              let neededStore = neededObjects.find((needObj) => needObj.id === "Store")
+              window.Store = neededStore.foundedModule ? neededStore.foundedModule : {}
+              neededObjects.splice(neededObjects.indexOf(neededStore), 1)
               neededObjects.forEach((needObj) => {
                 if (needObj.foundedModule) {
-                  window.Store[needObj.id] = needObj.foundedModule;
+                  window.Store[needObj.id] = needObj.foundedModule
                 }
-              });
+              })
               window.Store.ChatClass.default.prototype.sendMessage = function (e) {
-                return window.Store.SendTextMsgToChat(this, ...arguments);
+                return window.Store.SendTextMsgToChat(this, ...arguments)
               }
-              return window.Store;
+              return window.Store
             }
           }
         }
@@ -125,7 +125,7 @@ class BotController {
       if (!webpackJsonp) {
         return
       }
-      webpackJsonp([], { 'parasite': (x, y, z) => getStore(z) }, ['parasite']);
+      webpackJsonp([], { 'parasite': (x, y, z) => getStore(z) }, ['parasite'])
     })()
   }
 
@@ -135,11 +135,11 @@ class BotController {
   openAllConversations() {
     var conversations = document.querySelectorAll(conversationSelector)
     conversations.forEach((conversation) => {
-      this.triggerMouseEvent(conversation, "mouseover");
-      this.triggerMouseEvent(conversation, "mousedown");
-      this.triggerMouseEvent(conversation, "mouseup");
-      this.triggerMouseEvent(conversation, "click");
-    });
+      this.triggerMouseEvent(conversation, "mouseover")
+      this.triggerMouseEvent(conversation, "mousedown")
+      this.triggerMouseEvent(conversation, "mouseup")
+      this.triggerMouseEvent(conversation, "click")
+    })
   }
 
   /**
@@ -150,10 +150,10 @@ class BotController {
     let conversation = document.querySelector(`span[title="${name}"]`)
 
     // "Human" behavior
-    this.triggerMouseEvent(conversation, "mouseover");
-    this.triggerMouseEvent(conversation, "mousedown");
-    this.triggerMouseEvent(conversation, "mouseup");
-    this.triggerMouseEvent(conversation, "click");
+    this.triggerMouseEvent(conversation, "mouseover")
+    this.triggerMouseEvent(conversation, "mousedown")
+    this.triggerMouseEvent(conversation, "mouseup")
+    this.triggerMouseEvent(conversation, "click")
   }
 
   /**
@@ -164,9 +164,9 @@ class BotController {
   triggerMouseEvent(node, eventType) {
     if (!node) { return }
 
-    let clickEvent = document.createEvent('MouseEvents');
-    clickEvent.initEvent(eventType, true, true);
-    node.dispatchEvent(clickEvent);
+    let clickEvent = document.createEvent('MouseEvents')
+    clickEvent.initEvent(eventType, true, true)
+    node.dispatchEvent(clickEvent)
   }
 
   /**
@@ -191,8 +191,8 @@ class BotController {
     if (!chatModel) { return }
 
     let chat = {}
-    chat.contact = chatModel.__x_formattedTitle;
-    chat.id = chatModel.__x_id._serialized;
+    chat.contact = chatModel.__x_formattedTitle
+    chat.id = chatModel.__x_id._serialized
     chat.user = chatModel.__x_id.user
 
     // Clean coming message
@@ -201,24 +201,25 @@ class BotController {
     this.sendChatStateSeen(chatModel)
 
     // Send to conversation "typing..." state
-    await this.timeout(this.random(800, 2000));
+    await this.timeout(this.random(800, 2000))
 
 
     // Send the message
     for (const flowItem of flow) {
       this.sendChatstateComposing(chat.id)
-      await this.timeout(this.random(500, flowItem.message.length * 80));
-      //chatModel.sendMessage(message);
+      await this.timeout(this.random(500, flowItem.message.length * 80))
+      //chatModel.sendMessage(message)
       // Also works
       Store.SendTextMsgToChat(chatModel, flowItem.message)
 
       // Stop the sending of conversation "typing..." state
-      await this.timeout(this.random(300, 650));
+      await this.timeout(this.random(300, 650))
       this.sendChatstatePaused(chat.id)
     }
 
     // Set offline state
-    await this.timeout(this.random(300, 850));
+    await this.timeout(this.random(300, 850))
+    this.sendChatStateSeen(chatModel)
     this.sendPresenceUnavailable()
   }
 
@@ -307,7 +308,7 @@ class BotController {
             continue
           }
 
-          messages[i].__x_isNewMsg = false;
+          messages[i].__x_isNewMsg = false
           unreadMessage.messages.push({
             message: messages[i].__x_body,
             timestamp: messages[i].__x_t,
@@ -317,11 +318,11 @@ class BotController {
         }
       }
       if (unreadMessage.messages.length > 0) {
-        output.push(unreadMessage);
+        output.push(unreadMessage)
       }
     }
 
-    return output;
+    return output
   }
 
   /**
