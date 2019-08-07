@@ -21,11 +21,11 @@
       ],
       "services": {
         "preflight": {
-          "route": "https://app.miretail.com.co/api/validate-account-chatbot",
+          "route": "http://localhost:3532/api/validate-account-chatbot",
           "method": "POST"
         },
         "callback": {
-          "route": "https://app.miretail.com.co/api/chatbot",
+          "route": "http://localhost:3532/api/chatbot",
           "method": "get"
         }
       }
@@ -49,11 +49,11 @@
       ],
       "services": {
         "preflight": {
-          "route": "https://app.miretail.com.co/api/validate-account-chatbot",
+          "route": "http://localhost:3532/api/validate-account-chatbot",
           "method": "POST"
         },
         "callback": {
-          "route": "https://app.miretail.com.co/api/chatbot",
+          "route": "http://localhost:3532/api/chatbot",
           "method": "get"
         }
       }
@@ -75,7 +75,7 @@
       "services": {
         "preflight": null,
         "callback": {
-          "route": "https://app.miretail.com.co/api/chatbot",
+          "route": "http://localhost:3532/api/chatbot",
           "method": "get"
         }
       }
