@@ -4,8 +4,6 @@ class BotController {
   constructor({ ipc, conversationSelector }) {
     this.ipc = ipc
     this.conversationSelector = conversationSelector
-
-    this.parseAppObject()
   }
 
   /**
@@ -24,6 +22,7 @@ class BotController {
 
       // Is ready to works
       if (searchInputElements && searchInputElements.childElementCount > 0) {
+        this.parseAppObject()
         clearInterval(isReadyInterval)
         this.whatsappIsReady()
       }
@@ -82,7 +81,7 @@ class BotController {
           { id: "UserConstructor", conditions: (module) => (module.default && module.default.prototype && module.default.prototype.isServer && module.default.prototype.isUser) ? module.default : null },
           { id: "SendTextMsgToChat", conditions: (module) => (module.sendTextMsgToChat) ? module.sendTextMsgToChat : null },
           { id: "SendSeen", conditions: (module) => (module.sendSeen) ? module.sendSeen : null }
-        ]
+        ];
         for (let idx in modules) {
           if ((typeof modules[idx] === "object") && (modules[idx] !== null)) {
             let first = Object.values(modules[idx])[0]
