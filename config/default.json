@@ -1,6 +1,7 @@
 {
   "BOT_NAME": "WaBot",
   "BOT_VERSION": "0.0.0.1",
+  "MACHINE_ID": "bot-2b9cb",
   "BOT_KEY_ACTIONS": [
     {
       "id": "miretail_activate_account",
@@ -106,27 +107,32 @@
       }
     }
   ],
-  "SOCKET": {},
+  "SOCKET": {
+    "port": 3500,
+    "url": "ws://localhost"
+  },
   "SELECTORS": {
     "APP": ".app",
     "QRCODE": "img[alt=\"Scan me!\"]",
     "CONVERSATION": "#pane-side",
     "CONVERSATIONITEM": "._2UaNq"
   },
-  "SCRIPTS": [
-    {
-      "name": "qrSniffer",
-      "path": "./src/client-scripts/qrSniffer.js"
-    },
-    {
-      "name": "parasite",
-      "path": "./src/client-scripts/parasite.js"
-    },
-    {
-      "name": "wh-handler",
-      "path": "./src/client-scripts/wh-handler.js"
-    }
-  ],
+  "SCRIPTS": {
+    "whatsapp": [
+      {
+        "name": "qrSniffer",
+        "path": "./src/client-scripts/qrSniffer.js"
+      },
+      {
+        "name": "parasite",
+        "path": "./src/client-scripts/parasite.js"
+      },
+      {
+        "name": "wh-handler",
+        "path": "./src/client-scripts/wh-handler.js"
+      }
+    ]
+  },
   "BROWSER_OPTIONS": {
     "headless": false,
     "devtools": true

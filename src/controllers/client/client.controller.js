@@ -2,11 +2,12 @@ const backend = require('../backend/backend.controller')
 const utilities = require('../../core/utilities.manager')()
 
 class BotController {
-  constructor ({ selectors, config, browser, scripts }) {
+  constructor ({ selectors, config, browser, scripts, socket }) {
     this.selectors = selectors
     this.config = config
     this.browser = browser
     this.scripts = scripts
+    this.socket = socket
   }
 
   /**
@@ -74,7 +75,7 @@ class BotController {
   startListening () {
     setInterval(async () => {
       try {
-        let unreadChats = await this.page.evaluate('getUnreadChats()')
+        let unreadChats = await this.page.evaluate('window.whatsAppBus.getUnreadChats()')
         unreadChats = JSON.parse(unreadChats)
 
         if (unreadChats && unreadChats.length > 0) {
@@ -130,7 +131,7 @@ class BotController {
       flowMessage.message = flowMessage.message.replace('{{INCOMING_PHONE}}', chat.user)
     })
 
-    this.page.evaluate(`sendMessage('${chat.id}', '${JSON.stringify(chatAction)}')`)
+    this.page.evaluate(`window.whatsAppBus.sendMessage('${chat.id}', '${JSON.stringify(chatAction)}')`)
   }
 }
 

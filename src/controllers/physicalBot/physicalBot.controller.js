@@ -6,9 +6,10 @@ const fs = require('fs')
 
 class PhysicalBotController {
 
-  constructor ({ selectors, config }) {
+  constructor ({ selectors, config, socket }) {
     this.selectors = selectors
     this.config = config
+    this.socket = socket
   }
 
   async setupBrowser () {
@@ -27,11 +28,10 @@ class PhysicalBotController {
   }
 
   loadClientScripts () {
-    this.scripts = this.config.scripts.map(script => {
+    this.scripts = this.config.scripts.whatsapp.map(script => {
       script['data'] = fs.readFileSync(script.path, 'utf8')
       return script
     })
-    var i = 0
   }
 
   async createBot () {
@@ -39,7 +39,8 @@ class PhysicalBotController {
       selectors: this.selectors,
       config: this.config,
       browser: this.browser,
-      scripts: this.scripts
+      scripts: this.scripts,
+      socket: this.socket
     })
 
     await this.bot.startEngine()
