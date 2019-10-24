@@ -51,16 +51,17 @@ class BotController {
 
       /* Inject WhatsApp Handler */
       const whHandlerScript = utilities.searchers.object.findObject('wh-handler', 'name', this.scripts)
-      page.evaluate(whHandlerScript.data)
+      page.evaluate(whHandlerScript.data
+        .replaceAll('conversationSelector', `'${this.selectors.CONVERSATIONITEM}'`))
+
+      this.startListening()
     })
 
     /* Mutator for QR Code */
     const qrScript = utilities.searchers.object.findObject('qrSniffer', 'name', this.scripts)
-    const qrSrc = qrScript.data
+    this.page.evaluate(qrScript.data
       .replaceAll('qrCodeSelector', `'${this.selectors.QRCODE}'`)
-      .replaceAll('conversationSelector', `'${this.selectors.CONVERSATION}'`)
-
-    this.page.evaluate(qrSrc)
+      .replaceAll('conversationSelector', `'${this.selectors.CONVERSATION}'`))
   }
 
   /**

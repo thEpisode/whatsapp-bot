@@ -9,16 +9,13 @@ class PhysicalBotController {
   constructor ({ selectors, config }) {
     this.selectors = selectors
     this.config = config
-
-    this.setupBrowser()
   }
 
   async setupBrowser () {
     this.browser = await puppeteer.launch(this.config.browserOptions)
 
     this.loadClientScripts()
-    this.initializeEvents()
-    this.createBot()
+    return this.browser
   }
 
   updateConfig (config) {
@@ -46,10 +43,6 @@ class PhysicalBotController {
     })
 
     await this.bot.startEngine()
-  }
-
-  initializeEvents () {
-    // TODO: Initiate events
   }
 }
 

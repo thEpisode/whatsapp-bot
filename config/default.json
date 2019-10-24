@@ -110,7 +110,8 @@
   "SELECTORS": {
     "APP": ".app",
     "QRCODE": "img[alt=\"Scan me!\"]",
-    "CONVERSATION": "#pane-side"
+    "CONVERSATION": "#pane-side",
+    "CONVERSATIONITEM": "._2UaNq"
   },
   "SCRIPTS": [
     {

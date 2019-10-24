@@ -5,7 +5,7 @@ class ServerManager {
   constructor (config) {
     this.socketConfig = config.SOCKET
 
-    this.business = new PhysicalBotController({
+    this.physicalBot = new PhysicalBotController({
       selectors: config.SELECTORS,
       config: {
         scripts: config.SCRIPTS,
@@ -13,19 +13,23 @@ class ServerManager {
       }
     })
 
-    this.connectWS()
+    this.physicalBot.setupBrowser().then(_ => {
+      this.connectWS()
+    })
   }
 
   connectWS () {
     this.setupSocketEvents()
+
+    this.physicalBot.createBot()
   }
 
   setupSocketEvents () {
 
   }
 
-  configureBusiness (config) {
-    this.business.updateConfig(config)
+  updatePhysical (config) {
+    this.physicalBot.updateConfig(config)
   }
 }
 

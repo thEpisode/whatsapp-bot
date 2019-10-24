@@ -16,14 +16,6 @@ const random = (from, to) => {
 }
 
 /**
- * Send a message to main.js notifying is ready to use
- */
-const whatsappIsReady = () => {
-  // Return to code-behind telling whatsapp is ready to work
-  this.ipc.send('whatsapp-is-ready')
-}
-
-/**
  * Useful to clean all unread conversations
  */
 const openAllConversations = () => {
