@@ -1,0 +1,22 @@
+{
+  "window.zoomLevel": 0,
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.detectIndentation": false,
+  "files.autoSave": "afterDelay",
+  "explorer.confirmDragAndDrop": false,
+  "extensions.ignoreRecommendations": false,
+  "typescript.format.insertSpaceBeforeFunctionParenthesis": true,
+  "javascript.format.insertSpaceBeforeFunctionParenthesis": true,
+  "sqltools.connections": [
+    {
+      "database": "chatbotsdb",
+      "dialect": "PostgreSQL",
+      "name": "postgres_docker",
+      "password": "camilo",
+      "port": 5432,
+      "server": "localhost",
+      "username": "camiepisode"
+    }
+  ]
+}

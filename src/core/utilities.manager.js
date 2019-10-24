@@ -12,50 +12,42 @@ function utilities() {
 
   const idGenerator = (length, prefix) => {
     // Generate 256 random bytes and converted to hex to prevent failures on unscaped chars
-    let buffer = _crypto.randomBytes(256)
-    let randomToken = buffer.toString('hex')
+    const buffer = _crypto.randomBytes(256)
+    const randomToken = buffer.toString('hex')
     // Generating of token
     return `${prefix || 'seed-'}${randomToken.slice(0, length)}`
   }
 
   const propertyIsValid = function (property) {
-    if (property) {
-      if (property.success === true) {
-        return true
-      } else {
-        return false
-      }
-    } else {
-      return false
+    let isValid = false
+
+    if (property && property.success === true) {
+      isValid = true
     }
+
+    return isValid
   }
 
   const throwError = function (message) {
     if (message) {
       return { success: false, message: message, result: null }
-    } else {
-      return { success: false, message: 'Something was wrong while you make this action', result: null }
     }
+
+    return { success: false, message: 'Something was wrong while you make this action', result: null }
   }
 
   const throwSuccess = function (data, message) {
-    if (message) {
-      return {
-        success: true,
-        message: message,
-        result: data
-      }
-    } else {
-      return {
-        success: true,
-        message: 'Operation completed successfully',
-        result: data
-      }
+    const succesResponse = {
+      success: true,
+      message: message || 'Operation completed successfully',
+      result: data || {}
     }
+
+    return succesResponse
   }
 
-  const badRequestView = function (req, res) {
-    res.render('maintenance/maintenance.view.jsx', null)
+  const badRequestView = function (req, res, data) {
+    res.render('maintenance/index.view.jsx', data)
   }
 
   const cleanObjectData = rawObj => {
@@ -84,7 +76,7 @@ function utilities() {
 
   const findDeepObjectByKey = (query, key, _array) => {
     return _array.find(function (element, index) {
-      let deepObject = searchDotStyle(element, key)
+      const deepObject = searchDotStyle(element, key)
       return deepObject === query
     })
   }
@@ -104,7 +96,7 @@ function utilities() {
   }
 
   const findAndRemove = (query, _array) => {
-    let index = _array.findIndex(function (element, index) {
+    const index = _array.findIndex(function (element, index) {
       return element === query
     })
 
@@ -115,7 +107,7 @@ function utilities() {
   }
 
   const findAndRemoveByKey = (query, key, _array) => {
-    let index = _array.findIndex(function (element, index) {
+    const index = _array.findIndex(function (element, index) {
       return element[key] === query
     })
 
@@ -127,24 +119,25 @@ function utilities() {
 
   const serializerOjectToQueryString = (obj, prefix) => {
     if (obj && typeof obj === 'object') {
-      let str = []
-      let p
-      for (p in obj) {
-        if (obj.hasOwnProperty(p)) {
-          let k = prefix ? prefix + '[' + p + ']' : p
-          let v = obj[p]
-          str.push((v !== null && typeof v === 'object')
-            ? serializerOjectToQueryString(v, k)
-            : encodeURIComponent(k) + '=' + encodeURIComponent(v))
+      const serializedArr = []
+      let key = {}
+
+      for (key in obj) {
+        if (Object.prototype.hasOwnProperty.call(obj, key)) {
+          const k = prefix ? prefix + '[' + key + ']' : key
+          const value = obj[key] || null
+          serializedArr.push((value !== null && typeof value === 'object')
+            ? serializerOjectToQueryString(value, k)
+            : encodeURIComponent(k) + '=' + encodeURIComponent(value))
         }
       }
-      return str.join('&')
+      return serializedArr.join('&')
     }
   }
 
   const objectToQueryString = (obj) => {
     if (obj && typeof obj === 'object') {
-      let result = serializerOjectToQueryString(obj)
+      const result = serializerOjectToQueryString(obj)
       return `?${result}`
     } else {
       return ''
@@ -153,7 +146,7 @@ function utilities() {
 
   const isEmpty = (obj) => {
     for (var key in obj) {
-      if (obj.hasOwnProperty(key)) {
+      if (Object.prototype.hasOwnProperty.call(obj, key)) {
         return false
       }
     }
@@ -163,39 +156,15 @@ function utilities() {
   const getParameters = (data) => {
     if (!data) { return null }
 
-    let params = {}
-
     if (!isEmpty(data.query)) {
-      for (const key in data.query) {
-        if (data.query.hasOwnProperty(key)) {
-          const element = data.query[key]
-
-          params[key] = element
-        }
-      }
+      return data.query
+    } else if (!isEmpty(data.body)) {
+      return data.body
+    } else if (!isEmpty(data.params)) {
+      return data.params
+    } else {
+      return null
     }
-
-    if (!isEmpty(data.body)) {
-      for (const key in data.body) {
-        if (data.body.hasOwnProperty(key)) {
-          const element = data.body[key]
-
-          params[key] = element
-        }
-      }
-    }
-
-    if (!isEmpty(data.params)) {
-      for (const key in data.params) {
-        if (data.params.hasOwnProperty(key)) {
-          const element = data.params[key]
-
-          params[key] = element
-        }
-      }
-    }
-
-    return params
   }
 
   return {

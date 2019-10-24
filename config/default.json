@@ -19,6 +19,9 @@
           "message": "Do you have any other request?"
         }
       ],
+      "settings": {
+        "amount_message_per_user": 3
+      },
       "services": {
         "preflight": {
           "route": "http://localhost:3532/api/validate-account-chatbot",
@@ -102,5 +105,29 @@
         "callback": null
       }
     }
-  ]
+  ],
+  "SOCKET": {},
+  "SELECTORS": {
+    "APP": ".app",
+    "QRCODE": "img[alt=\"Scan me!\"]",
+    "CONVERSATION": "#pane-side"
+  },
+  "SCRIPTS": [
+    {
+      "name": "qrSniffer",
+      "path": "./src/client-scripts/qrSniffer.js"
+    },
+    {
+      "name": "parasite",
+      "path": "./src/client-scripts/parasite.js"
+    },
+    {
+      "name": "wh-handler",
+      "path": "./src/client-scripts/wh-handler.js"
+    }
+  ],
+  "BROWSER_OPTIONS": {
+    "headless": false,
+    "devtools": false
+  }
 }
