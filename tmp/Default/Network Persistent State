@@ -1,1 +1,0 @@
-{"net":{"http_server_properties":{"servers":[{"https://accounts.google.com":{"alternative_service":[{"advertised_versions":[46],"expiration":"13218940802926500","port":443,"protocol_str":"quic"}],"supports_spdy":true}}],"version":5},"network_qualities":{"CAASABiAgICA+P////8B":"4G"}}}
