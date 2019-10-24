@@ -78,6 +78,7 @@ class BotController {
         unreadChats = JSON.parse(unreadChats)
 
         if (unreadChats && unreadChats.length > 0) {
+          console.log(unreadChats)
           unreadChats.map((chat) => {
             chat.messages.map((messageModel) => {
               this.messageHandler({ chat, messageModel })
@@ -102,9 +103,9 @@ class BotController {
     })
 
     if (keyIncidence) {
-      chatAction = utilities.searchers.object.findObject(keyIncidence.id, 'id', this.config.botKeyActions)
+      chatAction = JSON.parse(JSON.stringify(utilities.searchers.object.findObject(keyIncidence.id, 'id', this.config.botKeyActions)))
     } else {
-      chatAction = utilities.searchers.object.findObject('no-key', 'id', this.config.botKeyActions)
+      chatAction = JSON.parse(JSON.stringify(utilities.searchers.object.findObject('no-key', 'id', this.config.botKeyActions)))
     }
 
     if (!chatAction) {

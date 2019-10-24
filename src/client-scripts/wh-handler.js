@@ -65,8 +65,9 @@ const sendMessage = async (id, chatAction) => {
     return
   }
 
+  chatAction = JSON.parse(chatAction)
   const chatsModels = Store.Chat.models
-  const flow = (JSON.parse(chatAction)).flow
+  const flow = chatAction.flow
 
   sendPresenceAvailable()
 
