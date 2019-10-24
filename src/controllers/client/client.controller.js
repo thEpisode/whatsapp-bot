@@ -25,7 +25,7 @@ class BotController {
     })
     await this.page.goto('https://web.whatsapp.com')
     await this.page.waitForSelector(this.selectors.QRCODE, { visible: true })
-    
+
     this.startEvents()
   }
 
@@ -35,7 +35,7 @@ class BotController {
         return
       }
 
-      console.log(`qr changed: ${data.result.qr}`);
+      console.log(`${data.message}`);
     })
 
     this.page.exposeFunction('chatOnLoaded', (data) => {
@@ -43,7 +43,8 @@ class BotController {
         return
       }
 
-      console.log(data.message)
+      console.log(data.message);
+
       /* Inject WhatsApp parasite */
       const whParasiteScript = utilities.searchers.object.findObject('parasite', 'name', this.scripts)
       page.evaluate(whParasiteScript.data)
