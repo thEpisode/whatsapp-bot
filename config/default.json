@@ -111,6 +111,10 @@
     "port": 3500,
     "url": "ws://localhost"
   },
+  "BACKEND": {
+    "port": 3500,
+    "url": "http://localhost"
+  },
   "SELECTORS": {
     "APP": ".app",
     "QRCODE": "img[alt=\"Scan me!\"]",

@@ -2,9 +2,11 @@ const PhysicalBotController = require('../controllers/physicalBot/physicalBot.co
 const socketClient = require('socket.io-client')
 class ServerManager {
 
-  constructor (config) {
+  constructor ({config, eventBus}) {
+    this.eventBus = eventBus
     this.config = config
     this.socketConfig = this.config.SOCKET
+    this.eventsIsInitialized = false
 
     this.physicalBot = new PhysicalBotController({
       selectors: this.config.SELECTORS,
@@ -50,13 +52,13 @@ class ServerManager {
 
     this.socketClient.on('reconnect_attempt', () => {
       this.socketClient.io.opts.transports = ['polling', 'websocket']
-      _console.log(`Socket connect attempt`)
+      console.log(`Socket connect attempt`)
     })
 
     this.socketClient.on('connect', (param) => {
-      if (!eventsIsInitialized) {
-        _eventBus.emit('initializeEvents')
-        eventsIsInitialized = true
+      if (!this.eventsIsInitialized) {
+        this.eventBus.emit('initializeEvents')
+        this.eventsIsInitialized = true
       }
 
       // Register node into network
@@ -71,14 +73,14 @@ class ServerManager {
         values: {}
       })
 
-      _console.success(`Connected to ${this.config.SOCKET_URL}:${this.config.SOCKET_PORT} as ${this.socketClient.id} with native id ${this.config.MACHINE_ID}`)
+      console.log(`Connected to ${this.config.SOCKET.url}:${this.config.SOCKET.port} as ${this.socketClient.id} with native id ${this.config.MACHINE_ID}`)
     })
 
     this.socketClient.on('reversebytes.gobot.bot#EVENT', (data) => {
-      _console.log('reversebytes.gobot.bot#EVENT')
+      console.log('reversebytes.gobot.bot#EVENT')
       if (data.context.receiver.socketId === this.socketClient.id) {
-        _console.log('Emitting serverEvent')
-        _eventBus.emit(
+        console.log('Emitting serverEvent')
+        this.eventBus.emit(
           'onAdminEvent',
           {
             context: data.context || {},
@@ -90,7 +92,7 @@ class ServerManager {
     })
 
     this.socketClient.on('disconnect', () => {
-      _console.error(`Disconnected from ${this.config.SOCKET_URL}:${this.config.SOCKET_PORT}`)
+      console.error(`Disconnected from ${this.config.SOCKET_URL}:${this.config.SOCKET_PORT}`)
     })
   }
 
