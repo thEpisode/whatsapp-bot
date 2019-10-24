@@ -8,6 +8,7 @@ class ServerManager {
     this.physicalBot = new PhysicalBotController({
       selectors: config.SELECTORS,
       config: {
+        botKeyActions: config.BOT_KEY_ACTIONS,
         scripts: config.SCRIPTS,
         browserOptions: config.BROWSER_OPTIONS
       }

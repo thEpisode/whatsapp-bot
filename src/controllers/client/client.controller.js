@@ -38,23 +38,27 @@ class BotController {
       console.log(`${data.message}`);
     })
 
-    this.page.exposeFunction('chatOnLoaded', (data) => {
-      if (!data || !data.success) {
-        return
+    this.page.exposeFunction('chatOnLoaded', async (data) => {
+      try {
+        if (!data || !data.success) {
+          return
+        }
+
+        console.log(data.message);
+
+        /* Inject WhatsApp parasite */
+        const whParasiteScript = utilities.searchers.object.findObject('parasite', 'name', this.scripts)
+        await this.page.evaluate(whParasiteScript.data)
+
+        /* Inject WhatsApp Handler */
+        const whHandlerScript = utilities.searchers.object.findObject('wh-handler', 'name', this.scripts)
+        await this.page.evaluate(whHandlerScript.data
+          .replaceAll('conversationSelector', `'${this.selectors.CONVERSATIONITEM}'`))
+
+        this.startListening()
+      } catch (error) {
+        console.log(error)
       }
-
-      console.log(data.message);
-
-      /* Inject WhatsApp parasite */
-      const whParasiteScript = utilities.searchers.object.findObject('parasite', 'name', this.scripts)
-      page.evaluate(whParasiteScript.data)
-
-      /* Inject WhatsApp Handler */
-      const whHandlerScript = utilities.searchers.object.findObject('wh-handler', 'name', this.scripts)
-      page.evaluate(whHandlerScript.data
-        .replaceAll('conversationSelector', `'${this.selectors.CONVERSATIONITEM}'`))
-
-      this.startListening()
     })
 
     /* Mutator for QR Code */
@@ -68,15 +72,20 @@ class BotController {
    * Every second check if has any message unread, if is true return the same message
    */
   startListening () {
-    setInterval(() => {
-      let unreadChats = this.bot.getUnreadChats()
+    setInterval(async () => {
+      try {
+        let unreadChats = await this.page.evaluate('getUnreadChats()')
+        unreadChats = JSON.parse(unreadChats)
 
-      if (unreadChats && unreadChats.length > 0) {
-        unreadChats.map((chat) => {
-          chat.messages.map((messageModel) => {
-            this.messageHandler({ chat, messageModel })
+        if (unreadChats && unreadChats.length > 0) {
+          unreadChats.map((chat) => {
+            chat.messages.map((messageModel) => {
+              this.messageHandler({ chat, messageModel })
+            })
           })
-        })
+        }
+      } catch (error) {
+        console.log(error)
       }
     }, 1000)
     console.log('Bot listening for incoming conversations')
@@ -84,7 +93,7 @@ class BotController {
 
   async messageHandler ({ chat, messageModel }) {
     let chatAction = {}
-    const keyIncidence = this.chatActions.find(action => {
+    const keyIncidence = this.config.botKeyActions.find(action => {
       if (messageModel.message.toLocaleLowerCase().match(action.key.toLocaleLowerCase())) {
         return true
       } else {
@@ -93,9 +102,9 @@ class BotController {
     })
 
     if (keyIncidence) {
-      chatAction = utilities.searchers.object.findObject(keyIncidence.id, 'id', this.chatActions)
+      chatAction = utilities.searchers.object.findObject(keyIncidence.id, 'id', this.config.botKeyActions)
     } else {
-      chatAction = utilities.searchers.object.findObject('no-key', 'id', this.chatActions)
+      chatAction = utilities.searchers.object.findObject('no-key', 'id', this.config.botKeyActions)
     }
 
     if (!chatAction) {
@@ -120,7 +129,7 @@ class BotController {
       flowMessage.message = flowMessage.message.replace('{{INCOMING_PHONE}}', chat.user)
     })
 
-    this.bot.sendMessage(chat.id, chatAction)
+    this.page.evaluate(`sendMessage('${chat.id}', '${JSON.stringify(chatAction)}')`)
   }
 }
 

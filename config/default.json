@@ -1,7 +1,7 @@
 {
   "BOT_NAME": "WaBot",
   "BOT_VERSION": "0.0.0.1",
-  "BUSINESS_KEY_ACTIONS": [
+  "BOT_KEY_ACTIONS": [
     {
       "id": "miretail_activate_account",
       "key": "activate mi retail account",
@@ -129,6 +129,6 @@
   ],
   "BROWSER_OPTIONS": {
     "headless": false,
-    "devtools": false
+    "devtools": true
   }
 }

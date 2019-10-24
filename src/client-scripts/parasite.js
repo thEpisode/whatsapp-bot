@@ -1,9 +1,9 @@
-if (window.Store !== undefined) {
-  return
-}
-
 (function () {
   function getStore (modules) {
+    if (window.Store !== undefined) {
+      return null
+    }
+    
     let foundCount = 0
     let neededObjects = [
       { id: "Store", conditions: (module) => (module.Chat && module.Msg) ? module : null },

@@ -21,10 +21,10 @@ const random = (from, to) => {
 const openAllConversations = () => {
   var conversations = document.querySelectorAll(conversationSelector)
   conversations.forEach((conversation) => {
-    this.triggerMouseEvent(conversation, "mouseover")
-    this.triggerMouseEvent(conversation, "mousedown")
-    this.triggerMouseEvent(conversation, "mouseup")
-    this.triggerMouseEvent(conversation, "click")
+    triggerMouseEvent(conversation, "mouseover")
+    triggerMouseEvent(conversation, "mousedown")
+    triggerMouseEvent(conversation, "mouseup")
+    triggerMouseEvent(conversation, "click")
   })
 }
 
@@ -36,10 +36,10 @@ const openConversation = (name) => {
   let conversation = document.querySelector(`span[title="${name}"]`)
 
   // "Human" behavior
-  this.triggerMouseEvent(conversation, "mouseover")
-  this.triggerMouseEvent(conversation, "mousedown")
-  this.triggerMouseEvent(conversation, "mouseup")
-  this.triggerMouseEvent(conversation, "click")
+  triggerMouseEvent(conversation, "mouseover")
+  triggerMouseEvent(conversation, "mousedown")
+  triggerMouseEvent(conversation, "mouseup")
+  triggerMouseEvent(conversation, "click")
 }
 
 /**
@@ -66,9 +66,9 @@ const sendMessage = async (id, chatAction) => {
   }
 
   const chatsModels = Store.Chat.models
-  const flow = chatAction.flow
+  const flow = (JSON.parse(chatAction)).flow
 
-  this.sendPresenceAvailable()
+  sendPresenceAvailable()
 
   let chatModel = chatsModels.find(chat => {
     return chat.__x_id._serialized.search(id) >= 0 && chat.__x_id._serialized.search('g.us') === -1
@@ -82,31 +82,31 @@ const sendMessage = async (id, chatAction) => {
   chat.user = chatModel.__x_id.user
 
   // Clean coming message
-  await this.timeout(this.random(300, 1000))
-  this.openConversation(chat.contact)
-  this.sendChatStateSeen(chatModel)
+  await timeout(random(300, 1000))
+  openConversation(chat.contact)
+  sendChatStateSeen(chatModel)
 
   // Send to conversation "typing..." state
-  await this.timeout(this.random(800, 2000))
+  await timeout(random(800, 2000))
 
 
   // Send the message
   for (const flowItem of flow) {
-    this.sendChatstateComposing(chat.id)
-    await this.timeout(this.random(500, flowItem.message.length * 80))
+    sendChatstateComposing(chat.id)
+    await timeout(random(500, flowItem.message.length * 80))
     //chatModel.sendMessage(message)
     // Also works
     Store.SendTextMsgToChat(chatModel, flowItem.message)
 
     // Stop the sending of conversation "typing..." state
-    await this.timeout(this.random(300, 650))
-    this.sendChatstatePaused(chat.id)
+    await timeout(random(300, 650))
+    sendChatstatePaused(chat.id)
   }
 
   // Set offline state
-  await this.timeout(this.random(300, 850))
-  this.sendChatStateSeen(chatModel)
-  this.sendPresenceUnavailable()
+  await timeout(random(300, 850))
+  sendChatStateSeen(chatModel)
+  sendPresenceUnavailable()
 }
 
 /**
@@ -170,7 +170,9 @@ const isChatMessage = (message) => {
 /**
  * Get all unread chats of Whatsapp
  */
-const getUnreadChats = () => {
+function getUnreadChats () {
+  if (!Store) { return [] }
+
   const chats = Store.Chat.models
   let output = []
 
@@ -190,10 +192,10 @@ const getUnreadChats = () => {
       if (!messages[i].__x_isNewMsg) {
         break
       } else {
-        if (!this.isChatMessage(messages[i])) {
+        if (!isChatMessage(messages[i])) {
           continue
         }
-
+        
         messages[i].__x_isNewMsg = false
         unreadMessage.messages.push({
           message: messages[i].__x_body,
@@ -208,7 +210,7 @@ const getUnreadChats = () => {
     }
   }
 
-  return output
+  return JSON.stringify(output)
 }
 
 /**
