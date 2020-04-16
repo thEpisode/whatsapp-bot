@@ -1,7 +1,8 @@
 {
   "BOT_NAME": "WaBot",
   "BOT_VERSION": "0.0.0.1",
-  "BUSINESS_KEY_ACTIONS": [
+  "MACHINE_ID": "bot-2b9cb",
+  "BOT_KEY_ACTIONS": [
     {
       "id": "miretail_activate_account",
       "key": "activate mi retail account",
@@ -19,6 +20,9 @@
           "message": "Do you have any other request?"
         }
       ],
+      "settings": {
+        "amount_message_per_user": 3
+      },
       "services": {
         "preflight": {
           "route": "http://localhost:3532/api/validate-account-chatbot",
@@ -102,5 +106,39 @@
         "callback": null
       }
     }
-  ]
+  ],
+  "SOCKET": {
+    "port": 3500,
+    "url": "ws://localhost"
+  },
+  "BACKEND": {
+    "port": 3500,
+    "url": "http://localhost"
+  },
+  "SELECTORS": {
+    "APP": ".app",
+    "QRCODE": "img[alt=\"Scan me!\"]",
+    "CONVERSATION": "#pane-side",
+    "CONVERSATIONITEM": "._2UaNq"
+  },
+  "SCRIPTS": {
+    "whatsapp": [
+      {
+        "name": "qrSniffer",
+        "path": "./src/client-scripts/qrSniffer.js"
+      },
+      {
+        "name": "parasite",
+        "path": "./src/client-scripts/parasite.js"
+      },
+      {
+        "name": "wh-handler",
+        "path": "./src/client-scripts/wh-handler.js"
+      }
+    ]
+  },
+  "BROWSER_OPTIONS": {
+    "headless": false,
+    "devtools": true
+  }
 }
