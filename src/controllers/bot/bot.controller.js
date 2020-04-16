@@ -90,7 +90,7 @@ class BotController {
                 let module = modules(idx2)
                 if (!module) {
                   continue
-                }
+                }if(typeof module === 'object'){debugger}
                 neededObjects.forEach((needObj) => {
                   if (!needObj.conditions || needObj.foundedModule)
                     return
