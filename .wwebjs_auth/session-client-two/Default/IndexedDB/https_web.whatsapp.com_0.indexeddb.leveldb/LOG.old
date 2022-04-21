@@ -1,5 +1,0 @@
-2022/04/21-11:44:07.748 3488 Creating DB C:\git\github\whatsapp-bot\.wwebjs_auth\session-client-two\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb since it was missing.
-2022/04/21-11:44:07.809 3488 Reusing MANIFEST C:\git\github\whatsapp-bot\.wwebjs_auth\session-client-two\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
-2022/04/21-11:44:28.973 6704 Level-0 table #5: started
-2022/04/21-11:44:29.229 6704 Level-0 table #5: 1103867 bytes OK
-2022/04/21-11:44:29.232 6704 Delete type=0 #3
