@@ -10,26 +10,12 @@ class PhysicalBotController {
     this.socket = socket
   }
 
-  async setupBrowser () {
-    this.browser = await puppeteer.launch(this.config.browserOptions)
-
-    this.loadClientScripts()
-    return this.browser
-  }
-
   updateConfig (config) {
     if (!config) {
       return
     }
 
     this.config = config
-  }
-
-  loadClientScripts () {
-    this.scripts = this.config.scripts.whatsapp.map(script => {
-      script['data'] = fs.readFileSync(script.path, 'utf8')
-      return script
-    })
   }
 
   async createBot () {

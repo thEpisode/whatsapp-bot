@@ -1,6 +1,9 @@
 const ConversationController = require('../conversation/conversation.controller')
 const utilities = require('../../core/utilities.manager')()
 var sizeof = require('object-sizeof')
+const { Client, LocalAuth, List, Buttons } = require('whatsapp-web.js')
+const qrcode = require('qrcode-terminal');
+
 class BotController {
   constructor ({ selectors, config, browser, scripts, socket }) {
     this.selectors = selectors
@@ -20,93 +23,84 @@ class BotController {
   }
 
   async startSession () {
-    this.context = await this.browser.createIncognitoBrowserContext()
-    this.page = await this.context.newPage()
-
-    await this.page.evaluateOnNewDocument(() => {
-      window.navigator = {}
-    })
-    await this.page.goto('https://web.whatsapp.com')
-    await this.page.waitForSelector(this.selectors.QRCODE, { visible: true })
+    this.client = new Client();
 
     this.startEvents()
   }
 
   async startEvents () {
-    this.page.exposeFunction('qrOnChange', (data) => {
-      if (!data || !data.success) {
-        return
-      }
+    this.client.on('qr', (qr) => {
+      console.log('QR RECEIVED', qr);
+      qrcode.generate(qr, { small: true });
+    });
 
-      console.log(`${data.message}`);
-    })
+    this.client.on('ready', () => {
+      console.log('Client is ready!');
+    });
 
-    this.page.exposeFunction('chatOnLoaded', async (data) => {
+    this.client.on('message', async (message) => {
+      const chat = await message.getChat()
       try {
-        if (!data || !data.success) {
-          return
+        //console.log(msg)
+        if (message.body == '!ping') {
+          message.reply('pong');
+        } else if (message.body == '!buttons') {
+          let buttons = new Buttons("Button body", [{ body: "bt1" }, { body: "bt2" }, { body: "bt3" }], "title", "footer");
+          chat.sendMessage('Sending buttons');
+          chat.sendMessage(buttons);
+        } else if (message.body == '!list') {
+          let sections = [{ title: 'sectionTitle', rows: [{ id: 'customId', title: 'ListItem1', description: 'desc' }, { title: 'ListItem2' }] }];
+          let list = new List('aaa', 'btnText', sections, 'Title', 'footer');
+          chat.sendMessage('Sending list');
+          chat.sendMessage(list);
+        } else {
+          const intentAction = await this.digestMessage(message, chat)
+
+          this.sendIntentActionMessages(chat, intentAction)
         }
-
-        console.log(data.message);
-
-        /* Inject WhatsApp parasite */
-        const whParasiteScript = utilities.searchers.object.findObject('parasite', 'name', this.scripts)
-        await this.page.evaluate(whParasiteScript.data)
-
-        /* Inject WhatsApp Handler */
-        const whHandlerScript = utilities.searchers.object.findObject('wh-handler', 'name', this.scripts)
-        await this.page.evaluate(whHandlerScript.data
-          .replaceAll('conversationSelector', `'${this.selectors.CONVERSATIONITEM}'`))
-
-        this.startListening()
       } catch (error) {
         console.log(error)
       }
-    })
 
-    /* Mutator for QR Code */
-    const qrScript = utilities.searchers.object.findObject('qrSniffer', 'name', this.scripts)
-    this.page.evaluate(qrScript.data
-      .replaceAll('qrCodeSelector', `'${this.selectors.QRCODE}'`)
-      .replaceAll('conversationSelector', `'${this.selectors.CONVERSATION}'`))
+    });
+    this.client.initialize();
+  }
+
+  findConversation (chat) {
+    for (const conversation of this.conversations) {
+      if (conversation.chat.id._serialized === chat.id._serialized) {
+        return conversation
+      }
+    }
+
+    return null
   }
 
   /**
    * Every second check if has any message unread, if is true return the same message
    */
-  startListening () {
-    setInterval(async () => {
-      try {
-        let unreadChats = await this.page.evaluate('window.whatsAppBus.getUnreadChats()')
-        unreadChats = JSON.parse(unreadChats)
+  digestMessage (message, chat) {
+    try {
+      let conversation = this.findConversation(chat)
 
-        if (!unreadChats || !unreadChats.length) {
-          return
-        }
-
-        console.log(unreadChats)
-        unreadChats.map((chat) => {
-          let conversation = this.conversations.find(conversation => conversation.id === chat.id)
-
-          if (!conversation) {
-            this.conversations.push({
-              id: chat.id,
-              user: chat.user,
-              controller: new ConversationController({
-                page: this.page,
-                config: this.config
-              })
-            })
-            conversation = this.conversations[this.conversations.length - 1]
-          }
-          conversation.controller.digestNewMessages(chat)
-          console.log(sizeof(conversation))
+      if (conversation === null) {
+        conversation = new ConversationController({
+          chat,
+          config: this.config
         })
-      } catch (error) {
-        console.log(error)
+        this.conversations.push(conversation)
       }
-    }, 1000)
-    console.log('Bot listening for incoming conversations')
+
+      return conversation.processMessage({ message })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  sendIntentActionMessages (chat, intentAction) {
+    for (const message of intentAction.messages) {
+      chat.sendMessage(message.body)
+    }
   }
 }
 

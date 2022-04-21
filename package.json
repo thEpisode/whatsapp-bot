@@ -20,8 +20,9 @@
     "config": "^3.2.2",
     "crypto": "^1.0.1",
     "object-sizeof": "^1.6.1",
+    "qrcode-terminal": "^0.12.0",
     "request": "^2.88.0",
     "socket.io-client": "^2.3.0",
-    "whatsapp-web.js": "^1.16.5"
+    "whatsapp-web.js": "github:pedroslopez/whatsapp-web.js#features_fix"
   }
 }

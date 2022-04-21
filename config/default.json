@@ -6,7 +6,7 @@
   "BOT_KEY_ACTIONS": [
     {
       "id": "genesys",
-      "flow": [],
+      "messages": [],
       "services": {
         "preflight": null,
         "callback": null
@@ -20,18 +20,18 @@
     },
     {
       "id": "question-0",
-      "flow": [
+      "messages": [
         {
-          "message": "Hola!, soy *Covid Bot*, hago parte de Comfasucre"
+          "body": "Hola!, soy *Covid Bot*, hago parte de Comfasucre"
         },
         {
-          "message": "Me gustaría ayudarte a idenficar si tienes algunos sintomas de COVID-19 para prevenir posibles riesgos"
+          "body": "Me gustaría ayudarte a idenficar si tienes algunos sintomas de COVID-19 para prevenir posibles riesgos"
         },
         {
-          "message": "Estas de acuerdo?"
+          "body": "Estas de acuerdo?"
         },
         {
-          "message": "Responde *SI* o *NO*"
+          "body": "Responde *SI* o *NO*"
         }
       ],
       "services": {
@@ -56,9 +56,9 @@
     },
     {
       "id": "question-1",
-      "flow": [
+      "messages": [
         {
-          "message": "Escribe tu número de documento de identidad (sin puntos, ni simbolos especiales), a continuación:"
+          "body": "Escribe tu número de documento de identidad (sin puntos, ni simbolos especiales), a continuación:"
         }
       ],
       "services": {
@@ -74,12 +74,12 @@
     },
     {
       "id": "question-2",
-      "flow": [
+      "messages": [
         {
-          "message": "En los ultimos dias has tenido gripa?"
+          "body": "En los ultimos dias has tenido gripa?"
         },
         {
-          "message": "Responde *SI* o *NO*"
+          "body": "Responde *SI* o *NO*"
         }
       ],
       "services": {
@@ -104,30 +104,30 @@
     },
     {
       "id": "question-3",
-      "flow": [
+      "messages": [
         {
-          "message": "La gripa estuvo acompañada de sintomas como:"
+          "body": "La gripa estuvo acompañada de sintomas como:"
         },
         {
-          "message": " - Dolor de cabeza,"
+          "body": " - Dolor de cabeza,"
         },
         {
-          "message": " - Perdida del olfato,"
+          "body": " - Perdida del olfato,"
         },
         {
-          "message": " - Dolores musculares,"
+          "body": " - Dolores musculares,"
         },
         {
-          "message": "- Tos,"
+          "body": "- Tos,"
         },
         {
-          "message": "- Dolor de garganta,"
+          "body": "- Dolor de garganta,"
         },
         {
-          "message": " - Dolor en el pecho?"
+          "body": " - Dolor en el pecho?"
         },
         {
-          "message": "Responde *SI* si has presentado alguno de los sintomas anteriores o *NO* si no los has presentado"
+          "body": "Responde *SI* si has presentado alguno de los sintomas anteriores o *NO* si no los has presentado"
         }
       ],
       "services": {
@@ -152,12 +152,12 @@
     },
     {
       "id": "question-4",
-      "flow": [
+      "messages": [
         {
-          "message": "Ademas de los sintomas anteriores, ¿has presentado fiebre?"
+          "body": "Ademas de los sintomas anteriores, ¿has presentado fiebre?"
         },
         {
-          "message": "Responde *SI* o *NO*"
+          "body": "Responde *SI* o *NO*"
         }
       ],
       "services": {
@@ -182,12 +182,12 @@
     },
     {
       "id": "question-5",
-      "flow": [
+      "messages": [
         {
-          "message": "Has sentido ronquera o perdida de apetito?"
+          "body": "Has sentido ronquera o perdida de apetito?"
         },
         {
-          "message": "Responde *SI* o *NO*"
+          "body": "Responde *SI* o *NO*"
         }
       ],
       "services": {
@@ -212,33 +212,33 @@
     },
     {
       "id": "question-6",
-      "flow": [
+      "messages": [
         {
-          "message": "¿Has presentado uno o más de los siguientes sintomas?:"
+          "body": "¿Has presentado uno o más de los siguientes sintomas?:"
         },
         {
-          "message": "- Dolor de cabeza,"
+          "body": "- Dolor de cabeza,"
         },
         {
-          "message": "- perdida del olfato,"
+          "body": "- perdida del olfato,"
         },
         {
-          "message": "- dolor de garganta,"
+          "body": "- dolor de garganta,"
         },
         {
-          "message": "- dolor en el pecho,"
+          "body": "- dolor en el pecho,"
         },
         {
-          "message": "- perdida del apetito,"
+          "body": "- perdida del apetito,"
         },
         {
-          "message": "- diarrea,"
+          "body": "- diarrea,"
         },
         {
-          "message": "- dolor abdominal o vómito?"
+          "body": "- dolor abdominal o vómito?"
         },
         {
-          "message": "Responde *SI* o *NO*"
+          "body": "Responde *SI* o *NO*"
         }
       ],
       "services": {
@@ -263,12 +263,12 @@
     },
     {
       "id": "question-7",
-      "flow": [
+      "messages": [
         {
-          "message": "Ademas de estos síntomas has sentido fatiga?"
+          "body": "Ademas de estos síntomas has sentido fatiga?"
         },
         {
-          "message": "Responde *SI* o *NO*"
+          "body": "Responde *SI* o *NO*"
         }
       ],
       "services": {
@@ -293,12 +293,12 @@
     },
     {
       "id": "question-8",
-      "flow": [
+      "messages": [
         {
-          "message": "Ademas de estos síntomas has sentido mareo?"
+          "body": "Ademas de estos síntomas has sentido mareo?"
         },
         {
-          "message": "Responde *SI* o *NO*"
+          "body": "Responde *SI* o *NO*"
         }
       ],
       "services": {
@@ -323,12 +323,12 @@
     },
     {
       "id": "question-9",
-      "flow": [
+      "messages": [
         {
-          "message": "Ademas de estos síntomas has sentido dificultad para respirar, dolor abdominal o vomito?"
+          "body": "Ademas de estos síntomas has sentido dificultad para respirar, dolor abdominal o vomito?"
         },
         {
-          "message": "Responde *SI* o *NO*"
+          "body": "Responde *SI* o *NO*"
         }
       ],
       "services": {
@@ -353,12 +353,12 @@
     },
     {
       "id": "eoi-success",
-      "flow": [
+      "messages": [
         {
-          "message": "Gracias, estaremos comunicandonos contigo brindandote información y acompañamiento."
+          "body": "Gracias, estaremos comunicandonos contigo brindandote información y acompañamiento."
         },
         {
-          "message": "*-- END OF INTERACTION --*"
+          "body": "*-- END OF INTERACTION --*"
         }
       ],
       "services": {
@@ -374,12 +374,12 @@
     },
     {
       "id": "eoi-failed",
-      "flow": [
+      "messages": [
         {
-          "message": "Gracias, estaremos comunicandonos contigo brindandote información y acompañamiento."
+          "body": "Gracias, estaremos comunicandonos contigo brindandote información y acompañamiento."
         },
         {
-          "message": "*-- END OF INTERACTION --*"
+          "body": "*-- END OF INTERACTION --*"
         }
       ],
       "services": {
@@ -395,30 +395,30 @@
     },
     {
       "id": "no-end",
-      "flow": [
+      "messages": [
         {
-          "message": "Gracias, estaremos junto a ti brindandote información y acompañamiento."
+          "body": "Gracias, estaremos junto a ti brindandote información y acompañamiento."
         },
         {
-          "message": "Lávate las manos con frecuencia"
+          "body": "Lávate las manos con frecuencia"
         },
         {
-          "message": "No saludes a la gente con besos o apretones de mano"
+          "body": "No saludes a la gente con besos o apretones de mano"
         },
         {
-          "message": "Si toses, cúbrete la boca con el codo flexionado o con un pañuelo desechable"
+          "body": "Si toses, cúbrete la boca con el codo flexionado o con un pañuelo desechable"
         },
         {
-          "message": "Evita tocarte los ojos, la nariz y la boca"
+          "body": "Evita tocarte los ojos, la nariz y la boca"
         },
         {
-          "message": "Si tienes fiebre o dificultad para respirar, busca atención médica, pero llama primero a la línea 123"
+          "body": "Si tienes fiebre o dificultad para respirar, busca atención médica, pero llama primero a la línea 123"
         },
         {
-          "message": "Sigue las indicaciones de las autoridades locales y nacionale"
+          "body": "Sigue las indicaciones de las autoridades locales y nacionale"
         },
         {
-          "message": "*-- END OF INTERACTION --*"
+          "body": "*-- END OF INTERACTION --*"
         }
       ],
       "services": {
@@ -434,15 +434,15 @@
     },
     {
       "id": "echo",
-      "flow": [
+      "messages": [
         {
-          "message": "Hi!, welcome to *Virtual capital of America*"
+          "body": "Hi!, welcome to *Virtual capital of America*"
         },
         {
-          "message": "if you are interested on my services please visit https://www.miretail.com.co"
+          "body": "if you are interested on my services please visit https://www.miretail.com.co"
         },
         {
-          "message": "Your message: _{{INCOMING_MESSAGE}}_"
+          "body": "Your body: _{{INCOMING_MESSAGE}}_"
         }
       ],
       "services": {
@@ -455,9 +455,9 @@
     },
     {
       "id": "no-key",
-      "flow": [
+      "messages": [
         {
-          "message": "No entiendo tu respuesta, revisa qué información te solicité"
+          "body": "No entiendo tu respuesta, revisa qué información te solicité"
         }
       ],
       "services": {

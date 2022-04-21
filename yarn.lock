@@ -697,6 +697,11 @@
     "unbzip2-stream" "1.4.3"
     "ws" "8.5.0"
 
+"qrcode-terminal@^0.12.0":
+  "integrity" "sha512-EXtzRZmC+YGmGlDFbXKxQiMZNwCLEO6BANKXG4iCtSIM0yqc/pappSx3RIKr4r0uh5JsBckOXeKrB3Iz7mdQpQ=="
+  "resolved" "https://registry.npmjs.org/qrcode-terminal/-/qrcode-terminal-0.12.0.tgz"
+  "version" "0.12.0"
+
 "qs@~6.5.2":
   "integrity" "sha512-qxXIEh4pCGfHICj1mAJQ2/2XVZkjCDTcEgfoSQxc/fYivUZxTkk7L3bDBJSoNrEzXI17oUO5Dp07ktqE5KzczA=="
   "resolved" "https://registry.npmjs.org/qs/-/qs-6.5.3.tgz"
@@ -897,9 +902,8 @@
   "resolved" "https://registry.npmjs.org/webidl-conversions/-/webidl-conversions-3.0.1.tgz"
   "version" "3.0.1"
 
-"whatsapp-web.js@^1.16.5":
-  "integrity" "sha512-4gkGuZgQngIOd68b5vC6ocTct2mHsWagSWepkKXhaDF+5xV/8rO9ynmPvMK1BjURRS8ET85y4HUDhpPabH+CnA=="
-  "resolved" "https://registry.npmjs.org/whatsapp-web.js/-/whatsapp-web.js-1.16.5.tgz"
+"whatsapp-web.js@github:pedroslopez/whatsapp-web.js#features_fix":
+  "resolved" "git+ssh://git@github.com/pedroslopez/whatsapp-web.js.git#0891a107d1849a93b2ac70f6007444312a597ffd"
   "version" "1.16.5"
   dependencies:
     "@pedroslopez/moduleraid" "^5.0.2"

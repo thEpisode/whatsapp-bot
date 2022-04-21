@@ -19,9 +19,7 @@ class ServerManager {
       socket: this.socketClient
     })
 
-    this.physicalBot.setupBrowser().then(_ => {
-      this.connectWS()
-    })
+    this.connectWS()
   }
 
   connectWS () {

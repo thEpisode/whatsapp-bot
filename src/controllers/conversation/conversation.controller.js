@@ -2,112 +2,110 @@ const backend = require('../backend/backend.controller')
 const utilities = require('../../core/utilities.manager')()
 
 class ConversationController {
-  constructor ({ page, config }) {
+  constructor ({ chat, config }) {
     this.nextChatActionId = null
-    this.page = page
     this.config = config
-    this.conversation = []
+    this.messages = []
+    this.chat = chat
   }
 
-  digestNewMessages (chat) {
-    chat.messages.map((messageModel) => {
-      this.messageHandler({ chat, messageModel })
-    })
+  processMessage (args) {
+    return this.messageHandler(args)
   }
 
-  async messageHandler ({ chat, messageModel }) {
-    let chatAction = null
+  async messageHandler ({ message }) {
+    let intentAction = null
 
-    this.conversation.push({ client: chat.user, message: messageModel.message, type: messageModel.type })
-    chatAction = await this.chatActionHandler({ messageModel })
+    this.messages.push({ client: this.chat.id, message: message.body, type: message.type })
+    intentAction = await this.chatActionHandler({ message })
 
-    if (!chatAction) {
-      console.log(`No exist flow for this message: ${messageModel.message}`)
-      this.conversation.push({ client: 'go bot', message: null, type: 'chat' })
+    if (!intentAction) {
+      console.log(`No exist flow for this message: ${message.body}`)
+      this.messages.push({ client: 'go bot', message: null, type: 'chat' })
       return
     }
 
-    this.conversation.push({ client: 'go bot', message: chatAction, type: 'chat' })
+    this.messages.push({ client: 'go bot', message: intentAction, type: 'chat' })
 
-    await this.preflightChatActionHandler({ chat, messageModel, chatAction })
+    await this.preflightChatActionHandler({ message, chatAction: intentAction })
 
-    this.page.evaluate(`window.whatsAppBus.sendMessage('${chat.id}', '${JSON.stringify(chatAction)}')`)
+    return intentAction
   }
 
-  async preflightChatActionHandler ({ chat, messageModel, chatAction }) {
+  async preflightChatActionHandler ({ message, chatAction }) {
     console.log(JSON.stringify({
-      user: chat.user,
-      conversation: this.conversation
+      user: this.chat.id,
+      conversation: this.messages
     }))
     if (chatAction.services && chatAction.services.preflight) {
-      this.backendHandler({ chat, chatAction })
+      this.backendHandler({ chatAction })
     }
 
-    chatAction.flow.map(flowMessage => {
-      flowMessage.message = flowMessage.message.replace('{{INCOMING_MESSAGE}}', messageModel.message)
-      flowMessage.message = flowMessage.message.replace('{{INCOMING_PHONE}}', chat.user)
+    chatAction.messages.map(message => {
+      message.body = message.body.replace('{{INCOMING_MESSAGE}}', message.body)
+      message.body = message.body.replace('{{INCOMING_PHONE}}', this.chat.id)
     })
   }
 
-  async backendHandler ({ chat, chatAction }) {
+  async backendHandler ({ chatAction }) {
     const response = await backend.request({
       route: chatAction.services.preflight.route,
       method: chatAction.services.preflight.method,
-      parameters: { chat, messageModel }
+      parameters: { chat: this.chat, message }
     })
 
     if (!utilities.response.isValid(response)) {
-      chatAction.flow = [{ message: response.message }]
+      chatAction.message = [{ body: response.body }]
     }
   }
 
-  async chatActionHandler ({ messageModel }) {
+  async chatActionHandler ({ message }) {
     console.log('next chat action: ', this.nextChatActionId)
     const defaultNoKey = JSON.parse(JSON.stringify(utilities.searchers.object.findObject('no-key', 'id', this.config.botKeyActions)))
     let currentChatActionId = null
-    let chatAction = null
+    let intentAction = null
 
-    if (messageModel.type !== 'chat') {
+    if (message.type !== 'chat') {
       return defaultNoKey
     }
 
     // If not exist last question
     if (!this.nextChatActionId) {
-      const question = utilities.searchers.object.findObject('genesys', 'id', this.config.botKeyActions)
-      currentChatActionId = question.id
+      const intent = utilities.searchers.object.findObject('genesys', 'id', this.config.botKeyActions)
+      currentChatActionId = intent.id
     } else {
       currentChatActionId = this.nextChatActionId
     }
 
-    const question = utilities.searchers.object.findObject(currentChatActionId, 'id', this.config.botKeyActions)
-    chatAction = JSON.parse(JSON.stringify(question || null))
+    const intent = utilities.searchers.object.findObject(currentChatActionId, 'id', this.config.botKeyActions)
+    intentAction = JSON.parse(JSON.stringify(intent || null))
 
     // No incidence
-    if (!chatAction) {
+    if (!intentAction) {
       return defaultNoKey
     }
 
-    const chatActionValidation = this.validateInputType({ chatAction, messageModel })
+    const chatActionValidation = this.validateInputType({ chatAction: intentAction, message })
 
     if (!chatActionValidation.isValid) {
       return defaultNoKey
     }
 
-    this.nextChatActionId = this.getNextChatActionId({ chatAction, payload: chatActionValidation.payload })
+    this.nextChatActionId = this.getNextChatActionId({ chatAction: intentAction, payload: chatActionValidation.payload })
     const nextQuestion = utilities.searchers.object.findObject(this.nextChatActionId, 'id', this.config.botKeyActions)
-    chatAction = JSON.parse(JSON.stringify(nextQuestion || null))
+    intentAction = JSON.parse(JSON.stringify(nextQuestion || null))
 
     if (this.nextChatActionId === 'genesys') {
       this.nextChatActionId = null
     }
 
-    return chatAction
+    return intentAction
   }
 
   /**
    * Validate if input type of current action is valid
    */
-  validateInputType ({ chatAction, messageModel }) {
+  validateInputType ({ chatAction, message }) {
     let isValid = false
     let payload = {}
 
@@ -115,7 +113,7 @@ class ConversationController {
       case 'regex':
         // TODO: Improve match
         const regex = new RegExp(chatAction.validOptions.toLocaleLowerCase().trim(), 'g')
-        if (messageModel.message.toLocaleLowerCase().trim().match(regex, 'g')) {
+        if (message.body.toLocaleLowerCase().trim().match(regex, 'g')) {
           isValid = true
           payload = { isMatched: true }
         } else {
@@ -123,7 +121,7 @@ class ConversationController {
         }
         break;
       case 'number':
-        if (!isNaN(messageModel.message.toLocaleLowerCase().trim())) {
+        if (!isNaN(message.body.toLocaleLowerCase().trim())) {
           isValid = true
         }
         break
@@ -132,7 +130,7 @@ class ConversationController {
           payload = chatAction.validOptions.find(option => {
             // Regex for whole word in options, NOT CONTAINS
             const regex = new RegExp('\\b(' + option.key.toLocaleLowerCase().trim() + ')\\b', 'g')
-            if (messageModel.message.toLocaleLowerCase().trim().match(regex)) {
+            if (message.body.toLocaleLowerCase().trim().match(regex)) {
               return true
             }
           })
