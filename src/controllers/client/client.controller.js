@@ -1,6 +1,6 @@
-const backend = require('../backend/backend.controller')
+const ConversationController = require('../conversation/conversation.controller')
 const utilities = require('../../core/utilities.manager')()
-
+var sizeof = require('object-sizeof')
 class BotController {
   constructor ({ selectors, config, browser, scripts, socket }) {
     this.selectors = selectors
@@ -8,6 +8,8 @@ class BotController {
     this.browser = browser
     this.scripts = scripts
     this.socket = socket
+    this.nextChatActionId = null
+    this.conversations = []
   }
 
   /**
@@ -78,60 +80,33 @@ class BotController {
         let unreadChats = await this.page.evaluate('window.whatsAppBus.getUnreadChats()')
         unreadChats = JSON.parse(unreadChats)
 
-        if (unreadChats && unreadChats.length > 0) {
-          console.log(unreadChats)
-          unreadChats.map((chat) => {
-            chat.messages.map((messageModel) => {
-              this.messageHandler({ chat, messageModel })
-            })
-          })
+        if (!unreadChats || !unreadChats.length) {
+          return
         }
+
+        console.log(unreadChats)
+        unreadChats.map((chat) => {
+          let conversation = this.conversations.find(conversation => conversation.id === chat.id)
+
+          if (!conversation) {
+            this.conversations.push({
+              id: chat.id,
+              user: chat.user,
+              controller: new ConversationController({
+                page: this.page,
+                config: this.config
+              })
+            })
+            conversation = this.conversations[this.conversations.length - 1]
+          }
+          conversation.controller.digestNewMessages(chat)
+          console.log(sizeof(conversation))
+        })
       } catch (error) {
         console.log(error)
       }
     }, 1000)
     console.log('Bot listening for incoming conversations')
-  }
-
-  async messageHandler ({ chat, messageModel }) {
-    let chatAction = {}
-    const keyIncidence = this.config.botKeyActions.find(action => {
-      if (messageModel.message.toLocaleLowerCase().match(action.key.toLocaleLowerCase())) {
-        return true
-      } else {
-        return false
-      }
-    })
-
-    if (keyIncidence) {
-      chatAction = JSON.parse(JSON.stringify(utilities.searchers.object.findObject(keyIncidence.id, 'id', this.config.botKeyActions)))
-    } else {
-      chatAction = JSON.parse(JSON.stringify(utilities.searchers.object.findObject('no-key', 'id', this.config.botKeyActions)))
-    }
-
-    if (!chatAction) {
-      console.log(`No exist flow for this message: ${messageModel.message}`)
-      return
-    }
-
-    if (chatAction.services && chatAction.services.preflight) {
-      const response = await backend.request({
-        route: chatAction.services.preflight.route,
-        method: chatAction.services.preflight.method,
-        parameters: { chat, messageModel }
-      })
-
-      if (!utilities.response.isValid(response)) {
-        chatAction.flow = [{ message: response.message }]
-      }
-    }
-
-    chatAction.flow.map(flowMessage => {
-      flowMessage.message = flowMessage.message.replace('{{INCOMING_MESSAGE}}', messageModel.message)
-      flowMessage.message = flowMessage.message.replace('{{INCOMING_PHONE}}', chat.user)
-    })
-
-    this.page.evaluate(`window.whatsAppBus.sendMessage('${chat.id}', '${JSON.stringify(chatAction)}')`)
   }
 }
 

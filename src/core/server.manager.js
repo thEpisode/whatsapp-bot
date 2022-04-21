@@ -2,7 +2,7 @@ const PhysicalBotController = require('../controllers/physicalBot/physicalBot.co
 const socketClient = require('socket.io-client')
 class ServerManager {
 
-  constructor ({config, eventBus}) {
+  constructor ({ config, eventBus }) {
     this.eventBus = eventBus
     this.config = config
     this.socketConfig = this.config.SOCKET
@@ -13,7 +13,8 @@ class ServerManager {
       config: {
         botKeyActions: this.config.BOT_KEY_ACTIONS,
         scripts: this.config.SCRIPTS,
-        browserOptions: this.config.BROWSER_OPTIONS
+        browserOptions: this.config.BROWSER_OPTIONS,
+        botType: this.config.BOT_TYPE
       },
       socket: this.socketClient
     })
@@ -29,7 +30,7 @@ class ServerManager {
       : `${this.config.SOCKET.url}`
     this.socketClient = socketClient(uri)
 
-    this.setupSocketEvents()
+    //this.setupSocketEvents()
 
     this.physicalBot.createBot()
   }

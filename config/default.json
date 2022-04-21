@@ -2,72 +2,441 @@
   "BOT_NAME": "WaBot",
   "BOT_VERSION": "0.0.0.1",
   "MACHINE_ID": "bot-2b9cb",
+  "BOT_TYPE": "sequential",
   "BOT_KEY_ACTIONS": [
     {
-      "id": "miretail_activate_account",
-      "key": "activate mi retail account",
-      "flow": [
-        {
-          "message": "Hi!, welcome to *Mi Retail*"
-        },
-        {
-          "message": "Your account with phone number _{{INCOMING_PHONE}}_ has been activated."
-        },
-        {
-          "message": "Please visit https://www.miretail.com.co to open your store"
-        },
-        {
-          "message": "Do you have any other request?"
-        }
-      ],
-      "settings": {
-        "amount_message_per_user": 3
-      },
+      "id": "genesys",
+      "flow": [],
       "services": {
-        "preflight": {
-          "route": "http://localhost:3532/api/validate-account-chatbot",
-          "method": "POST"
-        },
-        "callback": {
-          "route": "http://localhost:3532/api/chatbot",
-          "method": "get"
+        "preflight": null,
+        "callback": null
+      },
+      "inputType": "any",
+      "validOptions": [
+        {
+          "goto": "question-0"
         }
-      }
+      ]
     },
     {
-      "id": "miretail_activar_cuenta",
-      "key": "activar cuenta mi retail",
+      "id": "question-0",
       "flow": [
         {
-          "message": "Hola!, bienvenido a *Mi Retail*"
+          "message": "Hola!, soy *Covid Bot*, hago parte de Comfasucre"
         },
         {
-          "message": "Tu cuenta con el número de teléfono _{{INCOMING_PHONE}}_ ha sido activada"
+          "message": "Me gustaría ayudarte a idenficar si tienes algunos sintomas de COVID-19 para prevenir posibles riesgos"
         },
         {
-          "message": "Por favor visita https://www.miretail.com.co para abrir tu tienda."
+          "message": "Estas de acuerdo?"
         },
         {
-          "message": "¿Tienes alguna otra petición?"
+          "message": "Responde *SI* o *NO*"
         }
       ],
       "services": {
-        "preflight": {
-          "route": "http://localhost:3532/api/validate-account-chatbot",
-          "method": "POST"
+        "preflight": null,
+        "callback": null
+      },
+      "inputType": "option-string",
+      "validOptions": [
+        {
+          "key": "SI",
+          "goto": "question-1"
         },
-        "callback": {
-          "route": "http://localhost:3532/api/chatbot",
-          "method": "get"
+        {
+          "key": "NO",
+          "goto": "eoi-failed"
+        },
+        {
+          "key": "YES",
+          "goto": "question-1"
         }
-      }
+      ]
+    },
+    {
+      "id": "question-1",
+      "flow": [
+        {
+          "message": "Escribe tu número de documento de identidad (sin puntos, ni simbolos especiales), a continuación:"
+        }
+      ],
+      "services": {
+        "preflight": null,
+        "callback": null
+      },
+      "inputType": "number",
+      "validOptions": [
+        {
+          "goto": "question-2"
+        }
+      ]
+    },
+    {
+      "id": "question-2",
+      "flow": [
+        {
+          "message": "En los ultimos dias has tenido gripa?"
+        },
+        {
+          "message": "Responde *SI* o *NO*"
+        }
+      ],
+      "services": {
+        "preflight": null,
+        "callback": null
+      },
+      "inputType": "option-string",
+      "validOptions": [
+        {
+          "key": "SI",
+          "goto": "question-3"
+        },
+        {
+          "key": "NO",
+          "goto": "question-6"
+        },
+        {
+          "key": "YES",
+          "goto": "question-3"
+        }
+      ]
+    },
+    {
+      "id": "question-3",
+      "flow": [
+        {
+          "message": "La gripa estuvo acompañada de sintomas como:"
+        },
+        {
+          "message": " - Dolor de cabeza,"
+        },
+        {
+          "message": " - Perdida del olfato,"
+        },
+        {
+          "message": " - Dolores musculares,"
+        },
+        {
+          "message": "- Tos,"
+        },
+        {
+          "message": "- Dolor de garganta,"
+        },
+        {
+          "message": " - Dolor en el pecho?"
+        },
+        {
+          "message": "Responde *SI* si has presentado alguno de los sintomas anteriores o *NO* si no los has presentado"
+        }
+      ],
+      "services": {
+        "preflight": null,
+        "callback": null
+      },
+      "inputType": "option-string",
+      "validOptions": [
+        {
+          "key": "SI",
+          "goto": "question-4"
+        },
+        {
+          "key": "NO",
+          "goto": "no-end"
+        },
+        {
+          "key": "YES",
+          "goto": "question-4"
+        }
+      ]
+    },
+    {
+      "id": "question-4",
+      "flow": [
+        {
+          "message": "Ademas de los sintomas anteriores, ¿has presentado fiebre?"
+        },
+        {
+          "message": "Responde *SI* o *NO*"
+        }
+      ],
+      "services": {
+        "preflight": null,
+        "callback": null
+      },
+      "inputType": "option-string",
+      "validOptions": [
+        {
+          "key": "SI",
+          "goto": "question-5"
+        },
+        {
+          "key": "NO",
+          "goto": "no-end"
+        },
+        {
+          "key": "YES",
+          "goto": "question-5"
+        }
+      ]
+    },
+    {
+      "id": "question-5",
+      "flow": [
+        {
+          "message": "Has sentido ronquera o perdida de apetito?"
+        },
+        {
+          "message": "Responde *SI* o *NO*"
+        }
+      ],
+      "services": {
+        "preflight": null,
+        "callback": null
+      },
+      "inputType": "option-string",
+      "validOptions": [
+        {
+          "key": "SI",
+          "goto": "question-7"
+        },
+        {
+          "key": "NO",
+          "goto": "no-end"
+        },
+        {
+          "key": "YES",
+          "goto": "question-7"
+        }
+      ]
+    },
+    {
+      "id": "question-6",
+      "flow": [
+        {
+          "message": "¿Has presentado uno o más de los siguientes sintomas?:"
+        },
+        {
+          "message": "- Dolor de cabeza,"
+        },
+        {
+          "message": "- perdida del olfato,"
+        },
+        {
+          "message": "- dolor de garganta,"
+        },
+        {
+          "message": "- dolor en el pecho,"
+        },
+        {
+          "message": "- perdida del apetito,"
+        },
+        {
+          "message": "- diarrea,"
+        },
+        {
+          "message": "- dolor abdominal o vómito?"
+        },
+        {
+          "message": "Responde *SI* o *NO*"
+        }
+      ],
+      "services": {
+        "preflight": null,
+        "callback": null
+      },
+      "inputType": "option-string",
+      "validOptions": [
+        {
+          "key": "SI",
+          "goto": "question-7"
+        },
+        {
+          "key": "NO",
+          "goto": "eoi-success"
+        },
+        {
+          "key": "YES",
+          "goto": "question-7"
+        }
+      ]
+    },
+    {
+      "id": "question-7",
+      "flow": [
+        {
+          "message": "Ademas de estos síntomas has sentido fatiga?"
+        },
+        {
+          "message": "Responde *SI* o *NO*"
+        }
+      ],
+      "services": {
+        "preflight": null,
+        "callback": null
+      },
+      "inputType": "option-string",
+      "validOptions": [
+        {
+          "key": "SI",
+          "goto": "question-8"
+        },
+        {
+          "key": "NO",
+          "goto": "question-8"
+        },
+        {
+          "key": "YES",
+          "goto": "question-8"
+        }
+      ]
+    },
+    {
+      "id": "question-8",
+      "flow": [
+        {
+          "message": "Ademas de estos síntomas has sentido mareo?"
+        },
+        {
+          "message": "Responde *SI* o *NO*"
+        }
+      ],
+      "services": {
+        "preflight": null,
+        "callback": null
+      },
+      "inputType": "option-string",
+      "validOptions": [
+        {
+          "key": "SI",
+          "goto": "question-9"
+        },
+        {
+          "key": "NO",
+          "goto": "question-9"
+        },
+        {
+          "key": "YES",
+          "goto": "question-9"
+        }
+      ]
+    },
+    {
+      "id": "question-9",
+      "flow": [
+        {
+          "message": "Ademas de estos síntomas has sentido dificultad para respirar, dolor abdominal o vomito?"
+        },
+        {
+          "message": "Responde *SI* o *NO*"
+        }
+      ],
+      "services": {
+        "preflight": null,
+        "callback": null
+      },
+      "inputType": "option-string",
+      "validOptions": [
+        {
+          "key": "SI",
+          "goto": "eoi-success"
+        },
+        {
+          "key": "NO",
+          "goto": "eoi-success"
+        },
+        {
+          "key": "YES",
+          "goto": "eoi-success"
+        }
+      ]
+    },
+    {
+      "id": "eoi-success",
+      "flow": [
+        {
+          "message": "Gracias, estaremos comunicandonos contigo brindandote información y acompañamiento."
+        },
+        {
+          "message": "*-- END OF INTERACTION --*"
+        }
+      ],
+      "services": {
+        "preflight": null,
+        "callback": null
+      },
+      "inputType": "any",
+      "validOptions": [
+        {
+          "goto": "genesys"
+        }
+      ]
+    },
+    {
+      "id": "eoi-failed",
+      "flow": [
+        {
+          "message": "Gracias, estaremos comunicandonos contigo brindandote información y acompañamiento."
+        },
+        {
+          "message": "*-- END OF INTERACTION --*"
+        }
+      ],
+      "services": {
+        "preflight": null,
+        "callback": null
+      },
+      "inputType": "any",
+      "validOptions": [
+        {
+          "goto": "genesys"
+        }
+      ]
+    },
+    {
+      "id": "no-end",
+      "flow": [
+        {
+          "message": "Gracias, estaremos junto a ti brindandote información y acompañamiento."
+        },
+        {
+          "message": "Lávate las manos con frecuencia"
+        },
+        {
+          "message": "No saludes a la gente con besos o apretones de mano"
+        },
+        {
+          "message": "Si toses, cúbrete la boca con el codo flexionado o con un pañuelo desechable"
+        },
+        {
+          "message": "Evita tocarte los ojos, la nariz y la boca"
+        },
+        {
+          "message": "Si tienes fiebre o dificultad para respirar, busca atención médica, pero llama primero a la línea 123"
+        },
+        {
+          "message": "Sigue las indicaciones de las autoridades locales y nacionale"
+        },
+        {
+          "message": "*-- END OF INTERACTION --*"
+        }
+      ],
+      "services": {
+        "preflight": null,
+        "callback": null
+      },
+	  "inputType": "any",
+      "validOptions": [
+        {
+          "goto": "genesys"
+        }
+      ]
     },
     {
       "id": "echo",
-      "key": "echo",
       "flow": [
         {
-          "message": "Hi!, welcome to *Mi Retail*"
+          "message": "Hi!, welcome to *Virtual capital of America*"
         },
         {
           "message": "if you are interested on my services please visit https://www.miretail.com.co"
@@ -86,19 +455,9 @@
     },
     {
       "id": "no-key",
-      "key": "no-key",
       "flow": [
         {
-          "message": "Hi!, welcome to *Mi Retail*"
-        },
-        {
-          "message": "At the moment the action you give me is not known to me."
-        },
-        {
-          "message": "If you are interested on my services please visit https://www.miretail.com.co"
-        },
-        {
-          "message": "Your message: _{{INCOMING_MESSAGE}}_"
+          "message": "No entiendo tu respuesta, revisa qué información te solicité"
         }
       ],
       "services": {
@@ -117,7 +476,7 @@
   },
   "SELECTORS": {
     "APP": ".app",
-    "QRCODE": "img[alt=\"Scan me!\"]",
+    "QRCODE": "canvas",
     "CONVERSATION": "#pane-side",
     "CONVERSATIONITEM": "._2UaNq"
   },

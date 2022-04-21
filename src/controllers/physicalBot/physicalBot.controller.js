@@ -1,6 +1,4 @@
 const ClientController = require('../client/client.controller')
-const backend = require('../backend/backend.controller')()
-const utilities = require('../../core/utilities.manager')()
 const puppeteer = require('puppeteer');
 const fs = require('fs')
 

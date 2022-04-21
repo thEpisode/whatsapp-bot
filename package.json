@@ -19,8 +19,9 @@
   "dependencies": {
     "config": "^3.2.2",
     "crypto": "^1.0.1",
-    "puppeteer": "^1.20.0",
+    "object-sizeof": "^1.6.1",
     "request": "^2.88.0",
-    "socket.io-client": "^2.3.0"
+    "socket.io-client": "^2.3.0",
+    "whatsapp-web.js": "^1.16.5"
   }
 }
