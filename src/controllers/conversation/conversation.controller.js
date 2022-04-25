@@ -1,7 +1,7 @@
 
 const backend = require('../backend/backend.controller')
 const utilities = require('../../core/utilities.manager')()
-const { InputTypeValidator } = require('./../../utils/inputTypeValidator')
+const InputTypeValidator = require('./../../utils/inputTypeValidator')
 class ConversationController {
   constructor ({ chat, config }) {
     this.nextChatIntentId = null
@@ -88,7 +88,8 @@ class ConversationController {
     let intentAction = null
     let currentIntentActionId = null
 
-    if (message.type !== 'chat') {
+    if (message.
+      type !== 'chat') {
       return defaultNoKey
     }
 
