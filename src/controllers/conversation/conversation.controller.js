@@ -74,6 +74,7 @@ class ConversationController {
     const defaultNoKey = JSON.parse(JSON.stringify(utilities.searchers.object.findObject('no-key', 'id', this.config.botKeyActions)))
     let currentChatActionId = null
     let intentAction = null
+    let intent = null
 
     if (message.type !== 'chat') {
       return defaultNoKey
@@ -81,13 +82,13 @@ class ConversationController {
 
     // If not exist last question
     if (!this.nextChatActionId) {
-      const intent = utilities.searchers.object.findObject('seed', 'id', this.config.botKeyActions)
+      intent = utilities.searchers.object.findObject('seed', 'id', this.config.botKeyActions)
       currentChatActionId = intent.id
     } else {
       currentChatActionId = this.nextChatActionId
     }
 
-    const intent = utilities.searchers.object.findObject(currentChatActionId, 'id', this.config.botKeyActions)
+    intent = utilities.searchers.object.findObject(currentChatActionId, 'id', this.config.botKeyActions)
     intentAction = JSON.parse(JSON.stringify(intent || null))
 
     // No incidence
