@@ -108,7 +108,7 @@ class ConversationController {
       return defaultNoKey
     }
 
-    // Get the next 
+    // Get the next chat intent
     this.nextChatIntentId = this.#getNextChatIntentId({ intent, payload: chatActionValidation.payload })
 
     if (this.nextChatIntentId === 'start') {
