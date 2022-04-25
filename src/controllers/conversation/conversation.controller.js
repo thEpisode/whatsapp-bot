@@ -1,19 +1,10 @@
-/**
- * @typedef {Object} InputTypeArgs
- * @property {object} intentAction Current conversation intent action.
- * @property {object} message - Is the incoming message.
- */
-/**
- * @typedef {Object} InputTypeResult
- * @property {object} intentAction Current conversation intent action.
- * @property {object} message - Is the incoming message.
- */
+
 const backend = require('../backend/backend.controller')
 const utilities = require('../../core/utilities.manager')()
-
+const { InputTypeValidator } = require('./../../utils/inputTypeValidator')
 class ConversationController {
   constructor ({ chat, config }) {
-    this.nextChatActionId = null
+    this.nextChatIntentId = null
     this.config = config
     this.messages = []
     this.chat = chat
@@ -27,17 +18,19 @@ class ConversationController {
     let intentAction = null
 
     this.messages.push({ client: this.chat.id, message: message.body, type: message.type })
-    intentAction = await this.chatActionHandler({ message })
+    intentAction = await this.#intentActionHandler({ message })
 
     if (!intentAction) {
       console.log(`No exist flow for this message: ${message.body}`)
-      this.messages.push({ client: 'go bot', message: null, type: 'chat' })
+      this.messages.push({ client: 'go-bot', message: null, type: 'chat' })
       return
     }
 
-    this.messages.push({ client: 'go bot', message: intentAction, type: 'chat' })
+    // Set a reactive message into stack
+    this.messages.push({ client: 'go-bot', message: intentAction, type: 'chat' })
 
-    await this.preflightChatActionHandler({ message, intentAction })
+    // Intent to launch a preflight event
+    await this.preflightChatActionHandler({ intentAction, message })
 
     return intentAction
   }
@@ -48,7 +41,7 @@ class ConversationController {
       conversation: this.messages
     }))
     if (intentAction.services && intentAction.services.preflight) {
-      this.backendHandler({ intentAction })
+      this.#backendServiceHandler({ intentAction })
     }
 
     intentAction.messages.map(message => {
@@ -57,7 +50,7 @@ class ConversationController {
     })
   }
 
-  async backendHandler ({ intentAction }) {
+  async #backendServiceHandler ({ intentAction }) {
     const response = await backend.request({
       route: intentAction.services.preflight.route,
       method: intentAction.services.preflight.method,
@@ -69,268 +62,63 @@ class ConversationController {
     }
   }
 
-  async chatActionHandler ({ message }) {
-    console.log('next chat action: ', this.nextChatActionId)
-    const defaultNoKey = JSON.parse(JSON.stringify(utilities.searchers.object.findObject('no-key', 'id', this.config.botKeyActions)))
-    let currentChatActionId = null
+  /**
+   * Return a chatbot intent with given key
+   * @param {string} key Is a string key to find in the current intents
+   * @returns An object with given key or default message
+   */
+  #getIntentByKey (key) {
+    return JSON.parse(JSON.stringify(utilities.searchers.object.findObject(key || 'no-key', 'id', this.config.botKeyActions) || null))
+  }
+
+  #getCurrentIntentAction (intent) {
+    // Navigate to start intent
+    if (!this.nextChatIntentId) {
+      return intent.id
+    }
+
+    return this.nextChatIntentId
+  }
+
+  async #intentActionHandler ({ message }) {
+    console.log('next chat action: ', this.nextChatIntentId)
+    const inputValidator = new InputTypeValidator()
+    const defaultNoKey = this.#getIntentByKey()
+    let intent = this.#getIntentByKey('start')
     let intentAction = null
-    let intent = null
+    let currentIntentActionId = null
 
     if (message.type !== 'chat') {
       return defaultNoKey
     }
 
-    // If not exist last question
-    if (!this.nextChatActionId) {
-      intent = utilities.searchers.object.findObject('seed', 'id', this.config.botKeyActions)
-      currentChatActionId = intent.id
-    } else {
-      currentChatActionId = this.nextChatActionId
-    }
-
-    intent = utilities.searchers.object.findObject(currentChatActionId, 'id', this.config.botKeyActions)
-    intentAction = JSON.parse(JSON.stringify(intent || null))
+    // Get the current intent action
+    currentIntentActionId = this.#getCurrentIntentAction(intent)
+    intent = this.#getIntentByKey(currentIntentActionId)
 
     // No incidence
-    if (!intentAction) {
+    if (!intent) {
       return defaultNoKey
     }
 
-    const chatActionValidation = this.validateInputType({ intentAction, message })
+    // Validate the input message for current options
+    const chatActionValidation = inputValidator.validate({ intent, message })
 
     if (!chatActionValidation.isValid) {
       return defaultNoKey
     }
 
-    this.nextChatActionId = this.getNextChatActionId({ intentAction, payload: chatActionValidation.payload })
-    const nextQuestion = utilities.searchers.object.findObject(this.nextChatActionId, 'id', this.config.botKeyActions)
-    intentAction = JSON.parse(JSON.stringify(nextQuestion || null))
+    // Get the next 
+    this.nextChatIntentId = this.#getNextChatIntentId({ intent, payload: chatActionValidation.payload })
 
-    if (this.nextChatActionId === 'genesys') {
-      this.nextChatActionId = null
+    if (this.nextChatIntentId === 'start') {
+      this.nextChatIntentId = null
     }
 
     return intentAction
   }
 
-  /**
-   * Validate if input type of current action is valid
-   */
-  validateInputType ({ intentAction, message }) {
-    let input = {
-      isValid: false,
-      payload: {}
-    }
-
-    switch (intentAction.inputType) {
-      case 'regex':
-        input = this.validateInputTypeRegex({ intentAction, message })
-        break
-      case 'option-string':
-        input = this.validateInputTypeOptionString({ intentAction, message })
-        break
-      case 'any':
-        input = this.validateInputTypeAny({ intentAction, message })
-        break
-      case 'any-number':
-        input = this.validateInputTypeAnyNumber({ intentAction, message })
-        break
-    }
-
-    return input
-  }
-
-  invalidInput ({ messages }) {
-    return {
-      payload: {
-        id: 'no-key',
-        messages: [
-          {
-            'body': 'I can\'t process this message, please validate your information'
-          },
-          ...messages
-        ],
-        services: {
-          preflight: null,
-          callback: null
-        }
-      },
-      isValid: false
-    }
-  }
-
-  /**
-   * Validate the type "Option String" and return current error messages
-   * @param {InputTypeArgs} args - Arguments to validate given input type.
-   * @returns {InputTypeResult} result - Is the result of given input type.
-   */
-  validateInputTypeOptionString ({ intentAction, message }) {
-    let payload = {}
-    let isValid = false
-
-    if (!intentAction.validOptions || !intentAction.validOptions.length) {
-      return this.invalidInput({
-        messages: [
-          {
-            body: 'Error: Input not match with valid options'
-          }
-        ]
-      })
-    }
-
-    if (!message || !message.body) {
-      return this.invalidInput({
-        messages: [
-          {
-            body: 'Error: Input has not a valid body'
-          }
-        ]
-      })
-    }
-
-    // Iterate over every valid options
-    payload = intentAction.validOptions.find(option => {
-      // Regex for whole word in options, NOT CONTAINS
-      const regex = new RegExp('\\b(' + option.key.toLocaleLowerCase().trim() + ')\\b', 'g')
-      if (message.body.toLocaleLowerCase().trim().match(regex)) {
-        isValid = true
-        return true
-      }
-    })
-
-    return {
-      payload,
-      isValid
-    }
-  }
-
-  /**
-   * Validate the type "Any" and return current error messages
-   * @param {InputTypeArgs} args - Arguments to validate given input type.
-   * @returns {InputTypeResult} result - Is the result of given input type.
-   */
-  validateInputTypeAny ({ intentAction, message }) {
-    let payload = {}
-    let isValid = false
-
-    if (!message || !message.body) {
-      return this.invalidInput({
-        messages: [
-          {
-            body: 'Error: Input has not a valid body'
-          }
-        ]
-      })
-    }
-
-    if (!intentAction.validOptions || !intentAction.validOptions.length) {
-      return this.invalidInput({
-        messages: [
-          {
-            body: 'Error: Input not match with valid options'
-          }
-        ]
-      })
-    }
-
-    return {
-      payload,
-      isValid
-    }
-  }
-
-  /**
-   * Validate the type "Any Number" and return current error messages
-   * @param {InputTypeArgs} args - Arguments to validate given input type.
-   * @returns {InputTypeResult} Action of given input type.
-   */
-  validateInputTypeAnyNumber ({ intentAction, message }) {
-    let payload = {}
-    let isValid = false
-    
-    if (!message || !message.body) {
-      return this.invalidInput({
-        messages: [
-          {
-            body: 'Error: Input has not a valid body'
-          }
-        ]
-      })
-    }
-
-    if (!intentAction.validOptions || !intentAction.validOptions.length) {
-      return this.invalidInput({
-        messages: [
-          {
-            body: 'Error: Input not match with valid options'
-          }
-        ]
-      })
-    }
-    
-    if (isNaN(message.body.toLocaleLowerCase().trim())) {
-      return this.invalidInput({
-        messages: [
-          {
-            body: 'Error: Input is not a number'
-          }
-        ]
-      })
-    }
-
-    isValid = true
-
-    return {
-      payload,
-      isValid
-    }
-  }
-
-  /**
-   * Validate the type "Any Number" and return current error messages
-   * @param {InputTypeArgs} args - Arguments to validate given input type.
-   * @returns {InputTypeResult} Action of given input type.
-   */
-  validateInputTypeRegex ({ intentAction, message }) {
-    let payload = {}
-    let isValid = false
-
-    if (!message || !message.body) {
-      return this.invalidInput({
-        messages: [
-          {
-            body: 'Error: Input has not a valid body'
-          }
-        ]
-      })
-    }
-
-    if (!intentAction.validOptions || !intentAction.validOptions.length) {
-      return this.invalidInput({
-        messages: [
-          {
-            body: 'Error: Input not match with valid options'
-          }
-        ]
-      })
-    }
-
-    // TODO: Improve match
-    const regex = new RegExp(intentAction.validOptions.toLocaleLowerCase().trim(), 'g')
-    if (message.body.toLocaleLowerCase().trim().match(regex, 'g')) {
-      isValid = true
-      payload = { isMatched: true }
-    } else {
-      payload = { isMatched: false }
-    }
-
-    return {
-      payload,
-      isValid
-    }
-  }
-
-  getNextChatActionId ({ intentAction, payload }) {
+  #getNextChatIntentId ({ intentAction, payload }) {
     let actionId = 'eoi-failed'
     let option = {}
 

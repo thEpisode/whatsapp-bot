@@ -5,7 +5,7 @@
   "BOT_TYPE": "sequential",
   "BOT_KEY_ACTIONS": [
     {
-      "id": "seed",
+      "id": "start",
       "messages": [],
       "services": {
         "preflight": null,
