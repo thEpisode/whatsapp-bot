@@ -47,6 +47,9 @@ class InputTypeValidator {
       case 'option-string':
         input = this.validateInputTypeOptionString({ intent, message })
         break
+        case 'option-number':
+          // TODO: Implementar
+          break
       case 'any':
         input = this.validateInputTypeAny({ intent, message })
         break
@@ -131,6 +134,8 @@ class InputTypeValidator {
         ]
       })
     }
+
+    isValid = true
 
     return {
       payload,

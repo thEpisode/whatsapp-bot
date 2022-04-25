@@ -85,7 +85,6 @@ class ConversationController {
     const inputValidator = new InputTypeValidator()
     const defaultNoKey = this.#getIntentByKey()
     let intent = this.#getIntentByKey('start')
-    let intentAction = null
     let currentIntentActionId = null
 
     if (message.
@@ -116,35 +115,35 @@ class ConversationController {
       this.nextChatIntentId = null
     }
 
-    return intentAction
+    return intent
   }
 
-  #getNextChatIntentId ({ intentAction, payload }) {
+  #getNextChatIntentId ({ intent, payload }) {
     let actionId = 'eoi-failed'
     let option = {}
 
-    switch (intentAction.inputType) {
+    switch (intent.inputType) {
       case 'regex':
         if (payload && payload.isMatched) {
-          option = intentAction.validOptions.find(validOption => validOption.key.toLocaleLowerCase().trim() === 'matched')
+          option = intent.validOptions.find(validOption => validOption.key.toLocaleLowerCase().trim() === 'matched')
           actionId = option.goto
         } else {
-          option = intentAction.validOptions.find(validOption => validOption.key.toLocaleLowerCase().trim() === '!matched')
+          option = intent.validOptions.find(validOption => validOption.key.toLocaleLowerCase().trim() === '!matched')
           actionId = option.goto
         }
         break
       case 'option-string':
-        option = intentAction.validOptions.find(validOption => validOption.key.toLocaleLowerCase().trim() === payload.key.toLocaleLowerCase().trim())
+        option = intent.validOptions.find(validOption => validOption.key.toLocaleLowerCase().trim() === payload.key.toLocaleLowerCase().trim())
 
         if (option) {
           actionId = option.goto
         }
         break
       case 'any':
-        actionId = intentAction.validOptions[0].goto
+        actionId = intent.validOptions[0].goto
         break
       case 'any-number':
-        actionId = intentAction.validOptions[0].goto
+        actionId = intent.validOptions[0].goto
         break
     }
 

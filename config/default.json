@@ -2,468 +2,1416 @@
   "BOT_NAME": "WaBot",
   "BOT_VERSION": "0.0.0.1",
   "MACHINE_ID": "bot-2b9cb",
-  "BOT_TYPE": "sequential",
-  "BOT_KEY_ACTIONS": [
+  "BOTS": [
     {
-      "id": "start",
-      "messages": [],
-      "services": {
-        "preflight": null,
-        "callback": null
-      },
-      "inputType": "any",
-      "validOptions": [
+      "id": "bot-001",
+      "name": "Inversiones Von Croften - Welcome",
+      "behavior": "flow",
+      "platform": "whatsapp",
+      "triggers": [
         {
-          "goto": "intent-0"
+          "id": "trigger-001",
+          "name": "",
+          "title": "",
+          "condition": {
+            "inputType": "any",
+            "key": ""
+          },
+          "then": {
+            "scope": "internal",
+            "service": "intents",
+            "goto": "bot-001",
+            "intent": "start"
+          }
+        }
+      ],
+      "intents": [
+        {
+          "id": "start",
+          "messages": [
+            {
+              "body": "Bienvenido a *Inversiones Von Croften*"
+            },
+            {
+              "body": "Selecciona una opción:\n\n1) Solicitud de propuesta (RFP)\n2) Legal\n3) Agendar cita\n4) Proyectos\n5) Echo"
+            }
+          ],
+          "services": {
+            "preflight": null,
+            "callback": null
+          },
+          "inputType": "option-number",
+          "validOptions": [
+            {
+              "scope": "external",
+              "service": "bot",
+              "key": "1",
+              "goto": "bot-002"
+            },
+            {
+              "scope": "external",
+              "service": "bot",
+              "key": "2",
+              "goto": "bot-004"
+            },
+            {
+              "scope": "external",
+              "service": "bot",
+              "key": "3",
+              "goto": "bot-011"
+            },
+            {
+              "scope": "external",
+              "service": "bot",
+              "key": "4",
+              "goto": "bot-003"
+            },
+            {
+              "scope": "external",
+              "service": "bot",
+              "key": "5",
+              "goto": "bot-005"
+            }
+          ]
         }
       ]
     },
     {
-      "id": "intent-0",
-      "messages": [
+      "id": "bot-002",
+      "name": "Inversiones Von Croften - RFP",
+      "behavior": "flow",
+      "platform": "whatsapp",
+      "triggers": [
         {
-          "body": "Hola!, soy *Covid Bot*, hago parte de Comfasucre"
-        },
-        {
-          "body": "Me gustaría ayudarte a idenficar si tienes algunos sintomas de COVID-19 para prevenir posibles riesgos"
-        },
-        {
-          "body": "Estas de acuerdo?"
-        },
-        {
-          "body": "Responde *SI* o *NO*"
+          "id": "trigger-001",
+          "name": "",
+          "title": "",
+          "condition": {
+            "inputType": "exact-string",
+            "key": "#rfp"
+          },
+          "then": {
+            "scope": "internal",
+            "service": "intents",
+            "intent": "start",
+            "goto": "bot-002"
+          }
         }
       ],
-      "services": {
-        "preflight": null,
-        "callback": null
-      },
-      "inputType": "option-string",
-      "validOptions": [
+      "intents": [
         {
-          "key": "SI",
-          "goto": "intent-1"
+          "id": "start",
+          "messages": [
+            {
+              "body": "Para iniciar escribe tu email:"
+            }
+          ],
+          "services": {
+            "preflight": null,
+            "callback": null
+          },
+          "inputType": "any",
+          "validOptions": [
+            {
+              "goto": "intent-0"
+            }
+          ]
         },
         {
-          "key": "NO",
-          "goto": "eoi-failed"
+          "id": "intent-0",
+          "messages": [
+            {
+              "body": "Ahora, escribe al detalle qué necesitas decirnos:"
+            }
+          ],
+          "services": {
+            "preflight": null,
+            "callback": null
+          },
+          "inputType": "any",
+          "validOptions": [
+            {
+              "goto": "intent-1"
+            }
+          ]
         },
         {
-          "key": "YES",
-          "goto": "intent-1"
+          "id": "intent-2",
+          "messages": [
+            {
+              "body": "Para finalizar escribe en una frase un resumen de todo lo que acabas de escribir anteriormente:"
+            }
+          ],
+          "services": {
+            "preflight": null,
+            "callback": null
+          },
+          "inputType": "any",
+          "validOptions": [
+            {
+              "goto": "eoi-success"
+            }
+          ]
+        },
+        {
+          "id": "eoi-success",
+          "messages": [
+            {
+              "body": "Gracias, estaremos comunicandonos contigo brindandote información y acompañamiento."
+            },
+            {
+              "body": "*-- END OF INTERACTION --*"
+            }
+          ],
+          "services": {
+            "preflight": null,
+            "callback": null
+          },
+          "inputType": "any",
+          "validOptions": [
+            {
+              "scope": "external",
+              "service": "bot",
+              "goto": "bot-001",
+              "intent": "start"
+            }
+          ]
+        },
+        {
+          "id": "eoi-failed",
+          "messages": [
+            {
+              "body": "Gracias, Si necesitas algo más de nosotros puedes volver a escribirnos."
+            },
+            {
+              "body": "*-- END OF INTERACTION --*"
+            }
+          ],
+          "services": {
+            "preflight": null,
+            "callback": null
+          },
+          "inputType": "any",
+          "validOptions": [
+            {
+              "scope": "external",
+              "service": "bot",
+              "goto": "bot-001",
+              "intent": "start"
+            }
+          ]
         }
       ]
     },
     {
-      "id": "intent-1",
-      "messages": [
+      "id": "bot-003",
+      "name": "Inversiones Von Croften - Projects",
+      "behavior": "flow",
+      "platform": "whatsapp",
+      "triggers": [
         {
-          "body": "Escribe tu número de documento de identidad (sin puntos, ni simbolos especiales), a continuación:"
+          "id": "trigger-001",
+          "name": "",
+          "title": "",
+          "condition": {
+            "inputType": "exact-string",
+              "key": "#ivc-proj"
+          },
+          "then": {
+            "scope": "internal",
+              "service": "intents",
+              "intent": "start",
+              "goto": "bot-003"
+          }
         }
       ],
-      "services": {
-        "preflight": null,
-        "callback": null
-      },
-      "inputType": "any-number",
-      "validOptions": [
+      "intents": [
         {
-          "goto": "intent-2"
+          "id": "start",
+          "messages": [
+            {
+              "body": "Para conocer más detalles selecciona una opción:\n1) Virtual capital of America\n2) Mi Retail\n3) Go Bot"
+            }
+          ],
+          "services": {
+            "preflight": null,
+            "callback": null
+          },
+          "inputType": "option-number",
+          "validOptions": [
+            {
+              "scope": "external",
+              "service": "bot",
+              "key": "1",
+              "goto": "bot-006"
+            },
+            {
+              "scope": "external",
+              "service": "bot",
+              "key": "2",
+              "goto": "bot-008"
+            },
+            {
+              "scope": "external",
+              "service": "bot",
+              "key": "3",
+              "goto": "bot-012"
+            },
+            {
+              "scope": "internal",
+              "service": "intent",
+              "key": "else",
+              "goto": "eoi-failed"
+            }
+          ]
+        },
+        {
+          "id": "eoi-success",
+          "messages": [
+            {
+              "body": "Gracias, estaremos comunicandonos contigo brindandote información y acompañamiento."
+            },
+            {
+              "body": "*-- END OF INTERACTION --*"
+            }
+          ],
+          "services": {
+            "preflight": null,
+            "callback": null
+          },
+          "inputType": "any",
+          "validOptions": [
+            {
+              "scope": "external",
+              "service": "bot",
+              "goto": "bot-001",
+              "intent": "start"
+            }
+          ]
+        },
+        {
+          "id": "eoi-failed",
+          "messages": [
+            {
+              "body": "No he entendido tu respuesta, por favor sigue las instrucciones correctamente."
+            },
+            {
+              "body": "*-- END OF INTERACTION --*"
+            }
+          ],
+          "services": {
+            "preflight": null,
+            "callback": null
+          },
+          "inputType": "any",
+          "validOptions": [
+            {
+              "scope": "internal",
+              "service": "bot",
+              "goto": "bot-003",
+              "intent": "start"
+            }
+          ]
         }
       ]
     },
     {
-      "id": "intent-2",
-      "messages": [
+      "id": "bot-004",
+      "name": "Inversiones Von Croften - Legal",
+      "behavior": "flow",
+      "platform": "whatsapp",
+      "triggers": [
         {
-          "body": "En los ultimos dias has tenido gripa?"
-        },
-        {
-          "body": "Responde *SI* o *NO*"
+          "id": "trigger-001",
+          "name": "exact-string",
+          "title": "Exact string IVC Legal",
+          "condition": {
+            "inputType": "exact-string",
+            "key": "#ivc-legal"
+          },
+          "then": {
+            "scope": "internal",
+            "service": "intents",
+            "intent": "start",
+            "goto": "bot-004"
+          }
         }
       ],
-      "services": {
-        "preflight": null,
-        "callback": null
-      },
-      "inputType": "option-string",
-      "validOptions": [
+      "intents": [
         {
-          "key": "SI",
-          "goto": "intent-3"
-        },
-        {
-          "key": "NO",
-          "goto": "intent-6"
-        },
-        {
-          "key": "YES",
-          "goto": "intent-3"
+          "id": "start",
+          "messages": [
+            {
+              "body": "Entendemos que necesitas información más estructurada, para continuar, sigue el siguiente enlace:"
+            },
+            {
+              "body": "https://www.dremind.com/us/about"
+            },
+            {
+              "body": "Si ya visitaste el sitio, cómo más podemos ayudarte?, escribe algo para continuar."
+            }
+          ],
+          "services": {
+            "preflight": null,
+            "callback": null
+          },
+          "inputType": "any",
+          "validOptions": [
+            {
+              "scope": "external",
+              "service": "bot",
+              "key": "",
+              "goto": "bot-001"
+            }
+          ]
         }
       ]
     },
     {
-      "id": "intent-3",
-      "messages": [
+      "id": "bot-011",
+      "name": "Inversiones Von Croften - Schedule",
+      "behavior": "flow",
+      "platform": "whatsapp",
+      "triggers": [
         {
-          "body": "La gripa estuvo acompañada de sintomas como:"
-        },
-        {
-          "body": " - Dolor de cabeza,"
-        },
-        {
-          "body": " - Perdida del olfato,"
-        },
-        {
-          "body": " - Dolores musculares,"
-        },
-        {
-          "body": "- Tos,"
-        },
-        {
-          "body": "- Dolor de garganta,"
-        },
-        {
-          "body": " - Dolor en el pecho?"
-        },
-        {
-          "body": "Responde *SI* si has presentado alguno de los sintomas anteriores o *NO* si no los has presentado"
+          "id": "trigger-001",
+          "name": "exact-string",
+          "title": "Exact string IVC Schedule",
+          "condition": {
+            "inputType": "exact-string",
+            "key": "#ivc-schedule"
+          },
+          "then": {
+            "scope": "internal",
+            "service": "intents",
+            "intent": "start",
+            "goto": "bot-011"
+          }
         }
       ],
-      "services": {
-        "preflight": null,
-        "callback": null
-      },
-      "inputType": "option-string",
-      "validOptions": [
+      "intents": [
         {
-          "key": "SI",
-          "goto": "intent-4"
-        },
-        {
-          "key": "NO",
-          "goto": "no-end"
-        },
-        {
-          "key": "YES",
-          "goto": "intent-4"
+          "id": "start",
+          "messages": [
+            {
+              "body": "Siempre estamos disponibles para ti, por eso queremos que confirmes una cita con nosotros en el siguiente enlace:"
+            },
+            {
+              "body": "https://calendly.com/camiepisode/30min"
+            },
+            {
+              "body": "Si ya agendaste la llamada, cómo más podemos ayudarte?, escribe algo para continuar."
+            }
+          ],
+          "services": {
+            "preflight": null,
+            "callback": null
+          },
+          "inputType": "any",
+          "validOptions": [
+            {
+              "scope": "external",
+              "service": "bot",
+              "key": "",
+              "goto": "bot-001"
+            }
+          ]
         }
       ]
     },
     {
-      "id": "intent-4",
-      "messages": [
+      "id": "bot-005",
+      "name": "Inversiones Von Croften - Echo",
+      "behavior": "flow",
+      "platform": "whatsapp",
+      "triggers": [
         {
-          "body": "Ademas de los sintomas anteriores, ¿has presentado fiebre?"
-        },
-        {
-          "body": "Responde *SI* o *NO*"
+          "id": "trigger-001",
+          "name": "exact-string",
+          "title": "Exact string IVC Echo",
+          "condition": {
+            "inputType": "exact-string",
+            "key": "#echo"
+          },
+          "then": {
+            "scope": "internal",
+            "service": "intents",
+            "intent": "start",
+            "goto": "bot-005"
+          }
         }
       ],
-      "services": {
-        "preflight": null,
-        "callback": null
-      },
-      "inputType": "option-string",
-      "validOptions": [
+      "intents": [
         {
-          "key": "SI",
-          "goto": "intent-5"
-        },
-        {
-          "key": "NO",
-          "goto": "no-end"
-        },
-        {
-          "key": "YES",
-          "goto": "intent-5"
+          "id": "start",
+          "messages": [
+            {
+              "body": "Escribe algo"
+            }
+          ],
+          "services": {
+            "preflight": null,
+            "callback": null
+          },
+          "inputType": "echo",
+          "validOptions": [
+            {
+              "scope": "internal",
+              "service": "intents",
+              "key": "",
+              "goto": "start"
+            }
+          ]
         }
       ]
     },
     {
-      "id": "intent-5",
-      "messages": [
+      "id": "bot-006",
+      "name": "Virtual capital of America - Menu",
+      "behavior": "flow",
+      "platform": "whatsapp",
+      "triggers": [
         {
-          "body": "Has sentido ronquera o perdida de apetito?"
-        },
-        {
-          "body": "Responde *SI* o *NO*"
+          "id": "trigger-001",
+          "name": "exact-string",
+          "title": "Exact string VCA Menu",
+          "condition": {
+            "inputType": "exact-string",
+            "key": "#vca"
+          },
+          "then": {
+            "scope": "internal",
+            "service": "intents",
+            "intent": "start",
+            "goto": "bot-006"
+          }
         }
       ],
-      "services": {
-        "preflight": null,
-        "callback": null
-      },
-      "inputType": "option-string",
-      "validOptions": [
+      "intents": [
         {
-          "key": "SI",
-          "goto": "intent-7"
+          "id": "start",
+          "messages": [
+            {
+              "body": "Bienvenido a *Virtual capital of America*"
+            },
+            {
+              "body": "Selecciona una opción:\n\n1) Activar cuenta\n2) Crear cuenta\n3) Conoce más"
+            }
+          ],
+          "services": {
+            "preflight": null,
+            "callback": null
+          },
+          "inputType": "option-number",
+          "validOptions": [
+            {
+              "scope": "external",
+              "service": "bot",
+              "key": "1",
+              "goto": "bot-007"
+            },
+            {
+              "scope": "internal",
+              "service": "intent",
+              "key": "2",
+              "goto": "intent-0"
+            },
+            {
+              "scope": "external",
+              "service": "bot",
+              "key": "3",
+              "goto": "intent-1"
+            },
+            {
+              "scope": "internal",
+              "service": "intent",
+              "key": "else",
+              "goto": "eoi-failed"
+            }
+          ]
         },
         {
-          "key": "NO",
-          "goto": "no-end"
+          "id": "intent-0",
+          "messages": [
+            {
+              "body": "Para crear una cuenta dirigete a la siguiente dirección:"
+            },
+            {
+              "body": "https://app.virtualcapitalofamerica.com/signup/"
+            }
+          ],
+          "services": {
+            "preflight": null,
+            "callback": null
+          },
+          "inputType": "any",
+          "validOptions": [
+            {
+              "goto": "eoi-success"
+            }
+          ]
         },
         {
-          "key": "YES",
-          "goto": "intent-7"
+          "id": "intent-1",
+          "messages": [
+            {
+              "body": "VCA es una fintech que revoluciona el sector financiero con novedosas tecnologías y servicios"
+            },
+            {
+              "body": "https://www.virtualcapitalofamerica.com"
+            }
+          ],
+          "services": {
+            "preflight": null,
+            "callback": null
+          },
+          "inputType": "any",
+          "validOptions": [
+            {
+              "goto": "eoi-success"
+            }
+          ]
+        },
+        {
+          "id": "eoi-success",
+          "messages": [
+            {
+              "body": "Gracias, estamos junto a ti."
+            },
+            {
+              "body": "*-- END OF INTERACTION --*"
+            }
+          ],
+          "services": {
+            "preflight": null,
+            "callback": null
+          },
+          "inputType": "any",
+          "validOptions": [
+            {
+              "scope": "external",
+              "service": "bot",
+              "goto": "bot-001",
+              "intent": "start"
+            }
+          ]
+        },
+        {
+          "id": "eoi-failed",
+          "messages": [
+            {
+              "body": "Gracias, Si necesitas algo más de nosotros puedes volver a escribirnos."
+            },
+            {
+              "body": "*-- END OF INTERACTION --*"
+            }
+          ],
+          "services": {
+            "preflight": null,
+            "callback": null
+          },
+          "inputType": "any",
+          "validOptions": [
+            {
+              "scope": "external",
+              "service": "bot",
+              "goto": "bot-001",
+              "intent": "start"
+            }
+          ]
         }
       ]
     },
     {
-      "id": "intent-6",
-      "messages": [
+      "id": "bot-007",
+      "name": "Virtual capital of America - Account activation",
+      "behavior": "flow",
+      "platform": "whatsapp",
+      "triggers": [
         {
-          "body": "¿Has presentado uno o más de los siguientes sintomas?:"
-        },
-        {
-          "body": "- Dolor de cabeza,"
-        },
-        {
-          "body": "- perdida del olfato,"
-        },
-        {
-          "body": "- dolor de garganta,"
-        },
-        {
-          "body": "- dolor en el pecho,"
-        },
-        {
-          "body": "- perdida del apetito,"
-        },
-        {
-          "body": "- diarrea,"
-        },
-        {
-          "body": "- dolor abdominal o vómito?"
-        },
-        {
-          "body": "Responde *SI* o *NO*"
+          "id": "trigger-001",
+          "name": "exact-string",
+          "title": "Exact string VCA Account Activation",
+          "condition": {
+            "inputType": "exact-string",
+            "key": "#vca-activation"
+          },
+          "then": {
+            "scope": "internal",
+            "service": "intents",
+            "intent": "start",
+            "goto": "bot-007"
+          }
         }
       ],
-      "services": {
-        "preflight": null,
-        "callback": null
-      },
-      "inputType": "option-string",
-      "validOptions": [
+      "intents": [
         {
-          "key": "SI",
-          "goto": "intent-7"
-        },
-        {
-          "key": "NO",
-          "goto": "eoi-success"
-        },
-        {
-          "key": "YES",
-          "goto": "intent-7"
+          "id": "start",
+          "messages": [
+            {
+              "body": "Hi!, welcome to *Virtual capital of America* activation"
+            },
+            {
+              "body": "Your account with associate phone number _{{INCOMING_PHONE}}_ has been activated."
+            },
+            {
+              "body": "Please visit https://www.virtualcapitalofamerica.com to go to online banking"
+            },
+            {
+              "body": "Do you have any other request?"
+            }
+          ],
+          "services": {
+            "preflight": {
+              "route": "http://api.virtualcapitalofamerica.com/api/validate-account-chatbot",
+              "method": "POST"
+            },
+            "callback": {
+              "route": "http://www.virtualcapitalofamerica.com/api/chatbot",
+              "method": "get"
+            }
+          },
+          "inputType": "any",
+          "validOptions": [
+            {
+              "scope": "external",
+              "service": "bot",
+              "key": "",
+              "goto": "bot-012"
+            }
+          ]
         }
       ]
     },
     {
-      "id": "intent-7",
-      "messages": [
+      "id": "bot-008",
+      "name": "Go Bot - Menu",
+      "behavior": "flow",
+      "platform": "whatsapp",
+      "triggers": [
         {
-          "body": "Ademas de estos síntomas has sentido fatiga?"
-        },
-        {
-          "body": "Responde *SI* o *NO*"
+          "id": "trigger-001",
+          "name": "exact-string",
+          "title": "Exact string Go Bot Menu",
+          "condition": {
+            "inputType": "exact-string",
+            "key": "#gobot"
+          },
+          "then": {
+            "scope": "internal",
+            "service": "intents",
+            "intent": "start",
+            "goto": "bot-008"
+          }
         }
       ],
-      "services": {
-        "preflight": null,
-        "callback": null
-      },
-      "inputType": "option-string",
-      "validOptions": [
+      "intents": [
         {
-          "key": "SI",
-          "goto": "intent-8"
+          "id": "start",
+          "messages": [
+            {
+              "body": "Bienvenido a *Go Bot*"
+            },
+            {
+              "body": "Selecciona una opción:\n\n1) Activar cuenta\n2) Crear cuenta\n3) Conoce más"
+            }
+          ],
+          "services": {
+            "preflight": null,
+            "callback": null
+          },
+          "inputType": "option-number",
+          "validOptions": [
+            {
+              "scope": "external",
+              "service": "bot",
+              "key": "1",
+              "goto": "bot-009"
+            },
+            {
+              "scope": "internal",
+              "service": "intent",
+              "key": "2",
+              "goto": "intent-0"
+            },
+            {
+              "scope": "external",
+              "service": "bot",
+              "key": "3",
+              "goto": "intent-1"
+            },
+            {
+              "scope": "internal",
+              "service": "intent",
+              "key": "else",
+              "goto": "eoi-failed"
+            }
+          ]
         },
         {
-          "key": "NO",
-          "goto": "intent-8"
+          "id": "intent-0",
+          "messages": [
+            {
+              "body": "Para crear una cuenta dirigete a la siguiente dirección:"
+            },
+            {
+              "body": "https://app.gobot.site/signup/"
+            }
+          ],
+          "services": {
+            "preflight": null,
+            "callback": null
+          },
+          "inputType": "any",
+          "validOptions": [
+            {
+              "goto": "eoi-success"
+            }
+          ]
         },
         {
-          "key": "YES",
-          "goto": "intent-8"
+          "id": "intent-1",
+          "messages": [
+            {
+              "body": "Go Bot es una tecnología que potencia tus canales de comunicación para que seas una empresa omnicanal"
+            },
+            {
+              "body": "https://www.gobot.site"
+            }
+          ],
+          "services": {
+            "preflight": null,
+            "callback": null
+          },
+          "inputType": "any",
+          "validOptions": [
+            {
+              "goto": "eoi-success"
+            }
+          ]
+        },
+        {
+          "id": "eoi-success",
+          "messages": [
+            {
+              "body": "Gracias, Go Bot está junto a ti."
+            },
+            {
+              "body": "*-- END OF INTERACTION --*"
+            }
+          ],
+          "services": {
+            "preflight": null,
+            "callback": null
+          },
+          "inputType": "any",
+          "validOptions": [
+            {
+              "scope": "external",
+              "service": "bot",
+              "goto": "bot-001",
+              "intent": "start"
+            }
+          ]
+        },
+        {
+          "id": "eoi-failed",
+          "messages": [
+            {
+              "body": "Gracias, Si necesitas algo más de nosotros puedes volver a escribirnos."
+            },
+            {
+              "body": "*-- END OF INTERACTION --*"
+            }
+          ],
+          "services": {
+            "preflight": null,
+            "callback": null
+          },
+          "inputType": "any",
+          "validOptions": [
+            {
+              "scope": "external",
+              "service": "bot",
+              "goto": "bot-001",
+              "intent": "start"
+            }
+          ]
         }
       ]
     },
     {
-      "id": "intent-8",
-      "messages": [
+      "id": "bot-009",
+      "name": "Go Bot - Account activation",
+      "behavior": "flow",
+      "platform": "whatsapp",
+      "triggers": [
         {
-          "body": "Ademas de estos síntomas has sentido mareo?"
-        },
-        {
-          "body": "Responde *SI* o *NO*"
+          "id": "trigger-001",
+          "name": "exact-string",
+          "title": "Exact string Go Bot Account Activation",
+          "condition": {
+            "inputType": "exact-string",
+            "key": "#gobot-activation"
+          },
+          "then": {
+            "scope": "internal",
+            "service": "intents",
+            "intent": "start",
+            "goto": "bot-009"
+          }
         }
       ],
-      "services": {
-        "preflight": null,
-        "callback": null
-      },
-      "inputType": "option-string",
-      "validOptions": [
+      "intents": [
         {
-          "key": "SI",
-          "goto": "intent-9"
-        },
-        {
-          "key": "NO",
-          "goto": "intent-9"
-        },
-        {
-          "key": "YES",
-          "goto": "intent-9"
+          "id": "start",
+          "messages": [
+            {
+              "body": "Hi!, welcome to *Go Bot* activation"
+            },
+            {
+              "body": "Your account with associate phone number _{{INCOMING_PHONE}}_ has been activated."
+            },
+            {
+              "body": "Please visit https://www.gobot.site to configure your bots"
+            },
+            {
+              "body": "Do you have any other request?"
+            }
+          ],
+          "services": {
+            "preflight": {
+              "route": "http://api.gobot.site/api/validate-account-chatbot",
+              "method": "POST"
+            },
+            "callback": {
+              "route": "http://www.gobot.site/api/chatbot",
+              "method": "POST"
+            }
+          },
+          "inputType": "any",
+          "validOptions": [
+            {
+              "scope": "external",
+              "service": "bot",
+              "key": "",
+              "goto": "bot-012"
+            }
+          ]
         }
       ]
     },
     {
-      "id": "intent-9",
-      "messages": [
+      "id": "bot-0010",
+      "name": "Covid Bot",
+      "behavior": "flow",
+      "platform": "whatsapp",
+      "triggers": [
         {
-          "body": "Ademas de estos síntomas has sentido dificultad para respirar, dolor abdominal o vomito?"
-        },
-        {
-          "body": "Responde *SI* o *NO*"
+          "id": "trigger-001",
+          "name": "exact-string",
+          "title": "Exact string Covid",
+          "condition": {
+            "inputType": "exact-string",
+            "key": "#covid"
+          },
+          "then": {
+            "scope": "internal",
+            "service": "intents",
+            "intent": "start",
+            "goto": "bot-010"
+          }
         }
       ],
-      "services": {
-        "preflight": null,
-        "callback": null
-      },
-      "inputType": "option-string",
-      "validOptions": [
+      "intents": [
         {
-          "key": "SI",
-          "goto": "eoi-success"
+          "id": "start",
+          "messages": [],
+          "services": {
+            "preflight": null,
+            "callback": null
+          },
+          "inputType": "any",
+          "validOptions": [
+            {
+              "goto": "intent-0"
+            }
+          ]
         },
         {
-          "key": "NO",
-          "goto": "eoi-success"
+          "id": "intent-0",
+          "messages": [
+            {
+              "body": "Hola!, soy *Covid Bot*,"
+            },
+            {
+              "body": "Me gustaría ayudarte a idenficar si tienes algunos sintomas de COVID-19 para prevenir posibles riesgos"
+            },
+            {
+              "body": "Estas de acuerdo?"
+            },
+            {
+              "body": "Responde *SI* o *NO*"
+            }
+          ],
+          "services": {
+            "preflight": null,
+            "callback": null
+          },
+          "inputType": "option-string",
+          "validOptions": [
+            {
+              "key": "SI",
+              "goto": "intent-1"
+            },
+            {
+              "key": "NO",
+              "goto": "eoi-failed"
+            },
+            {
+              "key": "YES",
+              "goto": "intent-1"
+            }
+          ]
         },
         {
-          "key": "YES",
-          "goto": "eoi-success"
+          "id": "intent-1",
+          "messages": [
+            {
+              "body": "Escribe tu número de documento de identidad (sin puntos, ni simbolos especiales), a continuación:"
+            }
+          ],
+          "services": {
+            "preflight": null,
+            "callback": null
+          },
+          "inputType": "any-number",
+          "validOptions": [
+            {
+              "goto": "intent-2"
+            }
+          ]
+        },
+        {
+          "id": "intent-2",
+          "messages": [
+            {
+              "body": "En los ultimos dias has tenido gripa?"
+            },
+            {
+              "body": "Responde *SI* o *NO*"
+            }
+          ],
+          "services": {
+            "preflight": null,
+            "callback": null
+          },
+          "inputType": "option-string",
+          "validOptions": [
+            {
+              "key": "SI",
+              "goto": "intent-3"
+            },
+            {
+              "key": "NO",
+              "goto": "intent-6"
+            },
+            {
+              "key": "YES",
+              "goto": "intent-3"
+            }
+          ]
+        },
+        {
+          "id": "intent-3",
+          "messages": [
+            {
+              "body": "La gripa estuvo acompañada de sintomas como:"
+            },
+            {
+              "body": "- Dolor de cabeza,"
+            },
+            {
+              "body": "- Perdida del olfato,"
+            },
+            {
+              "body": "- Dolores musculares,"
+            },
+            {
+              "body": "- Tos,"
+            },
+            {
+              "body": "- Dolor de garganta,"
+            },
+            {
+              "body": "- Dolor en el pecho?"
+            },
+            {
+              "body": "Responde *SI* si has presentado alguno de los sintomas anteriores o *NO* si no los has presentado"
+            }
+          ],
+          "services": {
+            "preflight": null,
+            "callback": null
+          },
+          "inputType": "option-string",
+          "validOptions": [
+            {
+              "key": "SI",
+              "goto": "intent-4"
+            },
+            {
+              "key": "NO",
+              "goto": "no-end"
+            },
+            {
+              "key": "YES",
+              "goto": "intent-4"
+            }
+          ]
+        },
+        {
+          "id": "intent-7",
+          "messages": [
+            {
+              "body": "Ademas de estos síntomas has sentido fatiga?"
+            },
+            {
+              "body": "Responde *SI* o *NO*"
+            }
+          ],
+          "services": {
+            "preflight": null,
+            "callback": null
+          },
+          "inputType": "option-string",
+          "validOptions": [
+            {
+              "key": "SI",
+              "goto": "eoi-success"
+            },
+            {
+              "key": "NO",
+              "goto": "eoi-success"
+            },
+            {
+              "key": "YES",
+              "goto": "eoi-success"
+            }
+          ]
+        },
+        {
+          "id": "eoi-success",
+          "messages": [
+            {
+              "body": "Gracias, estaremos comunicandonos contigo brindandote información y acompañamiento."
+            },
+            {
+              "body": "*-- END OF INTERACTION --*"
+            }
+          ],
+          "services": {
+            "preflight": null,
+            "callback": null
+          },
+          "inputType": "any",
+          "validOptions": [
+            {
+              "goto": "genesys"
+            }
+          ]
+        },
+        {
+          "id": "eoi-failed",
+          "messages": [
+            {
+              "body": "Gracias, estaremos comunicandonos contigo brindandote información y acompañamiento."
+            },
+            {
+              "body": "*-- END OF INTERACTION --*"
+            }
+          ],
+          "services": {
+            "preflight": null,
+            "callback": null
+          },
+          "inputType": "any",
+          "validOptions": [
+            {
+              "goto": "genesys"
+            }
+          ]
+        },
+        {
+          "id": "no-end",
+          "messages": [
+            {
+              "body": "Gracias, estaremos junto a ti brindandote información y acompañamiento."
+            },
+            {
+              "body": "Lávate las manos con frecuencia"
+            },
+            {
+              "body": "No saludes a la gente con besos o apretones de mano"
+            },
+            {
+              "body": "Si toses, cúbrete la boca con el codo flexionado o con un pañuelo desechable"
+            },
+            {
+              "body": "Evita tocarte los ojos, la nariz y la boca"
+            },
+            {
+              "body": "Si tienes fiebre o dificultad para respirar, busca atención médica, pero llama primero a la línea 123"
+            },
+            {
+              "body": "Sigue las indicaciones de las autoridades locales y nacionale"
+            },
+            {
+              "body": "*-- END OF INTERACTION --*"
+            }
+          ],
+          "services": {
+            "preflight": null,
+            "callback": null
+          },
+          "inputType": "any",
+          "validOptions": [
+            {
+              "goto": "genesys"
+            }
+          ]
+        },
+        {
+          "id": "no-key",
+          "messages": [
+            {
+              "body": "No entiendo tu respuesta, revisa qué información te solicité"
+            }
+          ],
+          "services": {
+            "preflight": null,
+            "callback": null
+          }
         }
       ]
     },
     {
-      "id": "eoi-success",
-      "messages": [
+      "id": "bot-012",
+      "name": "Mi Retail - Menu",
+      "behavior": "flow",
+      "platform": "whatsapp",
+      "triggers": [
         {
-          "body": "Gracias, estaremos comunicandonos contigo brindandote información y acompañamiento."
-        },
-        {
-          "body": "*-- END OF INTERACTION --*"
+          "id": "trigger-001",
+          "name": "exact-string",
+          "title": "Exact string Mi Retail Menu",
+          "condition": {
+            "inputType": "exact-string",
+            "key": "#miretail"
+          },
+          "then": {
+            "scope": "internal",
+            "service": "intents",
+            "intent": "start",
+            "goto": "bot-012"
+          }
         }
       ],
-      "services": {
-        "preflight": null,
-        "callback": null
-      },
-      "inputType": "any",
-      "validOptions": [
+      "intents": [
         {
-          "goto": "genesys"
+          "id": "start",
+          "messages": [
+            {
+              "body": "Bienvenido a *Mi Retail*"
+            },
+            {
+              "body": "Selecciona una opción:\n\n1) Activar cuenta\n2) Crear cuenta\n3) Conoce más"
+            }
+          ],
+          "services": {
+            "preflight": null,
+            "callback": null
+          },
+          "inputType": "option-number",
+          "validOptions": [
+            {
+              "scope": "external",
+              "service": "bot",
+              "key": "1",
+              "goto": "bot-009"
+            },
+            {
+              "scope": "internal",
+              "service": "intent",
+              "key": "2",
+              "goto": "intent-0"
+            },
+            {
+              "scope": "external",
+              "service": "bot",
+              "key": "3",
+              "goto": "intent-1"
+            },
+            {
+              "scope": "internal",
+              "service": "intent",
+              "key": "else",
+              "goto": "eoi-failed"
+            }
+          ]
+        },
+        {
+          "id": "intent-0",
+          "messages": [
+            {
+              "body": "Para crear una cuenta dirigete a la siguiente dirección:"
+            },
+            {
+              "body": "https://app.miretail.com.co/signup/"
+            }
+          ],
+          "services": {
+            "preflight": null,
+            "callback": null
+          },
+          "inputType": "any",
+          "validOptions": [
+            {
+              "goto": "eoi-success"
+            }
+          ]
+        },
+        {
+          "id": "intent-1",
+          "messages": [
+            {
+              "body": "Mi Retail es el ecosistema para tu negocio donde encontrarás todo lo que necesites"
+            },
+            {
+              "body": "https://www.miretail.com.co"
+            }
+          ],
+          "services": {
+            "preflight": null,
+            "callback": null
+          },
+          "inputType": "any",
+          "validOptions": [
+            {
+              "goto": "eoi-success"
+            }
+          ]
+        },
+        {
+          "id": "eoi-success",
+          "messages": [
+            {
+              "body": "Gracias, Mi Retail está junto a ti."
+            },
+            {
+              "body": "*-- END OF INTERACTION --*"
+            }
+          ],
+          "services": {
+            "preflight": null,
+            "callback": null
+          },
+          "inputType": "any",
+          "validOptions": [
+            {
+              "scope": "external",
+              "service": "bot",
+              "goto": "bot-001",
+              "intent": "start"
+            }
+          ]
+        },
+        {
+          "id": "eoi-failed",
+          "messages": [
+            {
+              "body": "Gracias, Si necesitas algo más de nosotros puedes volver a escribirnos."
+            },
+            {
+              "body": "*-- END OF INTERACTION --*"
+            }
+          ],
+          "services": {
+            "preflight": null,
+            "callback": null
+          },
+          "inputType": "any",
+          "validOptions": [
+            {
+              "scope": "external",
+              "service": "bot",
+              "goto": "bot-001",
+              "intent": "start"
+            }
+          ]
         }
       ]
     },
     {
-      "id": "eoi-failed",
-      "messages": [
+      "id": "bot-013",
+      "name": "Mi Retail - Account activation",
+      "behavior": "flow",
+      "platform": "whatsapp",
+      "triggers": [
         {
-          "body": "Gracias, estaremos comunicandonos contigo brindandote información y acompañamiento."
-        },
-        {
-          "body": "*-- END OF INTERACTION --*"
+          "id": "trigger-001",
+          "name": "exact-string",
+          "title": "Exact string Mi Retail Account Activation",
+          "condition": {
+            "inputType": "exact-string",
+            "key": "#miretail-activation"
+          },
+          "then": {
+            "scope": "internal",
+            "service": "intents",
+            "intent": "start",
+            "goto": "bot-013"
+          }
         }
       ],
-      "services": {
-        "preflight": null,
-        "callback": null
-      },
-      "inputType": "any",
-      "validOptions": [
+      "intents": [
         {
-          "goto": "genesys"
+          "id": "start",
+          "messages": [
+            {
+              "body": "Hi!, welcome to *Mi Retail* activation"
+            },
+            {
+              "body": "Your account with associate phone number _{{INCOMING_PHONE}}_ has been activated."
+            },
+            {
+              "body": "Please visit https://www.miretail.com.co to open your store"
+            },
+            {
+              "body": "Do you have any other request?"
+            }
+          ],
+          "services": {
+            "preflight": {
+              "route": "http://api.miretail.com.co/api/validate-account-chatbot",
+              "method": "POST"
+            },
+            "callback": {
+              "route": "http://www.miretail.com.co/api/chatbot",
+              "method": "POST"
+            }
+          },
+          "inputType": "any",
+          "validOptions": [
+            {
+              "scope": "external",
+              "service": "bot",
+              "key": "",
+              "goto": "bot-012"
+            }
+          ]
         }
       ]
-    },
-    {
-      "id": "no-end",
-      "messages": [
-        {
-          "body": "Gracias, estaremos junto a ti brindandote información y acompañamiento."
-        },
-        {
-          "body": "Lávate las manos con frecuencia"
-        },
-        {
-          "body": "No saludes a la gente con besos o apretones de mano"
-        },
-        {
-          "body": "Si toses, cúbrete la boca con el codo flexionado o con un pañuelo desechable"
-        },
-        {
-          "body": "Evita tocarte los ojos, la nariz y la boca"
-        },
-        {
-          "body": "Si tienes fiebre o dificultad para respirar, busca atención médica, pero llama primero a la línea 123"
-        },
-        {
-          "body": "Sigue las indicaciones de las autoridades locales y nacionale"
-        },
-        {
-          "body": "*-- END OF INTERACTION --*"
-        }
-      ],
-      "services": {
-        "preflight": null,
-        "callback": null
-      },
-	  "inputType": "any",
-      "validOptions": [
-        {
-          "goto": "genesys"
-        }
-      ]
-    },
-    {
-      "id": "echo",
-      "messages": [
-        {
-          "body": "Hi!, welcome to *Virtual capital of America*"
-        },
-        {
-          "body": "if you are interested on my services please visit https://www.miretail.com.co"
-        },
-        {
-          "body": "Your body: _{{INCOMING_MESSAGE}}_"
-        }
-      ],
-      "services": {
-        "preflight": null,
-        "callback": {
-          "route": "http://localhost:3532/api/chatbot",
-          "method": "get"
-        }
-      }
-    },
-    {
-      "id": "no-key",
-      "messages": [
-        {
-          "body": "No entiendo tu respuesta, revisa qué información te solicité"
-        }
-      ],
-      "services": {
-        "preflight": null,
-        "callback": null
-      }
     }
   ],
   "SOCKET": {
@@ -473,28 +1421,6 @@
   "BACKEND": {
     "port": 3500,
     "url": "http://localhost"
-  },
-  "SELECTORS": {
-    "APP": ".app",
-    "QRCODE": "canvas",
-    "CONVERSATION": "#pane-side",
-    "CONVERSATIONITEM": "._2UaNq"
-  },
-  "SCRIPTS": {
-    "whatsapp": [
-      {
-        "name": "qrSniffer",
-        "path": "./src/client-scripts/qrSniffer.js"
-      },
-      {
-        "name": "parasite",
-        "path": "./src/client-scripts/parasite.js"
-      },
-      {
-        "name": "wh-handler",
-        "path": "./src/client-scripts/wh-handler.js"
-      }
-    ]
   },
   "BROWSER_OPTIONS": {
     "headless": false,
