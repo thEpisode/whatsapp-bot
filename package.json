@@ -1,18 +1,18 @@
 {
-  "name": "electron-quick-start",
+  "name": "chatbot-automation",
   "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "description": "A minimal Chatbot application",
   "main": "app.js",
   "scripts": {
     "start": "node app.js"
   },
-  "repository": "https://github.com/electron/electron-quick-start",
+  "repository": "https://github.com/virtualcapitalofamerica/whatsapp-bot",
   "keywords": [
-    "Electron",
+    "Node.js",
     "quick",
     "start",
-    "tutorial",
-    "demo"
+    "whatsapp",
+    "chatbot"
   ],
   "author": "GitHub",
   "license": "CC0-1.0",

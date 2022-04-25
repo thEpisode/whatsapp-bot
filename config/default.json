@@ -5,7 +5,7 @@
   "BOT_TYPE": "sequential",
   "BOT_KEY_ACTIONS": [
     {
-      "id": "genesys",
+      "id": "seed",
       "messages": [],
       "services": {
         "preflight": null,
@@ -14,12 +14,12 @@
       "inputType": "any",
       "validOptions": [
         {
-          "goto": "question-0"
+          "goto": "intent-0"
         }
       ]
     },
     {
-      "id": "question-0",
+      "id": "intent-0",
       "messages": [
         {
           "body": "Hola!, soy *Covid Bot*, hago parte de Comfasucre"
@@ -42,7 +42,7 @@
       "validOptions": [
         {
           "key": "SI",
-          "goto": "question-1"
+          "goto": "intent-1"
         },
         {
           "key": "NO",
@@ -50,12 +50,12 @@
         },
         {
           "key": "YES",
-          "goto": "question-1"
+          "goto": "intent-1"
         }
       ]
     },
     {
-      "id": "question-1",
+      "id": "intent-1",
       "messages": [
         {
           "body": "Escribe tu número de documento de identidad (sin puntos, ni simbolos especiales), a continuación:"
@@ -65,15 +65,15 @@
         "preflight": null,
         "callback": null
       },
-      "inputType": "number",
+      "inputType": "any-number",
       "validOptions": [
         {
-          "goto": "question-2"
+          "goto": "intent-2"
         }
       ]
     },
     {
-      "id": "question-2",
+      "id": "intent-2",
       "messages": [
         {
           "body": "En los ultimos dias has tenido gripa?"
@@ -90,20 +90,20 @@
       "validOptions": [
         {
           "key": "SI",
-          "goto": "question-3"
+          "goto": "intent-3"
         },
         {
           "key": "NO",
-          "goto": "question-6"
+          "goto": "intent-6"
         },
         {
           "key": "YES",
-          "goto": "question-3"
+          "goto": "intent-3"
         }
       ]
     },
     {
-      "id": "question-3",
+      "id": "intent-3",
       "messages": [
         {
           "body": "La gripa estuvo acompañada de sintomas como:"
@@ -138,7 +138,7 @@
       "validOptions": [
         {
           "key": "SI",
-          "goto": "question-4"
+          "goto": "intent-4"
         },
         {
           "key": "NO",
@@ -146,12 +146,12 @@
         },
         {
           "key": "YES",
-          "goto": "question-4"
+          "goto": "intent-4"
         }
       ]
     },
     {
-      "id": "question-4",
+      "id": "intent-4",
       "messages": [
         {
           "body": "Ademas de los sintomas anteriores, ¿has presentado fiebre?"
@@ -168,7 +168,7 @@
       "validOptions": [
         {
           "key": "SI",
-          "goto": "question-5"
+          "goto": "intent-5"
         },
         {
           "key": "NO",
@@ -176,12 +176,12 @@
         },
         {
           "key": "YES",
-          "goto": "question-5"
+          "goto": "intent-5"
         }
       ]
     },
     {
-      "id": "question-5",
+      "id": "intent-5",
       "messages": [
         {
           "body": "Has sentido ronquera o perdida de apetito?"
@@ -198,7 +198,7 @@
       "validOptions": [
         {
           "key": "SI",
-          "goto": "question-7"
+          "goto": "intent-7"
         },
         {
           "key": "NO",
@@ -206,12 +206,12 @@
         },
         {
           "key": "YES",
-          "goto": "question-7"
+          "goto": "intent-7"
         }
       ]
     },
     {
-      "id": "question-6",
+      "id": "intent-6",
       "messages": [
         {
           "body": "¿Has presentado uno o más de los siguientes sintomas?:"
@@ -249,7 +249,7 @@
       "validOptions": [
         {
           "key": "SI",
-          "goto": "question-7"
+          "goto": "intent-7"
         },
         {
           "key": "NO",
@@ -257,12 +257,12 @@
         },
         {
           "key": "YES",
-          "goto": "question-7"
+          "goto": "intent-7"
         }
       ]
     },
     {
-      "id": "question-7",
+      "id": "intent-7",
       "messages": [
         {
           "body": "Ademas de estos síntomas has sentido fatiga?"
@@ -279,20 +279,20 @@
       "validOptions": [
         {
           "key": "SI",
-          "goto": "question-8"
+          "goto": "intent-8"
         },
         {
           "key": "NO",
-          "goto": "question-8"
+          "goto": "intent-8"
         },
         {
           "key": "YES",
-          "goto": "question-8"
+          "goto": "intent-8"
         }
       ]
     },
     {
-      "id": "question-8",
+      "id": "intent-8",
       "messages": [
         {
           "body": "Ademas de estos síntomas has sentido mareo?"
@@ -309,20 +309,20 @@
       "validOptions": [
         {
           "key": "SI",
-          "goto": "question-9"
+          "goto": "intent-9"
         },
         {
           "key": "NO",
-          "goto": "question-9"
+          "goto": "intent-9"
         },
         {
           "key": "YES",
-          "goto": "question-9"
+          "goto": "intent-9"
         }
       ]
     },
     {
-      "id": "question-9",
+      "id": "intent-9",
       "messages": [
         {
           "body": "Ademas de estos síntomas has sentido dificultad para respirar, dolor abdominal o vomito?"
