@@ -1,6 +1,6 @@
 # Whatsapp bot
 
-This is an Electron app containing Whatsapp web and is using React methods to do an echo. This is very simple but useful to start developing our Whatsapp chatbot
+This is a Node.js console app containing Whatsapp handler using reactive methods to response messages as chatbot. This is very simple but useful project to start developing a complex NON-OFFICIAL Whatsapp chatbot
 
 ## Getting started
 
