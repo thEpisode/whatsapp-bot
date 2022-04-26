@@ -6,6 +6,7 @@ class ClientController {
   constructor (dependencies) {
     this._dependencies = dependencies
     this._config = this._dependencies.config
+    this._console = this._dependencies.console
     this._controllers = this._dependencies.controllers
     this.nextChatActionId = null
     this.conversations = []
@@ -26,18 +27,18 @@ class ClientController {
 
   async startEvents () {
     this.client.on('qr', (qr) => {
-      console.log('QR RECEIVED', qr);
+      this._console.info('QR Received');
       qrcode.generate(qr, { small: true });
     });
 
     this.client.on('ready', () => {
-      console.log('Client is ready!');
+      this._console.info('Client is ready!');
     });
 
     this.client.on('message', async (message) => {
       const chat = await message.getChat()
       try {
-        //console.log(msg)
+        //this._console.info(msg)
         if (message.body == '!ping') {
           message.reply('pong');
         } else if (message.body == '!buttons') {
@@ -55,7 +56,7 @@ class ClientController {
           this.sendIntentActionMessages(chat, intentAction)
         }
       } catch (error) {
-        console.log(error)
+        this._console.info(error)
       }
 
     });
@@ -89,7 +90,7 @@ class ClientController {
 
       return conversation.processMessage({ message })
     } catch (error) {
-      console.log(error)
+      this._console.info(error)
     }
   }
 
