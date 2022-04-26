@@ -1,16 +1,16 @@
-const InputTypeValidator = require('./../../utils/inputTypeValidator')
+const InputTypeValidator = require('../../validators/inputType.validator')
 
 class ConversationController {
-  constructor ({ chat, config, dependencies }) {
-    this.dependencies = dependencies
-    this._utilities = this.dependencies.utilities
-    this._controllers = this.dependencies.controllers.Backend
+  constructor (dependencies, { chat }) {
+    this._dependencies = dependencies
+    this._config = this._dependencies.config
+    this._utilities = this._dependencies.utilities
+    this._controllers = this._dependencies.controllers
     this.nextChatIntentId = null
-    this.config = config
     this.messages = []
     this.chat = chat
 
-    this._backendController = new this._controllers.Backend()
+    this._backendController = new this._controllers.Backend(this._dependencies)
   }
 
   processMessage (args) {
@@ -71,7 +71,7 @@ class ConversationController {
    * @returns An object with given key or default message
    */
   #getIntentByKey (key) {
-    return JSON.parse(JSON.stringify(this._utilities.searchers.object.findObject(key || 'no-key', 'id', this.config.botKeyActions) || null))
+    return JSON.parse(JSON.stringify(this._utilities.searchers.object.findObject(key || 'no-key', 'id', this._config.botKeyActions) || null))
   }
 
   #getCurrentIntentAction (intent) {

@@ -1,15 +1,12 @@
-const ConversationController = require('../conversation/conversation.controller')
 var sizeof = require('object-sizeof')
 const { Client, LocalAuth, List, Buttons } = require('whatsapp-web.js')
 const qrcode = require('qrcode-terminal');
 
 class ClientController {
-  constructor ({ selectors, config, browser, scripts, socket }) {
-    this.selectors = selectors
-    this.config = config
-    this.browser = browser
-    this.scripts = scripts
-    this.socket = socket
+  constructor (dependencies) {
+    this._dependencies = dependencies
+    this._config = this._dependencies.config
+    this._controllers = this._dependencies.controllers
     this.nextChatActionId = null
     this.conversations = []
   }
@@ -83,9 +80,9 @@ class ClientController {
       let conversation = this.findConversation(chat)
 
       if (conversation === null) {
-        conversation = new ConversationController({
-          chat,
-          config: this.config
+        conversation = new this._controllers.ConversationController(
+          dependencies, {
+          chat
         })
         this.conversations.push(conversation)
       }

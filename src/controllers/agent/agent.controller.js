@@ -1,11 +1,10 @@
-const ClientController = require('../client/client.controller')
-
 class AgentController {
 
-  constructor ({ selectors, config, socket }) {
-    this.selectors = selectors
-    this.config = config
-    this.socket = socket
+  constructor (dependencies) {
+    this._dependencies = dependencies
+    this._config = this._dependencies.config
+    this._socket = this._dependencies.socket
+    this._controllers = this._dependencies.controllers
   }
 
   updateConfig (config) {
@@ -13,17 +12,11 @@ class AgentController {
       return
     }
 
-    this.config = config
+    this._config = config
   }
 
   async createBot () {
-    this.bot = new ClientController({
-      selectors: this.selectors,
-      config: this.config,
-      browser: this.browser,
-      scripts: this.scripts,
-      socket: this.socket
-    })
+    this.bot = new this._controllers.ClientController(this._dependencies)
 
     await this.bot.startEngine()
   }
