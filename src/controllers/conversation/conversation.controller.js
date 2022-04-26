@@ -1,13 +1,16 @@
-
-const backend = require('../backend/backend.controller')
-const utilities = require('../../core/utilities.manager')()
 const InputTypeValidator = require('./../../utils/inputTypeValidator')
+
 class ConversationController {
-  constructor ({ chat, config }) {
+  constructor ({ chat, config, dependencies }) {
+    this.dependencies = dependencies
+    this._utilities = this.dependencies.utilities
+    this._controllers = this.dependencies.controllers.Backend
     this.nextChatIntentId = null
     this.config = config
     this.messages = []
     this.chat = chat
+
+    this._backendController = new this._controllers.Backend()
   }
 
   processMessage (args) {
@@ -51,13 +54,13 @@ class ConversationController {
   }
 
   async #backendServiceHandler ({ intentAction }) {
-    const response = await backend.request({
+    const response = await this._backendController.request({
       route: intentAction.services.preflight.route,
       method: intentAction.services.preflight.method,
       parameters: { chat: this.chat, message }
     })
 
-    if (!utilities.response.isValid(response)) {
+    if (!this._utilities.response.isValid(response)) {
       intentAction.message = [{ body: response.body }]
     }
   }
@@ -68,7 +71,7 @@ class ConversationController {
    * @returns An object with given key or default message
    */
   #getIntentByKey (key) {
-    return JSON.parse(JSON.stringify(utilities.searchers.object.findObject(key || 'no-key', 'id', this.config.botKeyActions) || null))
+    return JSON.parse(JSON.stringify(this._utilities.searchers.object.findObject(key || 'no-key', 'id', this.config.botKeyActions) || null))
   }
 
   #getCurrentIntentAction (intent) {

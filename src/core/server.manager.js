@@ -1,36 +1,132 @@
-const PhysicalBotController = require('../controllers/physicalBot/physicalBot.controller')
-const socketClient = require('socket.io-client')
+const { SettingsManager } = require('./settings.manager')
+const { ConsoleManager } = require('./console.manager')
 class ServerManager {
 
-  constructor ({ config, eventBus }) {
-    this.eventBus = eventBus
-    this.config = config
-    this.socketConfig = this.config.SOCKET
-    this.eventsIsInitialized = false
+  constructor (args) {
+    this._settings = new SettingsManager(args)
+    this._console = new ConsoleManager(this._settings.dependencies.core.get())
+    this._controllers = null
+  }
 
-    this.physicalBot = new PhysicalBotController({
-      selectors: this.config.SELECTORS,
-      config: {
-        botKeyActions: this.config.BOT_KEY_ACTIONS,
-        scripts: this.config.SCRIPTS,
-        browserOptions: this.config.BROWSER_OPTIONS,
-        botType: this.config.BOT_TYPE
-      },
-      socket: this.socketClient
-    })
+  start () {
+    this.agent = new this._controllers.AgentController(this._settings.dependencies.core.get())
+    this.agent.createBot()
+    //this.connectWS()
+  }
 
-    this.connectWS()
+  async loadServer () {
+    try {
+      this.registerSettings()
+
+      this.registerConsole()
+
+      this.registerDal()
+
+      this.socketSetup()
+
+      this.registerModels()
+
+      this.registerControllers()
+
+      this.registerSocket()
+
+      this.registerFunctions()
+
+      this._console.success('Server manager loaded')
+
+      this.executeStartupFunctions()
+
+      return this._settings.dependencies.get()
+    } catch (error) {
+      console.log(error)
+      process.exit()
+    }
+  }
+
+  registerModels () {
+    const { ModelManager } = require('./model.manager')
+    const _modelsManager = new ModelManager(this._settings.dependencies.get())
+
+    this._settings.dependencies.core.add(_modelsManager.models, 'models')
+  }
+
+  async registerDal () {
+    const { DalManager } = require('./dal.manager')
+    const _dalManager = new DalManager(this._settings.dependencies.get())
+
+    this._settings.dependencies.core.add(_dalManager, 'dal')
+  }
+
+  registerSettings () {
+    this._settings.dependencies.core.add(this._settings, 'settings')
+  }
+
+  registerConsole () {
+    this._settings.dependencies.core.add(this._console, 'console')
+  }
+
+  registerControllers () {
+    const { ControllerManager } = require('./controller.manager')
+    const _controllersManager = new ControllerManager(this._settings.dependencies.get())
+
+    this._settings.dependencies.core.add(_controllersManager.controllers, 'controllers')
+    this._controllers = this._settings.dependencies.core.get().controllers
+  }
+
+  registerFunctions () {
+    const { FunctionsManager } = require('./functions.manager')
+    const _functionsManager = new FunctionsManager(this._settings.dependencies.get())
+
+    this._settings.dependencies.core.add(_functionsManager.functions, 'functions')
+  }
+
+  socketSetup () {
+    // Listening and setup socket
+    // TODO: Improve this
+
+    const { SocketManager } = require('./socket.manager')
+    const _socketManager = new SocketManager(this._settings.dependencies.get())
+
+    return _socketManager
+  }
+
+  registerSocket () {
+    // Initialize socket when controllers are initialized
+    const controllers = this._settings.dependencies.core.get().controllers
+    const socketController = new controllers.SocketController(this._settings.dependencies.core.get())
+    socketController.initialize()
+  }
+
+  executeStartupFunctions () {
+    const functions = this._settings.dependencies.core.get().functions.startup
+    for (const _function in functions) {
+      functions[_function].run()
+    }
+  }
+
+  normalizePort (val) {
+    const port = parseInt(val, 10)
+
+    if (isNaN(port)) return val
+    if (port >= 0) return port
+
+    return false
+  }
+
+  get settings () {
+    return this._settings
   }
 
   connectWS () {
-    let uri = this.config.SOCKET.port
-      ? `${this.config.SOCKET.url}:${this.config.SOCKET.port}`
-      : `${this.config.SOCKET.url}`
-    this.socketClient = socketClient(uri)
+    this._config = this._settings.dependencies.core.get().config
+    let uri = this._config.SOCKET.port
+      ? `${this._config.SOCKET.url}:${this._config.SOCKET.port}`
+      : `${this._config.SOCKET.url}`
+    this.socketClient = this.socketClient(uri)
 
     //this.setupSocketEvents()
 
-    this.physicalBot.createBot()
+    
   }
 
   setupSocketSettings () {
@@ -66,13 +162,13 @@ class ServerManager {
           channel: this.socketChannels.ws.name,
           type: this.socketEventTypes.botMessage.name,
           sender: { socketId: this.socketClient.id },
-          nativeId: this.config.MACHINE_ID
+          nativeId: this._config.MACHINE_ID
         },
         command: 'registerNode#request',
         values: {}
       })
 
-      console.log(`Connected to ${this.config.SOCKET.url}:${this.config.SOCKET.port} as ${this.socketClient.id} with native id ${this.config.MACHINE_ID}`)
+      console.log(`Connected to ${this._config.SOCKET.url}:${this._config.SOCKET.port} as ${this.socketClient.id} with native id ${this._config.MACHINE_ID}`)
     })
 
     this.socketClient.on('reversebytes.gobot.bot#EVENT', (data) => {
@@ -91,13 +187,13 @@ class ServerManager {
     })
 
     this.socketClient.on('disconnect', () => {
-      console.error(`Disconnected from ${this.config.SOCKET_URL}:${this.config.SOCKET_PORT}`)
+      console.error(`Disconnected from ${this._config.SOCKET_URL}:${this._config.SOCKET_PORT}`)
     })
   }
 
   updatePhysical (config) {
-    this.physicalBot.updateConfig(config)
+    this.agent.updateConfig(config)
   }
 }
 
-module.exports = ServerManager
+module.exports = { ServerManager }

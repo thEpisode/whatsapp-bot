@@ -1,13 +1,16 @@
-const config = require('config');
-const ServerController = require('./src/core/server.manager');
-const events = require('events');
-String.prototype.replaceAll = function (search, replacement) {
-  var target = this
-  return target.replace(new RegExp(search, 'g'), replacement)
-};
+/**
+ * Main start
+ *
+ * To read documentation go to https://github.com/thepisode/beat/wiki
+ */
 
-(async () => {
+const { ServerManager } = require('./src/core/server.manager')
 
-  new ServerController({config, eventBus: new events.EventEmitter()})
+const main = async () => {
+  const server = new ServerManager({ root: __dirname })
+  const dependencies = await server.loadServer()
 
-})();
+  server.start(dependencies)
+}
+
+main()

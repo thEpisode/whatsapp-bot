@@ -1,6 +1,6 @@
 {
-  "BOT_NAME": "WaBot",
-  "BOT_VERSION": "0.0.0.1",
+  "AGENT_VERSION": "4.0.0",
+  "AGENT_NAME": "Bot Agent",
   "MACHINE_ID": "bot-2b9cb",
   "BOTS": [
     {

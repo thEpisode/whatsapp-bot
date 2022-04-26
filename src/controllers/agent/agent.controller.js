@@ -1,8 +1,6 @@
 const ClientController = require('../client/client.controller')
-const puppeteer = require('puppeteer');
-const fs = require('fs')
 
-class PhysicalBotController {
+class AgentController {
 
   constructor ({ selectors, config, socket }) {
     this.selectors = selectors
@@ -31,4 +29,4 @@ class PhysicalBotController {
   }
 }
 
-module.exports = PhysicalBotController
+module.exports = AgentController

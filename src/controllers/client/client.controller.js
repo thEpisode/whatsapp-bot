@@ -1,10 +1,9 @@
 const ConversationController = require('../conversation/conversation.controller')
-const utilities = require('../../core/utilities.manager')()
 var sizeof = require('object-sizeof')
 const { Client, LocalAuth, List, Buttons } = require('whatsapp-web.js')
 const qrcode = require('qrcode-terminal');
 
-class BotController {
+class ClientController {
   constructor ({ selectors, config, browser, scripts, socket }) {
     this.selectors = selectors
     this.config = config
@@ -104,4 +103,4 @@ class BotController {
   }
 }
 
-module.exports = BotController
+module.exports = ClientController

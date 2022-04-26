@@ -1,14 +1,16 @@
+class BackendController {
+  constructor (dependencies) {
+    this._dependencies = dependencies
+    this._request = this._dependencies.request
+  }
 
-const request = require('request')
-
-function backendController() {
-  const _request = async (data) => {
+   async request (data) {
     if (!data || !data.route || typeof data.route !== 'string' || data.route.length <= 0) {
       return null
     }
 
     try {
-      const response = await doRequest(data)
+      const response = await this.doRequest(data)
 
       return response
     } catch (error) {
@@ -17,9 +19,9 @@ function backendController() {
     }
   }
 
-  const doRequest = async ({ route, method, parameters }) => {
+   async doRequest ({ route, method, parameters }) {
     return new Promise(function (resolve, reject) {
-      request({
+      this._request({
         method: method,
         uri: route,
         gzip: true,
@@ -35,9 +37,6 @@ function backendController() {
     })
   }
 
-  return {
-    request: _request
-  }
 }
 
-module.exports = backendController
+module.exports = BackendController

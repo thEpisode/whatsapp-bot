@@ -1,24 +1,27 @@
-const crypto = require('crypto')
+class UtilitiesManager {
+  constructor (dependencies) {
+    this._dependencies = dependencies
+    this._console = dependencies.console
+    this._crypto = dependencies.crypto
+  }
 
-function utilities() {
-  const _crypto = crypto
   /// Find an object dynamically by dot style
   /// E.g.
   /// var objExample = {employee: { firstname: "camilo", job:{name:"developer"}}}
   /// searchDotStyle(objExample, 'employee.job.name')
-  const searchDotStyle = (obj, query) => {
+  searchDotStyle (obj, query) {
     return query.split('.').reduce((key, val) => key[val], obj)
   }
 
-  const idGenerator = (length, prefix) => {
+  idGenerator (length, prefix) {
     // Generate 256 random bytes and converted to hex to prevent failures on unscaped chars
-    const buffer = _crypto.randomBytes(256)
+    const buffer = this._crypto.randomBytes(256)
     const randomToken = buffer.toString('hex')
     // Generating of token
     return `${prefix || 'seed-'}${randomToken.slice(0, length)}`
   }
 
-  const propertyIsValid = function (property) {
+  propertyIsValid (property) {
     let isValid = false
 
     if (property && property.success === true) {
@@ -28,7 +31,7 @@ function utilities() {
     return isValid
   }
 
-  const throwError = function (message) {
+  throwError (message) {
     if (message) {
       return { success: false, message: message, result: null }
     }
@@ -36,7 +39,7 @@ function utilities() {
     return { success: false, message: 'Something was wrong while you make this action', result: null }
   }
 
-  const throwSuccess = function (data, message) {
+  throwSuccess (data, message) {
     const succesResponse = {
       success: true,
       message: message || 'Operation completed successfully',
@@ -46,11 +49,11 @@ function utilities() {
     return succesResponse
   }
 
-  const badRequestView = function (req, res, data) {
-    res.render('maintenance/index.view.jsx', data)
+  badRequestView (req, res, payload) {
+    res.render('maintenance/maintenance.view.jsx', payload)
   }
 
-  const cleanObjectData = rawObj => {
+  cleanObjectData (rawObj) {
     if (rawObj && rawObj.formatted) {
       return rawObj.formatted
     } else if (rawObj && rawObj.data) {
@@ -61,41 +64,41 @@ function utilities() {
   }
 
   // Search an object in a simple array
-  const findObject = (query, _array) => {
+  findObject (query, _array) {
     return _array.find(function (element, index) {
       return element === query
     })
   }
 
   // Search an item by an object key
-  const findObjectByKey = (query, key, _array) => {
+  findObjectByKey (query, key, _array) {
     return _array.find(function (element, index) {
       return element[key] === query
     })
   }
 
-  const findDeepObjectByKey = (query, key, _array) => {
+  findDeepObjectByKey (query, key, _array) {
     return _array.find(function (element, index) {
-      const deepObject = searchDotStyle(element, key)
+      const deepObject = this.searchDotStyle(element, key)
       return deepObject === query
     })
   }
 
   // Return index otherwise -1 is returned
-  const findIndexByKey = (query, key, _array) => {
+  findIndexByKey (query, key, _array) {
     return _array.findIndex(function (element, index) {
       return element[key] === query
     })
   }
 
   // Return index otherwise -1 is returned
-  const findIndex = (query, _array) => {
+  findIndex (query, _array) {
     return _array.findIndex(function (element, index) {
       return element === query
     })
   }
 
-  const findAndRemove = (query, _array) => {
+  findAndRemove (query, _array) {
     const index = _array.findIndex(function (element, index) {
       return element === query
     })
@@ -106,7 +109,7 @@ function utilities() {
     return index
   }
 
-  const findAndRemoveByKey = (query, key, _array) => {
+  findAndRemoveByKey (query, key, _array) {
     const index = _array.findIndex(function (element, index) {
       return element[key] === query
     })
@@ -117,7 +120,7 @@ function utilities() {
     return index
   }
 
-  const serializerOjectToQueryString = (obj, prefix) => {
+  serializerOjectToQueryString (obj, prefix) {
     if (obj && typeof obj === 'object') {
       const serializedArr = []
       let key = {}
@@ -127,7 +130,7 @@ function utilities() {
           const k = prefix ? prefix + '[' + key + ']' : key
           const value = obj[key] || null
           serializedArr.push((value !== null && typeof value === 'object')
-            ? serializerOjectToQueryString(value, k)
+            ? this.serializerOjectToQueryString(value, k)
             : encodeURIComponent(k) + '=' + encodeURIComponent(value))
         }
       }
@@ -135,16 +138,16 @@ function utilities() {
     }
   }
 
-  const objectToQueryString = (obj) => {
+  objectToQueryString (obj) {
     if (obj && typeof obj === 'object') {
-      const result = serializerOjectToQueryString(obj)
+      const result = this.serializerOjectToQueryString(obj)
       return `?${result}`
     } else {
       return ''
     }
   }
 
-  const isEmpty = (obj) => {
+  isEmpty (obj) {
     for (var key in obj) {
       if (Object.prototype.hasOwnProperty.call(obj, key)) {
         return false
@@ -153,53 +156,68 @@ function utilities() {
     return true
   }
 
-  const getParameters = (data) => {
-    if (!data) { return null }
+  getParameters (data) {
+    if (!data) { return {} }
 
-    if (!isEmpty(data.query)) {
-      return data.query
-    } else if (!isEmpty(data.body)) {
-      return data.body
-    } else if (!isEmpty(data.params)) {
-      return data.params
-    } else {
-      return null
+    let params = {}
+
+    if (!this.isEmpty(data.query)) {
+      params = { ...params, ...data.query }
+    }
+    if (!this.isEmpty(data.body)) {
+      params = { ...params, ...data.body }
+    }
+    if (!this.isEmpty(data.params)) {
+      params = { ...params, ...data.params }
+    }
+
+    return params
+  }
+
+  get objectIsEmpty () {
+    return this.isEmpty.bind(this)
+  }
+
+  get serializer () {
+    return {
+      object: {
+        toQueryString: this.objectToQueryString.bind(this)
+      }
     }
   }
 
-  return {
-    idGenerator: idGenerator,
-    objectIsEmpty: isEmpty,
-    serializer: {
+  get request () {
+    return {
+      getParameters: this.getParameters.bind(this)
+    }
+  }
+
+  get response () {
+    return {
+      success: this.throwSuccess.bind(this),
+      error: this.throwError.bind(this),
+      badRequestView: this.badRequestView.bind(this),
+      isValid: this.propertyIsValid.bind(this),
+      clean: this.cleanObjectData.bind(this)
+    }
+  }
+
+  get searchers () {
+    return {
       object: {
-        toQueryString: objectToQueryString
-      }
-    },
-    request: {
-      getParameters
-    },
-    response: {
-      success: throwSuccess,
-      error: throwError,
-      badRequestView: badRequestView,
-      isValid: propertyIsValid,
-      clean: cleanObjectData
-    },
-    searchers: {
-      object: {
-        searchDotStyle: searchDotStyle,
-        findAndRemove: findAndRemoveByKey,
-        findIndex: findIndexByKey,
-        findObject: findObjectByKey,
-        findDeepObject: findDeepObjectByKey
+        searchDotStyle: this.searchDotStyle.bind(this),
+        findAndRemove: this.findAndRemoveByKey.bind(this),
+        findIndex: this.findIndexByKey.bind(this),
+        findObject: this.findObjectByKey.bind(this),
+        findDeepObject: this.findDeepObjectByKey.bind(this)
       },
       array: {
-        findAndRemove: findAndRemove,
-        findIndex: findIndex,
-        findObject: findObject
+        findAndRemove: this.findAndRemove.bind(this),
+        findIndex: this.findIndex.bind(this),
+        findObject: this.findObject.bind(this)
       }
     }
   }
 }
 
-module.exports = utilities
+module.exports = { UtilitiesManager }
