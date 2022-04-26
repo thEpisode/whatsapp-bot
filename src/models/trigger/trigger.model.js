@@ -1,6 +1,6 @@
 const baseModel = require('../base/base.model')
 
-class BotModel extends baseModel {
+class TriggerModel extends baseModel {
   constructor (args, dependencies) {
     if (!args || !dependencies) {
       throw new Error('Required args and dependencies to build this entity')
@@ -16,14 +16,13 @@ class BotModel extends baseModel {
     this.id = { value: args.id, type: dependencies.dal.types.bigserial, isPK: true }
     this.date_creation = { value: timestamp, type: dependencies.dal.types.timestamp }
     this.last_user_modification = { value: args.user_id, type: dependencies.dal.types.object }
-    this.status = { value: args.status || BotModel.statuses.active, type: dependencies.dal.types.object }
+    this.status = { value: args.status || TriggerModel.statuses.active, type: dependencies.dal.types.object }
 
     /* Custom fields */
     this.name = { value: args.name, type: dependencies.dal.types.string }
-    this.behavior = { value: args.behavior, type: dependencies.dal.types.string }
-    this.platform = { value: args.platform, type: dependencies.dal.types.string }
-    this.triggers = { value: args.triggers, type: dependencies.dal.types.object }
-    this.intents = { value: args.intents, type: dependencies.dal.types.object }
+    this.title = { value: args.title, type: dependencies.dal.types.string }
+    this.condition = { value: args.condition, type: dependencies.dal.types.string }
+    this.then = { value: args.then, type: dependencies.dal.types.string }
   }
 
   // Return entity sanitized
@@ -31,10 +30,9 @@ class BotModel extends baseModel {
     return {
       id: this.id.value || this.id.type.default,
       name: this.name.value || this.name.type.default,
-      behavior: this.behavior.value || this.behavior.type.default,
-      platform: this.platform.value || this.platform.type.default,
-      triggers: this.triggers.value || this.triggers.type.default,
-      intents: this.intents.value || this.intents.type.default
+      title: this.title.value || this.name.type.default,
+      condition: this.condition.value || this.name.type.default,
+      then: this.then.value || this.name.type.default
     }
   }
 
@@ -46,18 +44,17 @@ class BotModel extends baseModel {
       last_user_modification: this.last_user_modification.value || this.last_user_modification.type.default,
       status: this.status.value || this.status.type.default,
       name: this.name.value || this.name.type.default,
-      behavior: this.behavior.value || this.behavior.type.default,
-      platform: this.platform.value || this.platform.type.default,
-      triggers: this.triggers.value || this.triggers.type.default,
-      intents: this.intents.value || this.intents.type.default
+      title: this.title.value || this.name.type.default,
+      condition: this.condition.value || this.name.type.default,
+      then: this.then.value || this.name.type.default
     }
   }
 }
 
-BotModel.statuses = {
+TriggerModel.statuses = {
   inactive: { id: 1, name: 'inactive', title: 'Inactive' },
   active: { id: 2, name: 'active', title: 'Active' },
   deleted: { id: 3, name: 'deleted', title: 'Deleted' }
 }
 
-module.exports = BotModel
+module.exports = TriggerModel
