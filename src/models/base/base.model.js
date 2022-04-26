@@ -13,7 +13,7 @@ class ModelBase {
   get getPropertiesAsBindings () {
     const keys = Object.keys(this.get)
 
-    return (keys.map((key, index) => `$${index + 1}`)).join()
+    return (keys.map((_key, index) => `$${index + 1}`)).join()
   }
 
   get getValuesAsArray () {
