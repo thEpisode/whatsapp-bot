@@ -1,6 +1,6 @@
+module.exports.Action = require('./action/action.model')
 module.exports.Bot = require('./bot/bot.model')
 module.exports.BotService = require('./botService/botService.model')
 module.exports.Intent = require('./intent/intent.model')
 module.exports.Message = require('./message/message.model')
 module.exports.Trigger = require('./trigger/trigger.model')
-module.exports.ValidOption = require('./validOption/validOption.model')

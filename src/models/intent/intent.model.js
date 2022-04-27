@@ -19,20 +19,20 @@ class IntentModel extends baseModel {
     this.status = { value: args.status || IntentModel.statuses.active, type: dependencies.dal.types.object }
 
     /* Custom fields */
-    this.messages = { value: args.messages, type: dependencies.dal.types.string }
-    this.services = { value: args.services, type: dependencies.dal.types.string }
-    this.inputType = { value: args.inputType, type: dependencies.dal.types.string }
-    this.validOptions = { value: args.validOptions, type: dependencies.dal.types.string }
+    this.scope = { value: args.scope, type: dependencies.dal.types.string }
+    this.service = { value: args.service, type: dependencies.dal.types.string }
+    this.key = { value: args.key, type: dependencies.dal.types.string }
+    this.goto = { value: args.goto, type: dependencies.dal.types.string }
   }
 
   // Return entity sanitized
   get sanitized () {
     return {
       id: this.id.value || this.id.type.default,
-      messages: this.messages.value || this.messages.type.default,
-      services: this.services.value || this.services.type.default,
-      inputType: this.inputType.value || this.inputType.type.default,
-      validOptions: this.validOptions.value || this.validOptions.type.default
+      scope: this.scope.value || this.scope.type.default,
+      service: this.service.value || this.scope.type.default,
+      key: this.key.value || this.scope.type.default,
+      goto: this.goto.value || this.scope.type.default
     }
   }
 
@@ -43,10 +43,10 @@ class IntentModel extends baseModel {
       last_modification: this.last_modification.value || this.last_modification.type.default,
       last_user_modification: this.last_user_modification.value || this.last_user_modification.type.default,
       status: this.status.value || this.status.type.default,
-      messages: this.messages.value || this.messages.type.default,
-      services: this.services.value || this.services.type.default,
-      inputType: this.inputType.value || this.inputType.type.default,
-      validOptions: this.validOptions.value || this.validOptions.type.default
+      scope: this.scope.value || this.scope.type.default,
+      service: this.service.value || this.scope.type.default,
+      key: this.key.value || this.scope.type.default,
+      goto: this.goto.value || this.scope.type.default
     }
   }
 }

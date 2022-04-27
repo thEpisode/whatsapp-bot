@@ -5,6 +5,8 @@ class AgentController {
     this._config = this._dependencies.config
     this._socket = this._dependencies.socket
     this._controllers = this._dependencies.controllers
+    this._client = null
+    this._clientBots = null
   }
 
   updateConfig (config) {
@@ -15,10 +17,16 @@ class AgentController {
     this._config = config
   }
 
-  async createBot () {
-    this.bot = new this._controllers.ClientController(this._dependencies)
+  async load () {
+    this._clientBots = this._dependencies.config.BOTS
+  }
 
-    await this.bot.startEngine()
+  async setup () {
+    this._client = new this._controllers.ClientController(this._dependencies, { bots: this._clientBots })
+  }
+
+  async start () {
+    await this._client.startEngine()
   }
 }
 

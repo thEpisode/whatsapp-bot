@@ -1,6 +1,6 @@
 const baseModel = require('../base/base.model')
 
-class ValidOptionModel extends baseModel {
+class ActionModel extends baseModel {
   constructor (args, dependencies) {
     if (!args || !dependencies) {
       throw new Error('Required args and dependencies to build this entity')
@@ -16,23 +16,23 @@ class ValidOptionModel extends baseModel {
     this.id = { value: args.id, type: dependencies.dal.types.bigserial, isPK: true }
     this.date_creation = { value: timestamp, type: dependencies.dal.types.timestamp }
     this.last_user_modification = { value: args.user_id, type: dependencies.dal.types.object }
-    this.status = { value: args.status || ValidOptionModel.statuses.active, type: dependencies.dal.types.object }
+    this.status = { value: args.status || ActionModel.statuses.active, type: dependencies.dal.types.object }
 
     /* Custom fields */
-    this.scope = { value: args.scope, type: dependencies.dal.types.string }
-    this.service = { value: args.service, type: dependencies.dal.types.string }
-    this.key = { value: args.key, type: dependencies.dal.types.string }
-    this.goto = { value: args.goto, type: dependencies.dal.types.string }
+    this.messages = { value: args.messages, type: dependencies.dal.types.string }
+    this.services = { value: args.services, type: dependencies.dal.types.string }
+    this.inputType = { value: args.inputType, type: dependencies.dal.types.string }
+    this.validOptions = { value: args.validOptions, type: dependencies.dal.types.string }
   }
 
   // Return entity sanitized
   get sanitized () {
     return {
       id: this.id.value || this.id.type.default,
-      scope: this.scope.value || this.scope.type.default,
-      service: this.service.value || this.scope.type.default,
-      key: this.key.value || this.scope.type.default,
-      goto: this.goto.value || this.scope.type.default
+      messages: this.messages.value || this.messages.type.default,
+      services: this.services.value || this.services.type.default,
+      inputType: this.inputType.value || this.inputType.type.default,
+      validOptions: this.validOptions.value || this.validOptions.type.default
     }
   }
 
@@ -43,18 +43,18 @@ class ValidOptionModel extends baseModel {
       last_modification: this.last_modification.value || this.last_modification.type.default,
       last_user_modification: this.last_user_modification.value || this.last_user_modification.type.default,
       status: this.status.value || this.status.type.default,
-      scope: this.scope.value || this.scope.type.default,
-      service: this.service.value || this.scope.type.default,
-      key: this.key.value || this.scope.type.default,
-      goto: this.goto.value || this.scope.type.default
+      messages: this.messages.value || this.messages.type.default,
+      services: this.services.value || this.services.type.default,
+      inputType: this.inputType.value || this.inputType.type.default,
+      validOptions: this.validOptions.value || this.validOptions.type.default
     }
   }
 }
 
-ValidOptionModel.statuses = {
+ActionModel.statuses = {
   inactive: { id: 1, name: 'inactive', title: 'Inactive' },
   active: { id: 2, name: 'active', title: 'Active' },
   deleted: { id: 3, name: 'deleted', title: 'Deleted' }
 }
 
-module.exports = ValidOptionModel
+module.exports = ActionModel

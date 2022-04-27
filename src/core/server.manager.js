@@ -10,7 +10,9 @@ class ServerManager {
 
   start () {
     this.agent = new this._controllers.AgentController(this._settings.dependencies.core.get())
-    this.agent.createBot()
+    this.agent.load()
+    this.agent.setup()
+    this.agent.start()
     //this.connectWS()
   }
 
@@ -126,7 +128,7 @@ class ServerManager {
 
     //this.setupSocketEvents()
 
-    
+
   }
 
   setupSocketSettings () {

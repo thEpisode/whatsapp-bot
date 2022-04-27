@@ -8,24 +8,26 @@
       "name": "Inversiones Von Croften - Welcome",
       "behavior": "flow",
       "platform": "whatsapp",
+      "isDefault": true,
       "triggers": [
         {
           "id": "trigger-001",
           "name": "",
           "title": "",
+          "isDefault": true,
           "condition": {
             "inputType": "any",
             "key": ""
           },
           "then": {
             "scope": "internal",
-            "service": "intents",
-            "goto": "bot-001",
-            "intent": "start"
+            "service": "actions",
+            "botId": "bot-001",
+            "actionId": "start"
           }
         }
       ],
-      "intents": [
+      "actions": [
         {
           "id": "start",
           "messages": [
@@ -41,36 +43,36 @@
             "callback": null
           },
           "inputType": "option-number",
-          "validOptions": [
+          "intents": [
             {
               "scope": "external",
               "service": "bot",
               "key": "1",
-              "goto": "bot-002"
+              "botId": "bot-002"
             },
             {
               "scope": "external",
               "service": "bot",
               "key": "2",
-              "goto": "bot-004"
+              "botId": "bot-004"
             },
             {
               "scope": "external",
               "service": "bot",
               "key": "3",
-              "goto": "bot-011"
+              "botId": "bot-011"
             },
             {
               "scope": "external",
               "service": "bot",
               "key": "4",
-              "goto": "bot-003"
+              "botId": "bot-003"
             },
             {
               "scope": "external",
               "service": "bot",
               "key": "5",
-              "goto": "bot-005"
+              "botId": "bot-005"
             }
           ]
         }
@@ -86,19 +88,20 @@
           "id": "trigger-001",
           "name": "",
           "title": "",
+          "isDefault": true,
           "condition": {
-            "inputType": "exact-string",
+            "inputType": "exact-match",
             "key": "#rfp"
           },
           "then": {
             "scope": "internal",
-            "service": "intents",
-            "intent": "start",
-            "goto": "bot-002"
+            "service": "actions",
+            "actionId": "start",
+            "botId": "bot-002"
           }
         }
       ],
-      "intents": [
+      "actions": [
         {
           "id": "start",
           "messages": [
@@ -111,9 +114,9 @@
             "callback": null
           },
           "inputType": "any",
-          "validOptions": [
+          "intents": [
             {
-              "goto": "intent-0"
+              "actionId": "intent-0"
             }
           ]
         },
@@ -129,9 +132,9 @@
             "callback": null
           },
           "inputType": "any",
-          "validOptions": [
+          "intents": [
             {
-              "goto": "intent-1"
+              "actionId": "intent-1"
             }
           ]
         },
@@ -147,9 +150,9 @@
             "callback": null
           },
           "inputType": "any",
-          "validOptions": [
+          "intents": [
             {
-              "goto": "eoi-success"
+              "actionId": "eoi-success"
             }
           ]
         },
@@ -168,12 +171,12 @@
             "callback": null
           },
           "inputType": "any",
-          "validOptions": [
+          "intents": [
             {
               "scope": "external",
               "service": "bot",
-              "goto": "bot-001",
-              "intent": "start"
+              "botId": "bot-001",
+              "actionId": "start"
             }
           ]
         },
@@ -192,12 +195,12 @@
             "callback": null
           },
           "inputType": "any",
-          "validOptions": [
+          "intents": [
             {
               "scope": "external",
               "service": "bot",
-              "goto": "bot-001",
-              "intent": "start"
+              "botId": "bot-001",
+              "actionId": "start"
             }
           ]
         }
@@ -213,19 +216,20 @@
           "id": "trigger-001",
           "name": "",
           "title": "",
+          "isDefault": true,
           "condition": {
-            "inputType": "exact-string",
+            "inputType": "exact-match",
               "key": "#ivc-proj"
           },
           "then": {
             "scope": "internal",
-              "service": "intents",
-              "intent": "start",
-              "goto": "bot-003"
+              "service": "actions",
+              "actionId": "start",
+              "botId": "bot-003"
           }
         }
       ],
-      "intents": [
+      "actions": [
         {
           "id": "start",
           "messages": [
@@ -238,30 +242,30 @@
             "callback": null
           },
           "inputType": "option-number",
-          "validOptions": [
+          "intents": [
             {
               "scope": "external",
               "service": "bot",
               "key": "1",
-              "goto": "bot-006"
+              "botId": "bot-006"
             },
             {
               "scope": "external",
               "service": "bot",
               "key": "2",
-              "goto": "bot-008"
+              "botId": "bot-008"
             },
             {
               "scope": "external",
               "service": "bot",
               "key": "3",
-              "goto": "bot-012"
+              "botId": "bot-012"
             },
             {
               "scope": "internal",
               "service": "intent",
               "key": "else",
-              "goto": "eoi-failed"
+              "actionId": "eoi-failed"
             }
           ]
         },
@@ -280,12 +284,12 @@
             "callback": null
           },
           "inputType": "any",
-          "validOptions": [
+          "intents": [
             {
               "scope": "external",
               "service": "bot",
-              "goto": "bot-001",
-              "intent": "start"
+              "botId": "bot-001",
+              "actionId": "start"
             }
           ]
         },
@@ -304,12 +308,12 @@
             "callback": null
           },
           "inputType": "any",
-          "validOptions": [
+          "intents": [
             {
               "scope": "internal",
               "service": "bot",
-              "goto": "bot-003",
-              "intent": "start"
+              "botId": "bot-003",
+              "actionId": "start"
             }
           ]
         }
@@ -323,21 +327,22 @@
       "triggers": [
         {
           "id": "trigger-001",
-          "name": "exact-string",
-          "title": "Exact string IVC Legal",
+          "name": "exact-match",
+          "title": "Exact match string IVC Legal",
+          "isDefault": true,
           "condition": {
-            "inputType": "exact-string",
+            "inputType": "exact-match",
             "key": "#ivc-legal"
           },
           "then": {
             "scope": "internal",
-            "service": "intents",
-            "intent": "start",
-            "goto": "bot-004"
+            "service": "actions",
+            "actionId": "start",
+            "botId": "bot-004"
           }
         }
       ],
-      "intents": [
+      "actions": [
         {
           "id": "start",
           "messages": [
@@ -356,12 +361,12 @@
             "callback": null
           },
           "inputType": "any",
-          "validOptions": [
+          "intents": [
             {
               "scope": "external",
               "service": "bot",
               "key": "",
-              "goto": "bot-001"
+              "botId": "bot-001"
             }
           ]
         }
@@ -375,21 +380,22 @@
       "triggers": [
         {
           "id": "trigger-001",
-          "name": "exact-string",
-          "title": "Exact string IVC Schedule",
+          "name": "exact-match",
+          "title": "Exact match string IVC Schedule",
+          "isDefault": true,
           "condition": {
-            "inputType": "exact-string",
+            "inputType": "exact-match",
             "key": "#ivc-schedule"
           },
           "then": {
             "scope": "internal",
-            "service": "intents",
-            "intent": "start",
-            "goto": "bot-011"
+            "service": "actions",
+            "actionId": "start",
+            "botId": "bot-011"
           }
         }
       ],
-      "intents": [
+      "actions": [
         {
           "id": "start",
           "messages": [
@@ -408,12 +414,12 @@
             "callback": null
           },
           "inputType": "any",
-          "validOptions": [
+          "intents": [
             {
               "scope": "external",
               "service": "bot",
               "key": "",
-              "goto": "bot-001"
+              "botId": "bot-001"
             }
           ]
         }
@@ -427,21 +433,22 @@
       "triggers": [
         {
           "id": "trigger-001",
-          "name": "exact-string",
-          "title": "Exact string IVC Echo",
+          "name": "exact-match",
+          "title": "Exact match string IVC Echo",
+          "isDefault": true,
           "condition": {
-            "inputType": "exact-string",
+            "inputType": "exact-match",
             "key": "#echo"
           },
           "then": {
             "scope": "internal",
-            "service": "intents",
-            "intent": "start",
-            "goto": "bot-005"
+            "service": "actions",
+            "actionId": "start",
+            "botId": "bot-005"
           }
         }
       ],
-      "intents": [
+      "actions": [
         {
           "id": "start",
           "messages": [
@@ -454,12 +461,12 @@
             "callback": null
           },
           "inputType": "echo",
-          "validOptions": [
+          "intents": [
             {
               "scope": "internal",
-              "service": "intents",
+              "service": "actions",
               "key": "",
-              "goto": "start"
+              "actionId": "start"
             }
           ]
         }
@@ -473,21 +480,22 @@
       "triggers": [
         {
           "id": "trigger-001",
-          "name": "exact-string",
-          "title": "Exact string VCA Menu",
+          "name": "exact-match",
+          "title": "Exact match string VCA Menu",
+          "isDefault": true,
           "condition": {
-            "inputType": "exact-string",
+            "inputType": "exact-match",
             "key": "#vca"
           },
           "then": {
             "scope": "internal",
-            "service": "intents",
-            "intent": "start",
-            "goto": "bot-006"
+            "service": "actions",
+            "actionId": "start",
+            "botId": "bot-006"
           }
         }
       ],
-      "intents": [
+      "actions": [
         {
           "id": "start",
           "messages": [
@@ -503,30 +511,30 @@
             "callback": null
           },
           "inputType": "option-number",
-          "validOptions": [
+          "intents": [
             {
               "scope": "external",
               "service": "bot",
               "key": "1",
-              "goto": "bot-007"
+              "botId": "bot-007"
             },
             {
               "scope": "internal",
               "service": "intent",
               "key": "2",
-              "goto": "intent-0"
+              "actionId": "intent-0"
             },
             {
               "scope": "external",
               "service": "bot",
               "key": "3",
-              "goto": "intent-1"
+              "actionId": "intent-1"
             },
             {
               "scope": "internal",
               "service": "intent",
               "key": "else",
-              "goto": "eoi-failed"
+              "actionId": "eoi-failed"
             }
           ]
         },
@@ -545,9 +553,9 @@
             "callback": null
           },
           "inputType": "any",
-          "validOptions": [
+          "intents": [
             {
-              "goto": "eoi-success"
+              "actionId": "eoi-success"
             }
           ]
         },
@@ -566,9 +574,9 @@
             "callback": null
           },
           "inputType": "any",
-          "validOptions": [
+          "intents": [
             {
-              "goto": "eoi-success"
+              "actionId": "eoi-success"
             }
           ]
         },
@@ -587,12 +595,12 @@
             "callback": null
           },
           "inputType": "any",
-          "validOptions": [
+          "intents": [
             {
               "scope": "external",
               "service": "bot",
-              "goto": "bot-001",
-              "intent": "start"
+              "botId": "bot-001",
+              "actionId": "start"
             }
           ]
         },
@@ -611,12 +619,12 @@
             "callback": null
           },
           "inputType": "any",
-          "validOptions": [
+          "intents": [
             {
               "scope": "external",
               "service": "bot",
-              "goto": "bot-001",
-              "intent": "start"
+              "botId": "bot-001",
+              "actionId": "start"
             }
           ]
         }
@@ -630,21 +638,22 @@
       "triggers": [
         {
           "id": "trigger-001",
-          "name": "exact-string",
-          "title": "Exact string VCA Account Activation",
+          "name": "exact-match",
+          "title": "Exact match string VCA Account Activation",
+          "isDefault": true,
           "condition": {
-            "inputType": "exact-string",
+            "inputType": "exact-match",
             "key": "#vca-activation"
           },
           "then": {
             "scope": "internal",
-            "service": "intents",
-            "intent": "start",
-            "goto": "bot-007"
+            "service": "actions",
+            "actionId": "start",
+            "botId": "bot-007"
           }
         }
       ],
-      "intents": [
+      "actions": [
         {
           "id": "start",
           "messages": [
@@ -672,12 +681,12 @@
             }
           },
           "inputType": "any",
-          "validOptions": [
+          "intents": [
             {
               "scope": "external",
               "service": "bot",
               "key": "",
-              "goto": "bot-012"
+              "botId": "bot-012"
             }
           ]
         }
@@ -691,21 +700,22 @@
       "triggers": [
         {
           "id": "trigger-001",
-          "name": "exact-string",
-          "title": "Exact string Go Bot Menu",
+          "name": "exact-match",
+          "title": "Exact match string Go Bot Menu",
+          "isDefault": true,
           "condition": {
-            "inputType": "exact-string",
+            "inputType": "exact-match",
             "key": "#gobot"
           },
           "then": {
             "scope": "internal",
-            "service": "intents",
-            "intent": "start",
-            "goto": "bot-008"
+            "service": "actions",
+            "actionId": "start",
+            "botId": "bot-008"
           }
         }
       ],
-      "intents": [
+      "actions": [
         {
           "id": "start",
           "messages": [
@@ -721,30 +731,30 @@
             "callback": null
           },
           "inputType": "option-number",
-          "validOptions": [
+          "intents": [
             {
               "scope": "external",
               "service": "bot",
               "key": "1",
-              "goto": "bot-009"
+              "botId": "bot-009"
             },
             {
               "scope": "internal",
               "service": "intent",
               "key": "2",
-              "goto": "intent-0"
+              "actionId": "intent-0"
             },
             {
               "scope": "external",
               "service": "bot",
               "key": "3",
-              "goto": "intent-1"
+              "actionId": "intent-1"
             },
             {
               "scope": "internal",
               "service": "intent",
               "key": "else",
-              "goto": "eoi-failed"
+              "actionId": "eoi-failed"
             }
           ]
         },
@@ -763,9 +773,9 @@
             "callback": null
           },
           "inputType": "any",
-          "validOptions": [
+          "intents": [
             {
-              "goto": "eoi-success"
+              "actionId": "eoi-success"
             }
           ]
         },
@@ -784,9 +794,9 @@
             "callback": null
           },
           "inputType": "any",
-          "validOptions": [
+          "intents": [
             {
-              "goto": "eoi-success"
+              "actionId": "eoi-success"
             }
           ]
         },
@@ -805,12 +815,12 @@
             "callback": null
           },
           "inputType": "any",
-          "validOptions": [
+          "intents": [
             {
               "scope": "external",
               "service": "bot",
-              "goto": "bot-001",
-              "intent": "start"
+              "botId": "bot-001",
+              "actionId": "start"
             }
           ]
         },
@@ -829,12 +839,12 @@
             "callback": null
           },
           "inputType": "any",
-          "validOptions": [
+          "intents": [
             {
               "scope": "external",
               "service": "bot",
-              "goto": "bot-001",
-              "intent": "start"
+              "botId": "bot-001",
+              "actionId": "start"
             }
           ]
         }
@@ -848,21 +858,22 @@
       "triggers": [
         {
           "id": "trigger-001",
-          "name": "exact-string",
-          "title": "Exact string Go Bot Account Activation",
+          "name": "exact-match",
+          "title": "Exact match string Go Bot Account Activation",
+          "isDefault": true,
           "condition": {
-            "inputType": "exact-string",
+            "inputType": "exact-match",
             "key": "#gobot-activation"
           },
           "then": {
             "scope": "internal",
-            "service": "intents",
-            "intent": "start",
-            "goto": "bot-009"
+            "service": "actions",
+            "actionId": "start",
+            "botId": "bot-009"
           }
         }
       ],
-      "intents": [
+      "actions": [
         {
           "id": "start",
           "messages": [
@@ -890,40 +901,41 @@
             }
           },
           "inputType": "any",
-          "validOptions": [
+          "intents": [
             {
               "scope": "external",
               "service": "bot",
               "key": "",
-              "goto": "bot-012"
+              "botId": "bot-012"
             }
           ]
         }
       ]
     },
     {
-      "id": "bot-0010",
+      "id": "bot-010",
       "name": "Covid Bot",
       "behavior": "flow",
       "platform": "whatsapp",
       "triggers": [
         {
           "id": "trigger-001",
-          "name": "exact-string",
-          "title": "Exact string Covid",
+          "name": "exact-match",
+          "title": "Exact match string Covid",
+          "isDefault": true,
           "condition": {
-            "inputType": "exact-string",
+            "inputType": "exact-match",
             "key": "#covid"
           },
           "then": {
             "scope": "internal",
-            "service": "intents",
-            "intent": "start",
-            "goto": "bot-010"
+            "service": "actions",
+            "actionId": "start",
+            "botId": "bot-010"
           }
         }
       ],
-      "intents": [
+      "actions": [
         {
           "id": "start",
           "messages": [],
@@ -932,9 +944,9 @@
             "callback": null
           },
           "inputType": "any",
-          "validOptions": [
+          "intents": [
             {
-              "goto": "intent-0"
+              "actionId": "intent-0"
             }
           ]
         },
@@ -959,18 +971,18 @@
             "callback": null
           },
           "inputType": "option-string",
-          "validOptions": [
+          "intents": [
             {
               "key": "SI",
-              "goto": "intent-1"
+              "actionId": "intent-1"
             },
             {
               "key": "NO",
-              "goto": "eoi-failed"
+              "actionId": "eoi-failed"
             },
             {
               "key": "YES",
-              "goto": "intent-1"
+              "actionId": "intent-1"
             }
           ]
         },
@@ -986,9 +998,9 @@
             "callback": null
           },
           "inputType": "any-number",
-          "validOptions": [
+          "intents": [
             {
-              "goto": "intent-2"
+              "actionId": "intent-2"
             }
           ]
         },
@@ -1007,18 +1019,18 @@
             "callback": null
           },
           "inputType": "option-string",
-          "validOptions": [
+          "intents": [
             {
               "key": "SI",
-              "goto": "intent-3"
+              "actionId": "intent-3"
             },
             {
               "key": "NO",
-              "goto": "intent-6"
+              "actionId": "intent-6"
             },
             {
               "key": "YES",
-              "goto": "intent-3"
+              "actionId": "intent-3"
             }
           ]
         },
@@ -1055,18 +1067,18 @@
             "callback": null
           },
           "inputType": "option-string",
-          "validOptions": [
+          "intents": [
             {
               "key": "SI",
-              "goto": "intent-4"
+              "actionId": "intent-4"
             },
             {
               "key": "NO",
-              "goto": "no-end"
+              "actionId": "no-end"
             },
             {
               "key": "YES",
-              "goto": "intent-4"
+              "actionId": "intent-4"
             }
           ]
         },
@@ -1085,18 +1097,18 @@
             "callback": null
           },
           "inputType": "option-string",
-          "validOptions": [
+          "intents": [
             {
               "key": "SI",
-              "goto": "eoi-success"
+              "actionId": "eoi-success"
             },
             {
               "key": "NO",
-              "goto": "eoi-success"
+              "actionId": "eoi-success"
             },
             {
               "key": "YES",
-              "goto": "eoi-success"
+              "actionId": "eoi-success"
             }
           ]
         },
@@ -1115,9 +1127,9 @@
             "callback": null
           },
           "inputType": "any",
-          "validOptions": [
+          "intents": [
             {
-              "goto": "genesys"
+              "actionId": "genesys"
             }
           ]
         },
@@ -1136,9 +1148,9 @@
             "callback": null
           },
           "inputType": "any",
-          "validOptions": [
+          "intents": [
             {
-              "goto": "genesys"
+              "actionId": "genesys"
             }
           ]
         },
@@ -1175,9 +1187,9 @@
             "callback": null
           },
           "inputType": "any",
-          "validOptions": [
+          "intents": [
             {
-              "goto": "genesys"
+              "actionId": "genesys"
             }
           ]
         },
@@ -1203,21 +1215,22 @@
       "triggers": [
         {
           "id": "trigger-001",
-          "name": "exact-string",
-          "title": "Exact string Mi Retail Menu",
+          "name": "exact-match",
+          "title": "Exact match string Mi Retail Menu",
+          "isDefault": true,
           "condition": {
-            "inputType": "exact-string",
+            "inputType": "exact-match",
             "key": "#miretail"
           },
           "then": {
             "scope": "internal",
-            "service": "intents",
-            "intent": "start",
-            "goto": "bot-012"
+            "service": "actions",
+            "actionId": "start",
+            "botId": "bot-012"
           }
         }
       ],
-      "intents": [
+      "actions": [
         {
           "id": "start",
           "messages": [
@@ -1233,30 +1246,30 @@
             "callback": null
           },
           "inputType": "option-number",
-          "validOptions": [
+          "intents": [
             {
               "scope": "external",
               "service": "bot",
               "key": "1",
-              "goto": "bot-009"
+              "botId": "bot-009"
             },
             {
               "scope": "internal",
               "service": "intent",
               "key": "2",
-              "goto": "intent-0"
+              "actionId": "intent-0"
             },
             {
               "scope": "external",
               "service": "bot",
               "key": "3",
-              "goto": "intent-1"
+              "actionId": "intent-1"
             },
             {
               "scope": "internal",
               "service": "intent",
               "key": "else",
-              "goto": "eoi-failed"
+              "actionId": "eoi-failed"
             }
           ]
         },
@@ -1275,9 +1288,9 @@
             "callback": null
           },
           "inputType": "any",
-          "validOptions": [
+          "intents": [
             {
-              "goto": "eoi-success"
+              "actionId": "eoi-success"
             }
           ]
         },
@@ -1296,9 +1309,9 @@
             "callback": null
           },
           "inputType": "any",
-          "validOptions": [
+          "intents": [
             {
-              "goto": "eoi-success"
+              "actionId": "eoi-success"
             }
           ]
         },
@@ -1317,12 +1330,12 @@
             "callback": null
           },
           "inputType": "any",
-          "validOptions": [
+          "intents": [
             {
               "scope": "external",
               "service": "bot",
-              "goto": "bot-001",
-              "intent": "start"
+              "botId": "bot-001",
+              "actionId": "start"
             }
           ]
         },
@@ -1341,12 +1354,12 @@
             "callback": null
           },
           "inputType": "any",
-          "validOptions": [
+          "intents": [
             {
               "scope": "external",
               "service": "bot",
-              "goto": "bot-001",
-              "intent": "start"
+              "botId": "bot-001",
+              "actionId": "start"
             }
           ]
         }
@@ -1360,21 +1373,22 @@
       "triggers": [
         {
           "id": "trigger-001",
-          "name": "exact-string",
-          "title": "Exact string Mi Retail Account Activation",
+          "name": "exact-match",
+          "title": "Exact match string Mi Retail Account Activation",
+          "isDefault": true,
           "condition": {
-            "inputType": "exact-string",
+            "inputType": "exact-match",
             "key": "#miretail-activation"
           },
           "then": {
             "scope": "internal",
-            "service": "intents",
-            "intent": "start",
-            "goto": "bot-013"
+            "service": "actions",
+            "actionId": "start",
+            "botId": "bot-013"
           }
         }
       ],
-      "intents": [
+      "actions": [
         {
           "id": "start",
           "messages": [
@@ -1402,12 +1416,12 @@
             }
           },
           "inputType": "any",
-          "validOptions": [
+          "intents": [
             {
               "scope": "external",
               "service": "bot",
               "key": "",
-              "goto": "bot-012"
+              "botId": "bot-012"
             }
           ]
         }

@@ -21,6 +21,7 @@ class TriggerModel extends baseModel {
     /* Custom fields */
     this.name = { value: args.name, type: dependencies.dal.types.string }
     this.title = { value: args.title, type: dependencies.dal.types.string }
+    this.isDefault
     this.condition = { value: args.condition, type: dependencies.dal.types.string }
     this.then = { value: args.then, type: dependencies.dal.types.string }
   }

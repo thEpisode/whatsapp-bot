@@ -20,6 +20,7 @@ class BotModel extends baseModel {
 
     /* Custom fields */
     this.name = { value: args.name, type: dependencies.dal.types.string }
+    this.isDefault = { value: args.isDefault, type: dependencies.dal.types.string }
     this.behavior = { value: args.behavior, type: dependencies.dal.types.string }
     this.platform = { value: args.platform, type: dependencies.dal.types.string }
     this.triggers = { value: args.triggers, type: dependencies.dal.types.object }
@@ -31,6 +32,7 @@ class BotModel extends baseModel {
     return {
       id: this.id.value || this.id.type.default,
       name: this.name.value || this.name.type.default,
+      isDefault: this.isDefault.value || this.isDefault.type.default,
       behavior: this.behavior.value || this.behavior.type.default,
       platform: this.platform.value || this.platform.type.default,
       triggers: this.triggers.value || this.triggers.type.default,
@@ -46,6 +48,7 @@ class BotModel extends baseModel {
       last_user_modification: this.last_user_modification.value || this.last_user_modification.type.default,
       status: this.status.value || this.status.type.default,
       name: this.name.value || this.name.type.default,
+      isDefault: this.isDefault.value || this.isDefault.type.default,
       behavior: this.behavior.value || this.behavior.type.default,
       platform: this.platform.value || this.platform.type.default,
       triggers: this.triggers.value || this.triggers.type.default,
