@@ -21,7 +21,7 @@ class TriggerModel extends baseModel {
     /* Custom fields */
     this.name = { value: args.name, type: dependencies.dal.types.string }
     this.title = { value: args.title, type: dependencies.dal.types.string }
-    this.isDefault
+    this.isDefault = { value: args.isDefault, type: dependencies.dal.types.string }
     this.condition = { value: args.condition, type: dependencies.dal.types.string }
     this.then = { value: args.then, type: dependencies.dal.types.string }
   }
@@ -32,6 +32,7 @@ class TriggerModel extends baseModel {
       id: this.id.value || this.id.type.default,
       name: this.name.value || this.name.type.default,
       title: this.title.value || this.name.type.default,
+      isDefault: this.isDefault.value || this.isDefault.type.default,
       condition: this.condition.value || this.name.type.default,
       then: this.then.value || this.name.type.default
     }
@@ -46,6 +47,7 @@ class TriggerModel extends baseModel {
       status: this.status.value || this.status.type.default,
       name: this.name.value || this.name.type.default,
       title: this.title.value || this.name.type.default,
+      isDefault: this.isDefault.value || this.isDefault.type.default,
       condition: this.condition.value || this.name.type.default,
       then: this.then.value || this.name.type.default
     }
