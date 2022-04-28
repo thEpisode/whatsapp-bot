@@ -22,7 +22,8 @@ class IntentModel extends baseModel {
     this.scope = { value: args.scope, type: dependencies.dal.types.string }
     this.service = { value: args.service, type: dependencies.dal.types.string }
     this.key = { value: args.key, type: dependencies.dal.types.string }
-    this.goto = { value: args.goto, type: dependencies.dal.types.string }
+    this.botId = { value: args.key, type: dependencies.dal.types.string }
+    this.actionId = { value: args.actionId, type: dependencies.dal.types.string }
   }
 
   // Return entity sanitized
@@ -30,9 +31,10 @@ class IntentModel extends baseModel {
     return {
       id: this.id.value || this.id.type.default,
       scope: this.scope.value || this.scope.type.default,
-      service: this.service.value || this.scope.type.default,
-      key: this.key.value || this.scope.type.default,
-      goto: this.goto.value || this.scope.type.default
+      service: this.service.value || this.service.type.default,
+      key: this.key.value || this.key.type.default,
+      botId: this.botId.value || this.botId.type.default,
+      actionId: this.actionId.value || this.actionId.type.default
     }
   }
 
@@ -44,9 +46,10 @@ class IntentModel extends baseModel {
       last_user_modification: this.last_user_modification.value || this.last_user_modification.type.default,
       status: this.status.value || this.status.type.default,
       scope: this.scope.value || this.scope.type.default,
-      service: this.service.value || this.scope.type.default,
-      key: this.key.value || this.scope.type.default,
-      goto: this.goto.value || this.scope.type.default
+      service: this.service.value || this.service.type.default,
+      key: this.key.value || this.key.type.default,
+      botId: this.botId.value || this.botId.type.default,
+      actionId: this.actionId.value || this.actionId.type.default
     }
   }
 }

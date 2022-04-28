@@ -1,11 +1,11 @@
 /**
  * @typedef {Object} InputTypeArgs
- * @property {object} intent Current conversation intent action.
+ * @property {object} action Current conversation action action.
  * @property {object} message - Is the incoming message.
  */
 /**
  * @typedef {Object} InputTypeResult
- * @property {object} intent Current conversation intent action.
+ * @property {object} action Current conversation action action.
  * @property {object} message - Is the incoming message.
  */
 
@@ -14,7 +14,7 @@ class InputTypeValidator {
 
   invalidInput ({ messages }) {
     return {
-      payload: {
+      intent: {
         id: 'no-key',
         messages: [
           {
@@ -34,27 +34,27 @@ class InputTypeValidator {
   /**
    * Validate if input type of current action is valid
    */
-  validate ({ intent, message }) {
+  validate ({ action, message }) {
     let input = {
       isValid: false,
-      payload: {}
+      intent: {}
     }
 
-    switch (intent.inputType) {
+    switch (action.inputType) {
       case 'regex':
-        input = this.validateInputTypeRegex({ intent, message })
+        input = this.validateInputTypeRegex({ action, message })
         break
       case 'option-string':
-        input = this.validateInputTypeOptionString({ intent, message })
+        input = this.validateInputTypeOptionString({ action, message })
         break
         case 'option-number':
           // TODO: Implementar
           break
       case 'any':
-        input = this.validateInputTypeAny({ intent, message })
+        input = this.validateInputTypeAny({ action, message })
         break
       case 'any-number':
-        input = this.validateInputTypeAnyNumber({ intent, message })
+        input = this.validateInputTypeAnyNumber({ action, message })
         break
     }
 
@@ -66,11 +66,11 @@ class InputTypeValidator {
    * @param {InputTypeArgs} args - Arguments to validate given input type.
    * @returns {InputTypeResult} result - Is the result of given input type.
    */
-  validateInputTypeOptionString ({ intent, message }) {
-    let payload = {}
+  validateInputTypeOptionString ({ action, message }) {
+    let intent = {}
     let isValid = false
 
-    if (!intent.validOptions || !intent.validOptions.length) {
+    if (!action.intents || !action.intents.length) {
       return this.invalidInput({
         messages: [
           {
@@ -91,7 +91,7 @@ class InputTypeValidator {
     }
 
     // Iterate over every valid options
-    payload = intent.validOptions.find(option => {
+    intent = action.intents.find(option => {
       // Regex for whole word in options, NOT CONTAINS
       const regex = new RegExp('\\b(' + option.key.toLocaleLowerCase().trim() + ')\\b', 'g')
       if (message.body.toLocaleLowerCase().trim().match(regex)) {
@@ -101,7 +101,7 @@ class InputTypeValidator {
     })
 
     return {
-      payload,
+      intent,
       isValid
     }
   }
@@ -111,8 +111,8 @@ class InputTypeValidator {
    * @param {InputTypeArgs} args - Arguments to validate given input type.
    * @returns {InputTypeResult} result - Is the result of given input type.
    */
-  validateInputTypeAny ({ intent, message }) {
-    let payload = {}
+  validateInputTypeAny ({ action, message }) {
+    let intent = {}
     let isValid = false
 
     if (!message || !message.body) {
@@ -125,7 +125,7 @@ class InputTypeValidator {
       })
     }
 
-    if (!intent.validOptions || !intent.validOptions.length) {
+    if (!action.intents || !action.intents.length) {
       return this.invalidInput({
         messages: [
           {
@@ -138,7 +138,7 @@ class InputTypeValidator {
     isValid = true
 
     return {
-      payload,
+      intent,
       isValid
     }
   }
@@ -148,8 +148,8 @@ class InputTypeValidator {
    * @param {InputTypeArgs} args - Arguments to validate given input type.
    * @returns {InputTypeResult} Action of given input type.
    */
-  validateInputTypeAnyNumber ({ intent, message }) {
-    let payload = {}
+  validateInputTypeAnyNumber ({ action, message }) {
+    let intent = {}
     let isValid = false
 
     if (!message || !message.body) {
@@ -162,7 +162,7 @@ class InputTypeValidator {
       })
     }
 
-    if (!intent.validOptions || !intent.validOptions.length) {
+    if (!action.intents || !action.intents.length) {
       return this.invalidInput({
         messages: [
           {
@@ -185,7 +185,7 @@ class InputTypeValidator {
     isValid = true
 
     return {
-      payload,
+      intent,
       isValid
     }
   }
@@ -195,8 +195,8 @@ class InputTypeValidator {
    * @param {InputTypeArgs} args - Arguments to validate given input type.
    * @returns {InputTypeResult} Action of given input type.
    */
-  validateInputTypeRegex ({ intent, message }) {
-    let payload = {}
+  validateInputTypeRegex ({ action, message }) {
+    let intent = {}
     let isValid = false
 
     if (!message || !message.body) {
@@ -209,7 +209,7 @@ class InputTypeValidator {
       })
     }
 
-    if (!intent.validOptions || !intent.validOptions.length) {
+    if (!action.intents || !action.intents.length) {
       return this.invalidInput({
         messages: [
           {
@@ -220,16 +220,16 @@ class InputTypeValidator {
     }
 
     // TODO: Improve match
-    const regex = new RegExp(intent.validOptions.toLocaleLowerCase().trim(), 'g')
+    const regex = new RegExp(action.intents.toLocaleLowerCase().trim(), 'g')
     if (message.body.toLocaleLowerCase().trim().match(regex, 'g')) {
       isValid = true
-      payload = { isMatched: true }
+      intent = { isMatched: true }
     } else {
-      payload = { isMatched: false }
+      intent = { isMatched: false }
     }
 
     return {
-      payload,
+      intent,
       isValid
     }
   }

@@ -13,18 +13,18 @@ class ConversationController {
     this._bots = bots
     this._chat = chat
     this._currentBot = null
-    this._currentStepAction = {
+    this._state = {
       scope: '',
       service: '',
-      intent: '',
-      goto: '',
+      botId: '',
+      actionId: ''
     }
 
     this._backendController = new this._controllers.BackendController(this._dependencies)
   }
 
   processMessage (args) {
-    return this.#messageHandler(args)
+    return this.#analizeMessage(args)
   }
 
   #getBotIdByTrigger ({ message }) {
@@ -48,15 +48,6 @@ class ConversationController {
       }
     }
 
-    const defaultBot = this._bots.find(bot => bot.isDefault === true)
-    const defaultTrigger = defaultBot.triggers.find(trigger => trigger.isDefault === true)
-
-    response = {
-      isTrigger: true,
-      botId: defaultBot.id,
-      triggerId: defaultTrigger.id
-    }
-
     return response
   }
 
@@ -76,9 +67,12 @@ class ConversationController {
     return this._currentBot.triggers.find(trigger => trigger.id === id)
   }
 
-  #getActionByStep () {
-    if (this._currentStepAction.scope === 'internal' && this._currentStepAction.service === 'actions') {
-      return this._currentBot.actions.find(action => action.id === this._currentStepAction.actionId)
+  #getActionByState () {
+    if (this._state.scope === 'internal' && this._state.service === 'actions') {
+      return this._currentBot.actions.find(action => action.id === this._state.actionId)
+    } else if (this._state.scope === 'external' && this._state.service === 'bot') {
+      this._currentBot = this._bots.find(bot => bot.id === this._state.botId)
+      return this._currentBot.actions.find(action => action.id === this._state.actionId)
     }
 
     return this.#getDefaultAction()
@@ -93,57 +87,139 @@ class ConversationController {
     return trigger.then
   }
 
+  #getDefaultBot () {
+    return this._bots.find(bot => bot.isDefault === true)
+  }
+
   #getDefaultAction () {
+    if (!this._currentBot) {
+      this._currentBot = this.#getDefaultBot()
+    }
+
     return {
       scope: 'internal',
       service: 'action',
       intent: 'start',
-      goto: this._currentBot.id,
+      actionId: this._currentBot.id,
     }
   }
 
-  async #messageHandler ({ message }) {
+  #setDefaultState () {
+    if (!this._currentBot) {
+      this._currentBot = this.#getDefaultBot()
+    }
+
+    this._state = {
+      scope: 'internal',
+      service: 'action',
+      intent: 'start',
+      actionId: this._currentBot.id,
+    }
+  }
+
+  #setState ({ scope, service, actionId, botId }) {
+    if (!this._currentBot) {
+      this._currentBot = this.#getDefaultBot()
+    }
+
+    this._state = {
+      scope,
+      service,
+      botId,
+      actionId
+    }
+  }
+
+  #handleTrigger ({ message }) {
     try {
       let actionRaw = null
-
-      // Send to current stack memory the incoming message
-      this._messages.push({ client: this._chat.id, message: message.body, type: message.type })
+      let response = {
+        isTriggered: false,
+        action: null
+      }
 
       const botByTriggerResponse = this.#getBotIdByTrigger({ message })
 
-      if (botByTriggerResponse && botByTriggerResponse.isTrigger && botByTriggerResponse.botId) {
-        this._currentBot = this.#getBotById(botByTriggerResponse.botId)
-        this._currentStepAction = this.#processTrigger(botByTriggerResponse)
-        this._console.info('Current step action: ')
-        this._console.log(this._currentStepAction)
+      if (!botByTriggerResponse || !botByTriggerResponse.isTrigger || !botByTriggerResponse.botId) {
+        return response
       }
 
-      actionRaw = this.#getActionByStep()
+      this._currentBot = this.#getBotById(botByTriggerResponse.botId)
+      this._state = this.#processTrigger(botByTriggerResponse)
+      this._console.info('Current step action: ')
+      this._console.log(this._state)
+
+      actionRaw = this.#getActionByState()
       const action = new this._models.Action(actionRaw, this._dependencies)
 
-      this._messages.push({ client: 'go-bot', message: action, type: 'chat' })
+      if (action) {
+        response = {
+          isTriggered: true,
+          action
+        }
+      }
 
-      return action
+      return response
     } catch (error) {
       this._console.error(error)
+      console.log(error.stack)
+    }
+  }
+
+  #handleAction ({ message }) {
+    try {
+      let actionRaw = null
+      let response = {
+        isMatched: false,
+        action: null
+      }
+
+      const actionHandlerResponse = this.#actionHandler({ message })
+
+      actionRaw = this.#getActionByState()
+      const action = new this._models.Action(actionRaw, this._dependencies)
+
+      if (action) {
+        response = {
+          isMatched: true,
+          action
+        }
+      }
+
+      return response
+    } catch (error) {
+      this._console.error(error)
+      console.log(error.stack)
+    }
+  }
+
+  async #analizeMessage ({ message }) {
+    // Send to current stack memory the incoming message
+    this._messages.push({ client: this._chat.id, message: message.body, type: message.type })
+
+    if (!this._state || !this._state.botId || !this._state.actionId) {
+      this.#setDefaultState()
     }
 
+    const triggerResponse = this.#handleTrigger({ message })
 
-    /* intentAction = await this.#intentActionHandler({ message })
+    if (triggerResponse && triggerResponse.isTriggered) {
+      this._console.info('Incoming message is triggered')
 
-    if (!intentAction) {
-      console.log(`No exist flow for this message: ${message.body}`)
-      this._messages.push({ client: 'go-bot', message: null, type: 'chat' })
-      return
+      this._messages.push({ client: 'go-bot', message: triggerResponse, type: 'chat' })
+      return triggerResponse.action
     }
 
-    // Set a reactive message into stack
-    this._messages.push({ client: 'go-bot', message: intentAction, type: 'chat' })
+    const actionResponse = this.#handleAction({ message })
 
-    // Intent to launch a preflight event
-    await this.#preflightChatActionHandler({ intentAction, message })
+    if (actionResponse && actionResponse.isMatched) {
+      this._console.info('Incoming message is matched from action')
 
-    return intentAction */
+      this._messages.push({ client: 'go-bot', message: actionResponse, type: 'chat' })
+      return actionResponse.action
+    }
+
+    return action
   }
 
   async #preflightChatActionHandler ({ intentAction }) {
@@ -173,91 +249,30 @@ class ConversationController {
     }
   }
 
-  /**
-   * Return a chatbot intent with given key
-   * @param {string} key Is a string key to find in the current intents
-   * @returns An object with given key or default message
-   */
-  #getIntentByKey (key) {
-    return JSON.parse(JSON.stringify(this._utilities.searchers.object.findObject(key || 'no-key', 'id', this._config.botKeyActions) || null))
-  }
-
-  #getCurrentIntentAction (intent) {
-    // Navigate to start intent
-    if (!this._nextChatIntentId) {
-      return intent.id
-    }
-
-    return this._nextChatIntentId
-  }
-
-  async #intentActionHandler ({ message }) {
-    console.log('next chat action: ', this._nextChatIntentId)
+  async #actionHandler ({ message }) {
     const inputValidator = new InputTypeValidator()
-    const defaultNoKey = this.#getIntentByKey()
-    let intent = this.#getIntentByKey('start')
-    let currentIntentActionId = null
+    const defaultAction = this.#getDefaultAction()
+    let action = this.#getActionByState()
 
     if (message.type !== 'chat') {
-      return defaultNoKey
+      return defaultAction
     }
 
-    // Get the current intent action
-    currentIntentActionId = this.#getCurrentIntentAction(intent)
-    intent = this.#getIntentByKey(currentIntentActionId)
-
     // No incidence
-    if (!intent) {
-      return defaultNoKey
+    if (!action) {
+      return defaultAction
     }
 
     // Validate the input message for current options
-    const chatActionValidation = inputValidator.validate({ intent, message })
+    const actionValidationResponse = inputValidator.validate({ action, message })
 
-    if (!chatActionValidation.isValid) {
-      return defaultNoKey
+    if (!actionValidationResponse.isValid) {
+      return defaultAction
     }
 
-    // Get the next chat intent
-    this._nextChatIntentId = this.#getNextChatIntentId({ intent, payload: chatActionValidation.payload })
+    this.#setState(actionValidationResponse.intent)
 
-    if (this._nextChatIntentId === 'start') {
-      this._nextChatIntentId = null
-    }
-
-    return intent
-  }
-
-  #getNextChatIntentId ({ intent, payload }) {
-    let actionId = 'eoi-failed'
-    let option = {}
-
-    switch (intent.inputType) {
-      case 'regex':
-        if (payload && payload.isMatched) {
-          option = intent.validOptions.find(validOption => validOption.key.toLocaleLowerCase().trim() === 'matched')
-          actionId = option.goto
-        } else {
-          option = intent.validOptions.find(validOption => validOption.key.toLocaleLowerCase().trim() === '!matched')
-          actionId = option.goto
-        }
-        break
-      case 'option-string':
-        option = intent.validOptions.find(validOption => validOption.key.toLocaleLowerCase().trim() === payload.key.toLocaleLowerCase().trim())
-
-        if (option) {
-          actionId = option.goto
-        }
-        break
-      case 'any':
-        actionId = intent.validOptions[0].goto
-        break
-      case 'any-number':
-        actionId = intent.validOptions[0].goto
-        break
-    }
-
-    return actionId
+    return action
   }
 
   get chat () {

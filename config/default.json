@@ -48,31 +48,36 @@
               "scope": "external",
               "service": "bot",
               "key": "1",
-              "botId": "bot-002"
+              "botId": "bot-002",
+              "actionId": "start"
             },
             {
               "scope": "external",
               "service": "bot",
               "key": "2",
-              "botId": "bot-004"
+              "botId": "bot-004",
+              "actionId": "start"
             },
             {
               "scope": "external",
               "service": "bot",
               "key": "3",
-              "botId": "bot-011"
+              "botId": "bot-011",
+              "actionId": "start"
             },
             {
               "scope": "external",
               "service": "bot",
               "key": "4",
-              "botId": "bot-003"
+              "botId": "bot-003",
+              "actionId": "start"
             },
             {
               "scope": "external",
               "service": "bot",
               "key": "5",
-              "botId": "bot-005"
+              "botId": "bot-005",
+              "actionId": "start"
             }
           ]
         }
@@ -116,6 +121,10 @@
           "inputType": "any",
           "intents": [
             {
+              "scope": "internal",
+              "service": "actions",
+              "key": "",
+              "botId": "bot-005",
               "actionId": "intent-0"
             }
           ]
@@ -134,6 +143,10 @@
           "inputType": "any",
           "intents": [
             {
+              "scope": "internal",
+              "service": "actions",
+              "key": "",
+              "botId": "bot-005",
               "actionId": "intent-1"
             }
           ]
@@ -152,6 +165,10 @@
           "inputType": "any",
           "intents": [
             {
+              "scope": "internal",
+              "service": "actions",
+              "key": "",
+              "botId": "bot-005",
               "actionId": "eoi-success"
             }
           ]
@@ -175,6 +192,7 @@
             {
               "scope": "external",
               "service": "bot",
+              "key": "",
               "botId": "bot-001",
               "actionId": "start"
             }
@@ -199,6 +217,7 @@
             {
               "scope": "external",
               "service": "bot",
+              "key": "",
               "botId": "bot-001",
               "actionId": "start"
             }
@@ -219,13 +238,13 @@
           "isDefault": true,
           "condition": {
             "inputType": "exact-match",
-              "key": "#ivc-proj"
+            "key": "#ivc-proj"
           },
           "then": {
             "scope": "internal",
-              "service": "actions",
-              "actionId": "start",
-              "botId": "bot-003"
+            "service": "actions",
+            "actionId": "start",
+            "botId": "bot-003"
           }
         }
       ],
@@ -247,24 +266,28 @@
               "scope": "external",
               "service": "bot",
               "key": "1",
-              "botId": "bot-006"
+              "botId": "bot-006",
+              "actionId": "start"
             },
             {
               "scope": "external",
               "service": "bot",
               "key": "2",
-              "botId": "bot-008"
+              "botId": "bot-008",
+              "actionId": "start"
             },
             {
               "scope": "external",
               "service": "bot",
               "key": "3",
-              "botId": "bot-012"
+              "botId": "bot-012",
+              "actionId": "start"
             },
             {
               "scope": "internal",
-              "service": "intent",
+              "service": "actions",
               "key": "else",
+              "botId": "bot-003",
               "actionId": "eoi-failed"
             }
           ]
@@ -288,6 +311,7 @@
             {
               "scope": "external",
               "service": "bot",
+              "key": "",
               "botId": "bot-001",
               "actionId": "start"
             }
@@ -312,6 +336,7 @@
             {
               "scope": "internal",
               "service": "bot",
+              "key": "",
               "botId": "bot-003",
               "actionId": "start"
             }
@@ -366,7 +391,8 @@
               "scope": "external",
               "service": "bot",
               "key": "",
-              "botId": "bot-001"
+              "botId": "bot-001",
+              "actionId": "start"
             }
           ]
         }
@@ -419,7 +445,8 @@
               "scope": "external",
               "service": "bot",
               "key": "",
-              "botId": "bot-001"
+              "botId": "bot-001",
+              "actionId": "start"
             }
           ]
         }
@@ -466,6 +493,7 @@
               "scope": "internal",
               "service": "actions",
               "key": "",
+              "botId": "bot-005",
               "actionId": "start"
             }
           ]
@@ -516,24 +544,28 @@
               "scope": "external",
               "service": "bot",
               "key": "1",
-              "botId": "bot-007"
+              "botId": "bot-007",
+              "actionId": "start"
             },
             {
               "scope": "internal",
-              "service": "intent",
+              "service": "actions",
               "key": "2",
+              "botId": "bot-006",
               "actionId": "intent-0"
             },
             {
               "scope": "external",
               "service": "bot",
               "key": "3",
+              "botId": "bot-006",
               "actionId": "intent-1"
             },
             {
               "scope": "internal",
-              "service": "intent",
+              "service": "actions",
               "key": "else",
+              "botId": "bot-006",
               "actionId": "eoi-failed"
             }
           ]
@@ -555,6 +587,10 @@
           "inputType": "any",
           "intents": [
             {
+              "scope": "internal",
+              "service": "actions",
+              "key": "",
+              "botId": "bot-006",
               "actionId": "eoi-success"
             }
           ]
@@ -576,6 +612,10 @@
           "inputType": "any",
           "intents": [
             {
+              "scope": "internal",
+              "service": "actions",
+              "key": "",
+              "botId": "bot-006",
               "actionId": "eoi-success"
             }
           ]
@@ -599,6 +639,7 @@
             {
               "scope": "external",
               "service": "bot",
+              "key": "",
               "botId": "bot-001",
               "actionId": "start"
             }
@@ -623,6 +664,7 @@
             {
               "scope": "external",
               "service": "bot",
+              "key": "",
               "botId": "bot-001",
               "actionId": "start"
             }
@@ -686,7 +728,8 @@
               "scope": "external",
               "service": "bot",
               "key": "",
-              "botId": "bot-012"
+              "botId": "bot-012",
+              "actionId": "start"
             }
           ]
         }
@@ -736,24 +779,28 @@
               "scope": "external",
               "service": "bot",
               "key": "1",
-              "botId": "bot-009"
+              "botId": "bot-009",
+              "actionId": "start"
             },
             {
               "scope": "internal",
-              "service": "intent",
+              "service": "actions",
               "key": "2",
+              "botId": "bot-008",
               "actionId": "intent-0"
             },
             {
               "scope": "external",
               "service": "bot",
               "key": "3",
+              "botId": "bot-008",
               "actionId": "intent-1"
             },
             {
               "scope": "internal",
-              "service": "intent",
+              "service": "actions",
               "key": "else",
+              "botId": "bot-008",
               "actionId": "eoi-failed"
             }
           ]
@@ -775,6 +822,10 @@
           "inputType": "any",
           "intents": [
             {
+              "scope": "internal",
+              "service": "actions",
+              "key": "",
+              "botId": "bot-005",
               "actionId": "eoi-success"
             }
           ]
@@ -796,6 +847,10 @@
           "inputType": "any",
           "intents": [
             {
+              "scope": "internal",
+              "service": "actions",
+              "key": "",
+              "botId": "bot-005",
               "actionId": "eoi-success"
             }
           ]
@@ -819,6 +874,7 @@
             {
               "scope": "external",
               "service": "bot",
+              "key": "",
               "botId": "bot-001",
               "actionId": "start"
             }
@@ -843,6 +899,7 @@
             {
               "scope": "external",
               "service": "bot",
+              "key": "",
               "botId": "bot-001",
               "actionId": "start"
             }
@@ -906,7 +963,8 @@
               "scope": "external",
               "service": "bot",
               "key": "",
-              "botId": "bot-012"
+              "botId": "bot-012",
+              "actionId": "start"
             }
           ]
         }
@@ -946,6 +1004,10 @@
           "inputType": "any",
           "intents": [
             {
+              "scope": "internal",
+              "service": "actions",
+              "key": "",
+              "botId": "bot-010",
               "actionId": "intent-0"
             }
           ]
@@ -973,14 +1035,23 @@
           "inputType": "option-string",
           "intents": [
             {
+              "scope": "internal",
+              "service": "actions",
+              "botId": "bot-005",
               "key": "SI",
               "actionId": "intent-1"
             },
             {
+              "scope": "internal",
+              "service": "actions",
+              "botId": "bot-005",
               "key": "NO",
               "actionId": "eoi-failed"
             },
             {
+              "scope": "internal",
+              "service": "actions",
+              "botId": "bot-005",
               "key": "YES",
               "actionId": "intent-1"
             }
@@ -1000,6 +1071,10 @@
           "inputType": "any-number",
           "intents": [
             {
+              "scope": "internal",
+              "service": "actions",
+              "key": "",
+              "botId": "bot-005",
               "actionId": "intent-2"
             }
           ]
@@ -1021,14 +1096,23 @@
           "inputType": "option-string",
           "intents": [
             {
+              "scope": "internal",
+              "service": "actions",
+              "botId": "bot-005",
               "key": "SI",
               "actionId": "intent-3"
             },
             {
+              "scope": "internal",
+              "service": "actions",
+              "botId": "bot-005",
               "key": "NO",
               "actionId": "intent-6"
             },
             {
+              "scope": "internal",
+              "service": "actions",
+              "botId": "bot-005",
               "key": "YES",
               "actionId": "intent-3"
             }
@@ -1069,14 +1153,23 @@
           "inputType": "option-string",
           "intents": [
             {
+              "scope": "internal",
+              "service": "actions",
+              "botId": "bot-005",
               "key": "SI",
               "actionId": "intent-4"
             },
             {
+              "scope": "internal",
+              "service": "actions",
+              "botId": "bot-005",
               "key": "NO",
               "actionId": "no-end"
             },
             {
+              "scope": "internal",
+              "service": "actions",
+              "botId": "bot-005",
               "key": "YES",
               "actionId": "intent-4"
             }
@@ -1099,14 +1192,23 @@
           "inputType": "option-string",
           "intents": [
             {
+              "scope": "internal",
+              "service": "actions",
+              "botId": "bot-005",
               "key": "SI",
               "actionId": "eoi-success"
             },
             {
+              "scope": "internal",
+              "service": "actions",
+              "botId": "bot-005",
               "key": "NO",
               "actionId": "eoi-success"
             },
             {
+              "scope": "internal",
+              "service": "actions",
+              "botId": "bot-005",
               "key": "YES",
               "actionId": "eoi-success"
             }
@@ -1129,7 +1231,11 @@
           "inputType": "any",
           "intents": [
             {
-              "actionId": "genesys"
+              "scope": "internal",
+              "service": "actions",
+              "key": "",
+              "botId": "bot-005",
+              "actionId": "start"
             }
           ]
         },
@@ -1150,7 +1256,11 @@
           "inputType": "any",
           "intents": [
             {
-              "actionId": "genesys"
+              "scope": "internal",
+              "service": "actions",
+              "key": "",
+              "botId": "bot-005",
+              "actionId": "start"
             }
           ]
         },
@@ -1189,7 +1299,11 @@
           "inputType": "any",
           "intents": [
             {
-              "actionId": "genesys"
+              "scope": "internal",
+              "service": "actions",
+              "key": "",
+              "botId": "bot-005",
+              "actionId": "start"
             }
           ]
         },
@@ -1251,25 +1365,29 @@
               "scope": "external",
               "service": "bot",
               "key": "1",
-              "botId": "bot-009"
+              "botId": "bot-009",
+              "actionId": "start"
             },
             {
               "scope": "internal",
-              "service": "intent",
+              "service": "actions",
               "key": "2",
-              "actionId": "intent-0"
+              "actionId": "intent-0",
+              "botId": "bot-012"
             },
             {
               "scope": "external",
               "service": "bot",
               "key": "3",
-              "actionId": "intent-1"
+              "actionId": "intent-1",
+              "botId": "bot-012"
             },
             {
               "scope": "internal",
-              "service": "intent",
+              "service": "actions",
               "key": "else",
-              "actionId": "eoi-failed"
+              "actionId": "eoi-failed",
+              "botId": "bot-012"
             }
           ]
         },
@@ -1290,6 +1408,10 @@
           "inputType": "any",
           "intents": [
             {
+              "scope": "internal",
+              "service": "actions",
+              "key": "",
+              "botId": "bot-005",
               "actionId": "eoi-success"
             }
           ]
@@ -1311,6 +1433,10 @@
           "inputType": "any",
           "intents": [
             {
+              "scope": "internal",
+              "service": "actions",
+              "key": "",
+              "botId": "bot-005",
               "actionId": "eoi-success"
             }
           ]
@@ -1334,6 +1460,7 @@
             {
               "scope": "external",
               "service": "bot",
+              "key": "",
               "botId": "bot-001",
               "actionId": "start"
             }
@@ -1358,6 +1485,7 @@
             {
               "scope": "external",
               "service": "bot",
+              "key": "",
               "botId": "bot-001",
               "actionId": "start"
             }
@@ -1421,7 +1549,8 @@
               "scope": "external",
               "service": "bot",
               "key": "",
-              "botId": "bot-012"
+              "botId": "bot-012",
+              "actionId": "start"
             }
           ]
         }
