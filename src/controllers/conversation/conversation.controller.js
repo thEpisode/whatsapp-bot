@@ -27,6 +27,187 @@ class ConversationController {
     return this.#analizeMessage(args)
   }
 
+  async #analizeMessage ({ message }) {
+    // Send to current stack memory the incoming message
+    this._messages.push({ client: this._chat.id, message: message.body, type: message.type })
+
+    // Try to catch a trigger with incomming message
+    const triggerResponse = this.#triggerHandler({ message })
+
+    if (triggerResponse && triggerResponse.isTriggered) {
+      this._console.info('Incoming message is triggered: ' + message.body)
+
+      const transformedMessages = this.#transformActionMessages({ action: triggerResponse.action, incomingMessage: message })
+      triggerResponse.action.updateProperty({ property: 'messages', value: transformedMessages })
+
+      this._messages.push({ client: 'go-bot', message: triggerResponse, type: 'chat' })
+      return triggerResponse.action
+    }
+
+    // Try to catch an action with incoming message
+    const actionResponse = this.#actionHandler({ message })
+
+    if (actionResponse && actionResponse.isMatched) {
+      this._console.info('Incoming message is matched from action: ' + message.body)
+
+      const transformedMessages = this.#transformActionMessages({ action: actionResponse.action, incomingMessage: message })
+      actionResponse.action.updateProperty({ property: 'messages', value: transformedMessages })
+
+      this._messages.push({ client: 'go-bot', message: actionResponse, type: 'chat' })
+      return actionResponse.action
+    }
+
+    // Setup and return default state
+    this._console.info('Incoming message is not matched and not triggered: ' + message.body)
+
+    return this.#getDefaultAction()
+  }
+
+  #triggerHandler ({ message }) {
+    try {
+      let actionRaw = null
+      let actionDeepCopy = null
+      let response = {
+        isTriggered: false,
+        action: null
+      }
+
+      const botByTriggerResponse = this.#getBotIdByTrigger({ message })
+
+      if (!botByTriggerResponse || !botByTriggerResponse.isTrigger || !botByTriggerResponse.botId) {
+        return response
+      }
+
+      this._currentBot = this.#getBotById(botByTriggerResponse.botId)
+      this._state = this.#processTrigger(botByTriggerResponse)
+      this._console.info('Current step action: ')
+      this._console.log(this._state)
+
+      actionRaw = this.#getActionByState()
+      actionDeepCopy = JSON.parse(JSON.stringify(actionRaw))
+      const action = new this._models.Action(actionDeepCopy, this._dependencies)
+
+      if (action) {
+        response = {
+          isTriggered: true,
+          action
+        }
+      }
+
+      return response
+    } catch (error) {
+      this._console.error(error)
+      console.log(error.stack)
+    }
+  }
+
+  #actionHandler ({ message }) {
+    try {
+      let actionRaw = null
+      let actionDeepCopy = null
+      let response = {
+        isMatched: false,
+        action: null
+      }
+
+      const actionHandlerResponse = this.#processAction({ message })
+
+      // Return action by default processed by #actionHandler
+      if (!actionHandlerResponse || !actionHandlerResponse.isMatched) {
+        response.action = actionHandlerResponse.action
+        return response
+      }
+
+      actionRaw = this.#getActionByState()
+      actionDeepCopy = JSON.parse(JSON.stringify(actionRaw))
+      const action = new this._models.Action(actionDeepCopy, this._dependencies)
+
+      if (action) {
+        response = {
+          isMatched: true,
+          action
+        }
+      }
+
+      return response
+    } catch (error) {
+      this._console.error(error)
+      console.log(error.stack)
+    }
+  }
+
+  #processTrigger (botByTrigger) {
+    if (!botByTrigger) {
+      return this.#getDefaultState()
+    }
+
+    const trigger = this.#getTriggerById(botByTrigger.triggerId)
+    return trigger.then
+  }
+
+  #processAction ({ message }) {
+    const inputValidator = new InputTypeValidator()
+    const defaultState = this.#getDefaultState()
+    let action = this.#getActionByState()
+    let response = {
+      isMatched: false,
+      botId: null,
+      actionId: null
+    }
+
+    if (message.type !== 'chat') {
+      response = {
+        isMatched: false,
+        botId: this._currentBot.id,
+        actionId: defaultState.id
+      }
+      return response
+    }
+
+    // No incidence
+    if (!action) {
+      response = {
+        isMatched: false,
+        botId: this._currentBot.id,
+        actionId: defaultState.actionId
+      }
+      return response
+    }
+
+    // Validate the input message for current options
+    const actionValidationResponse = inputValidator.validate({ action, message })
+
+    if (!actionValidationResponse.isValid) {
+      response = {
+        isMatched: false,
+        botId: this._currentBot.id,
+        actionId: defaultState.actionId
+      }
+      return response
+    }
+
+    this.#setState(actionValidationResponse.intent)
+
+    response = {
+      isMatched: true,
+      botId: actionValidationResponse.intent.botId,
+      actionId: actionValidationResponse.intent.actionId
+    }
+
+    return response
+  }
+
+  #transformActionMessages ({ action, incomingMessage }) {
+    let messages = action.get.messages.slice()
+
+    messages.map(message => {
+      message.body = message.body.replace('{{INCOMING_MESSAGE}}', incomingMessage.body)
+      message.body = message.body.replace('{{INCOMING_PHONE}}', this._chat.id)
+    })
+
+    return messages
+  }
+
   #getBotIdByTrigger ({ message }) {
     let response = {
       isTrigger: false,
@@ -88,15 +269,6 @@ class ConversationController {
     return this.#getDefaultState()
   }
 
-  #processTrigger (botByTrigger) {
-    if (!botByTrigger) {
-      return this.#getDefaultState()
-    }
-
-    const trigger = this.#getTriggerById(botByTrigger.triggerId)
-    return trigger.then
-  }
-
   #getDefaultBot () {
     return this._bots.find(bot => bot.isDefault === true)
   }
@@ -133,115 +305,6 @@ class ConversationController {
     return new this._models.Action(actionRaw, this._dependencies)
   }
 
-  #handleTrigger ({ message }) {
-    try {
-      let actionRaw = null
-      let actionDeepCopy = null
-      let response = {
-        isTriggered: false,
-        action: null
-      }
-
-      const botByTriggerResponse = this.#getBotIdByTrigger({ message })
-
-      if (!botByTriggerResponse || !botByTriggerResponse.isTrigger || !botByTriggerResponse.botId) {
-        return response
-      }
-
-      this._currentBot = this.#getBotById(botByTriggerResponse.botId)
-      this._state = this.#processTrigger(botByTriggerResponse)
-      this._console.info('Current step action: ')
-      this._console.log(this._state)
-
-      actionRaw = this.#getActionByState()
-      actionDeepCopy = JSON.parse(JSON.stringify(actionRaw))
-      const action = new this._models.Action(actionDeepCopy, this._dependencies)
-
-      if (action) {
-        response = {
-          isTriggered: true,
-          action
-        }
-      }
-
-      return response
-    } catch (error) {
-      this._console.error(error)
-      console.log(error.stack)
-    }
-  }
-
-  #handleAction ({ message }) {
-    try {
-      let actionRaw = null
-      let actionDeepCopy = null
-      let response = {
-        isMatched: false,
-        action: null
-      }
-
-      const actionHandlerResponse = this.#actionHandler({ message })
-
-      // Return action by default processed by #actionHandler
-      if (!actionHandlerResponse || !actionHandlerResponse.isMatched) {
-        response.action = actionHandlerResponse.action
-        return response
-      }
-
-      actionRaw = this.#getActionByState()
-      actionDeepCopy = JSON.parse(JSON.stringify(actionRaw))
-      const action = new this._models.Action(actionDeepCopy, this._dependencies)
-
-      if (action) {
-        response = {
-          isMatched: true,
-          action
-        }
-      }
-
-      return response
-    } catch (error) {
-      this._console.error(error)
-      console.log(error.stack)
-    }
-  }
-
-  async #analizeMessage ({ message }) {
-    // Send to current stack memory the incoming message
-    this._messages.push({ client: this._chat.id, message: message.body, type: message.type })
-
-    // Try to catch a trigger with incomming message
-    const triggerResponse = this.#handleTrigger({ message })
-
-    if (triggerResponse && triggerResponse.isTriggered) {
-      this._console.info('Incoming message is triggered: ' + message.body)
-
-      const transformedMessages = this.#transformActionMessages({ action: triggerResponse.action, incomingMessage: message })
-      triggerResponse.action.updateProperty({ property: 'messages', value: transformedMessages })
-
-      this._messages.push({ client: 'go-bot', message: triggerResponse, type: 'chat' })
-      return triggerResponse.action
-    }
-
-    // Try to catch an action with incoming message
-    const actionResponse = this.#handleAction({ message })
-
-    if (actionResponse && actionResponse.isMatched) {
-      this._console.info('Incoming message is matched from action: ' + message.body)
-
-      const transformedMessages = this.#transformActionMessages({ action: actionResponse.action, incomingMessage: message })
-      actionResponse.action.updateProperty({ property: 'messages', value: transformedMessages })
-
-      this._messages.push({ client: 'go-bot', message: actionResponse, type: 'chat' })
-      return actionResponse.action
-    }
-
-    // Setup and return default state
-    this._console.info('Incoming message is not matched and not triggered: ' + message.body)
-
-    return this.#getDefaultAction()
-  }
-
   async #preflightChatActionHandler ({ intentAction }) {
     console.log(JSON.stringify({
       user: this._chat.id,
@@ -267,69 +330,6 @@ class ConversationController {
     if (!this._utilities.response.isValid(response)) {
       intentAction.message = [{ body: response.body }]
     }
-  }
-
-  #actionHandler ({ message }) {
-    const inputValidator = new InputTypeValidator()
-    const defaultState = this.#getDefaultState()
-    let action = this.#getActionByState()
-    let response = {
-      isMatched: false,
-      botId: null,
-      actionId: null
-    }
-
-    if (message.type !== 'chat') {
-      response = {
-        isMatched: false,
-        botId: this._currentBot.id,
-        actionId: defaultState.id
-      }
-      return response
-    }
-
-    // No incidence
-    if (!action) {
-      response = {
-        isMatched: false,
-        botId: this._currentBot.id,
-        actionId: defaultState.actionId
-      }
-      return response
-    }
-
-    // Validate the input message for current options
-    const actionValidationResponse = inputValidator.validate({ action, message })
-
-    if (!actionValidationResponse.isValid) {
-      response = {
-        isMatched: false,
-        botId: this._currentBot.id,
-        actionId: defaultState.actionId
-      }
-      return response
-    }
-
-    this.#setState(actionValidationResponse.intent)
-
-    response = {
-      isMatched: true,
-      botId: actionValidationResponse.intent.botId,
-      actionId: actionValidationResponse.intent.actionId
-    }
-
-    return response
-  }
-
-  #transformActionMessages ({ action, incomingMessage }) {
-    let messages = action.get.messages.slice()
-
-    messages.map(message => {
-      message.body = message.body.replace('{{INCOMING_MESSAGE}}', incomingMessage.body)
-      message.body = message.body.replace('{{INCOMING_PHONE}}', this._chat.id)
-    })
-
-    return messages
   }
 
   get chat () {
