@@ -202,7 +202,7 @@ class ConversationController {
 
     messages.map(message => {
       message.body = message.body.replace('{{INCOMING_MESSAGE}}', incomingMessage.body)
-      message.body = message.body.replace('{{INCOMING_PHONE}}', this._chat.id)
+      message.body = message.body.replace('{{INCOMING_PHONE}}', this._chat.id.user)
     })
 
     return messages

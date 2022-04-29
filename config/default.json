@@ -202,7 +202,7 @@
               "behavior": "simple"
             },
             {
-              "body": "*-- END OF INTERACTION --*",
+              "body": "Para continuar escribe algo.",
               "behavior": "simple"
             }
           ],
@@ -229,7 +229,7 @@
               "behavior": "simple"
             },
             {
-              "body": "*-- END OF INTERACTION --*",
+              "body": "Para continuar escribe algo.",
               "behavior": "simple"
             }
           ],
@@ -278,7 +278,11 @@
           "id": "start",
           "messages": [
             {
-              "body": "Para conocer más detalles selecciona una opción:\n\n1) Virtual capital of America\n2) Mi Retail\n3) Go Bot\n4) Salir",
+              "body": "Somos una incubadora de negocios y por ello, queremos que conozcas cada proyecto relevante para nosotros",
+              "behavior": "simple"
+            },
+            {
+              "body": "Selecciona una opción:\n\n1) Virtual capital of America\n2) Mi Retail\n3) Go Bot\n4) Salir",
               "behavior": "simple"
             }
           ],
@@ -326,7 +330,7 @@
               "behavior": "simple"
             },
             {
-              "body": "*-- END OF INTERACTION --*",
+              "body": "Para continuar escribe algo.",
               "behavior": "simple"
             }
           ],
@@ -353,7 +357,7 @@
               "behavior": "simple"
             },
             {
-              "body": "*-- END OF INTERACTION --*",
+              "body": "Para continuar escribe algo.",
               "behavior": "simple"
             }
           ],
@@ -410,7 +414,11 @@
               "behavior": "simple"
             },
             {
-              "body": "Si ya visitaste el sitio, cómo más podemos ayudarte?, escribe algo para continuar.",
+              "body": "Si ya visitaste el sitio, cómo más podemos ayudarte?",
+              "behavior": "simple"
+            },
+            {
+              "body": "Para continuar escribe algo.",
               "behavior": "simple"
             }
           ],
@@ -467,7 +475,11 @@
               "behavior": "simple"
             },
             {
-              "body": "Si ya agendaste la llamada, cómo más podemos ayudarte?, escribe algo para continuar.",
+              "body": "Si ya agendaste la llamada, cómo más podemos ayudarte?",
+              "behavior": "simple"
+            },
+            {
+              "body": "Para continuar escribe algo.",
               "behavior": "simple"
             }
           ],
@@ -518,6 +530,10 @@
             {
               "body": "Tu mensaje: _{{INCOMING_MESSAGE}}_",
               "behavior": "reply"
+            },
+            {
+              "body": "Para salir escribe _#welcome_",
+              "behavior": "simple"
             },
             {
               "body": "Escribeme algo...",
@@ -608,7 +624,7 @@
               "key": "4",
               "scope": "external",
               "service": "bot",
-              "botId": "bot-001",
+              "botId": "bot-003",
               "actionId": "start"
             }
           ]
@@ -623,6 +639,10 @@
             {
               "body": "https://app.virtualcapitalofamerica.com/signup/",
               "behavior": "simple"
+            },
+            {
+              "body": "Para continuar escribe algo.",
+              "behavior": "simple"
             }
           ],
           "services": {
@@ -636,7 +656,7 @@
               "scope": "internal",
               "service": "actions",
               "botId": "bot-006",
-              "actionId": "eoi-success"
+              "actionId": "start"
             }
           ]
         },
@@ -654,6 +674,10 @@
             {
               "body": "https://www.virtualcapitalofamerica.com/img/OpenGraphBanner.jpg",
               "behavior": "image"
+            },
+            {
+              "body": "Para continuar escribe algo.",
+              "behavior": "simple"
             }
           ],
           "services": {
@@ -667,7 +691,7 @@
               "scope": "internal",
               "service": "actions",
               "botId": "bot-006",
-              "actionId": "eoi-success"
+              "actionId": "start"
             }
           ]
         },
@@ -679,7 +703,7 @@
               "behavior": "simple"
             },
             {
-              "body": "*-- END OF INTERACTION --*",
+              "body": "Para continuar escribe algo.",
               "behavior": "simple"
             }
           ],
@@ -693,7 +717,7 @@
               "key": "",
               "scope": "external",
               "service": "bot",
-              "botId": "bot-001",
+              "botId": "bot-003",
               "actionId": "start"
             }
           ]
@@ -706,7 +730,7 @@
               "behavior": "simple"
             },
             {
-              "body": "*-- END OF INTERACTION --*",
+              "body": "Para continuar escribe algo.",
               "behavior": "simple"
             }
           ],
@@ -861,7 +885,7 @@
               "key": "4",
               "scope": "external",
               "service": "bot",
-              "botId": "bot-001",
+              "botId": "bot-003",
               "actionId": "start"
             }
           ]
@@ -876,6 +900,10 @@
             {
               "body": "https://app.gobot.site/signup/",
               "behavior": "simple"
+            },
+            {
+              "body": "Para continuar escribe algo.",
+              "behavior": "simple"
             }
           ],
           "services": {
@@ -888,8 +916,8 @@
               "key": "",
               "scope": "internal",
               "service": "actions",
-              "botId": "bot-005",
-              "actionId": "eoi-success"
+              "botId": "bot-008",
+              "actionId": "start"
             }
           ]
         },
@@ -907,6 +935,10 @@
             {
               "body": "https://www.gobot.site/img/OpenGraphBanner.jpg",
               "behavior": "image"
+            },
+            {
+              "body": "Para continuar escribe algo.",
+              "behavior": "simple"
             }
           ],
           "services": {
@@ -919,8 +951,8 @@
               "key": "",
               "scope": "internal",
               "service": "actions",
-              "botId": "bot-005",
-              "actionId": "eoi-success"
+              "botId": "bot-008",
+              "actionId": "start"
             }
           ]
         },
@@ -932,7 +964,7 @@
               "behavior": "simple"
             },
             {
-              "body": "*-- END OF INTERACTION --*",
+              "body": "Para continuar escribe algo.",
               "behavior": "simple"
             }
           ],
@@ -959,7 +991,7 @@
               "behavior": "simple"
             },
             {
-              "body": "*-- END OF INTERACTION --*",
+              "body": "Para continuar escribe algo.",
               "behavior": "simple"
             }
           ],
@@ -1316,7 +1348,7 @@
               "behavior": "simple"
             },
             {
-              "body": "*-- END OF INTERACTION --*",
+              "body": "Para continuar escribe algo.",
               "behavior": "simple"
             }
           ],
@@ -1343,7 +1375,7 @@
               "behavior": "simple"
             },
             {
-              "body": "*-- END OF INTERACTION --*",
+              "body": "Para continuar escribe algo.",
               "behavior": "simple"
             }
           ],
@@ -1391,10 +1423,6 @@
             },
             {
               "body": "Sigue las indicaciones de las autoridades locales y nacionale",
-              "behavior": "simple"
-            },
-            {
-              "body": "*-- END OF INTERACTION --*",
               "behavior": "simple"
             }
           ],
@@ -1474,7 +1502,7 @@
               "key": "1",
               "scope": "external",
               "service": "bot",
-              "botId": "bot-009",
+              "botId": "bot-013",
               "actionId": "start"
             },
             {
@@ -1486,8 +1514,8 @@
             },
             {
               "key": "3",
-              "scope": "external",
-              "service": "bot",
+              "scope": "internal",
+              "service": "actions",
               "actionId": "intent-1",
               "botId": "bot-012"
             },
@@ -1495,7 +1523,7 @@
               "key": "4",
               "scope": "external",
               "service": "bot",
-              "botId": "bot-001",
+              "botId": "bot-003",
               "actionId": "start"
             }
           ]
@@ -1510,6 +1538,10 @@
             {
               "body": "https://app.miretail.com.co/signup/",
               "behavior": "simple"
+            },
+            {
+              "body": "Para continuar escribe algo.",
+              "behavior": "simple"
             }
           ],
           "services": {
@@ -1522,8 +1554,8 @@
               "key": "",
               "scope": "internal",
               "service": "actions",
-              "botId": "bot-005",
-              "actionId": "eoi-success"
+              "botId": "bot-012",
+              "actionId": "start"
             }
           ]
         },
@@ -1541,6 +1573,10 @@
             {
               "body": "https://www.miretail.com.co/img/OpenGraphBanner.jpg",
               "behavior": "image"
+            },
+            {
+              "body": "Para continuar escribe algo.",
+              "behavior": "simple"
             }
           ],
           "services": {
@@ -1553,8 +1589,8 @@
               "key": "",
               "scope": "internal",
               "service": "actions",
-              "botId": "bot-005",
-              "actionId": "eoi-success"
+              "botId": "bot-012",
+              "actionId": "start"
             }
           ]
         },
@@ -1566,7 +1602,7 @@
               "behavior": "simple"
             },
             {
-              "body": "*-- END OF INTERACTION --*",
+              "body": "Para continuar escribe algo.",
               "behavior": "simple"
             }
           ],
@@ -1580,7 +1616,7 @@
               "key": "",
               "scope": "external",
               "service": "bot",
-              "botId": "bot-001",
+              "botId": "bot-003",
               "actionId": "start"
             }
           ]
@@ -1593,7 +1629,7 @@
               "behavior": "simple"
             },
             {
-              "body": "*-- END OF INTERACTION --*",
+              "body": "Para continuar escribe algo.",
               "behavior": "simple"
             }
           ],
