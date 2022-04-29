@@ -136,6 +136,7 @@ class ConversationController {
   #handleTrigger ({ message }) {
     try {
       let actionRaw = null
+      let actionDeepCopy = null
       let response = {
         isTriggered: false,
         action: null
@@ -153,7 +154,8 @@ class ConversationController {
       this._console.log(this._state)
 
       actionRaw = this.#getActionByState()
-      const action = new this._models.Action(actionRaw, this._dependencies)
+      actionDeepCopy = JSON.parse(JSON.stringify(actionRaw))
+      const action = new this._models.Action(actionDeepCopy, this._dependencies)
 
       if (action) {
         response = {
@@ -172,6 +174,7 @@ class ConversationController {
   #handleAction ({ message }) {
     try {
       let actionRaw = null
+      let actionDeepCopy = null
       let response = {
         isMatched: false,
         action: null
@@ -186,7 +189,8 @@ class ConversationController {
       }
 
       actionRaw = this.#getActionByState()
-      const action = new this._models.Action(actionRaw, this._dependencies)
+      actionDeepCopy = JSON.parse(JSON.stringify(actionRaw))
+      const action = new this._models.Action(actionDeepCopy, this._dependencies)
 
       if (action) {
         response = {
@@ -212,7 +216,8 @@ class ConversationController {
     if (triggerResponse && triggerResponse.isTriggered) {
       this._console.info('Incoming message is triggered: ' + message.body)
 
-      triggerResponse.action.messages = this.#transformActionMessages({ action: triggerResponse.action, incomingMessage: message })
+      const transformedMessages = this.#transformActionMessages({ action: triggerResponse.action, incomingMessage: message })
+      triggerResponse.action.updateProperty({ property: 'messages', value: transformedMessages })
 
       this._messages.push({ client: 'go-bot', message: triggerResponse, type: 'chat' })
       return triggerResponse.action
@@ -224,7 +229,8 @@ class ConversationController {
     if (actionResponse && actionResponse.isMatched) {
       this._console.info('Incoming message is matched from action: ' + message.body)
 
-      actionResponse.action.messages = this.#transformActionMessages({ action: actionResponse.action, incomingMessage: message })
+      const transformedMessages = this.#transformActionMessages({ action: actionResponse.action, incomingMessage: message })
+      actionResponse.action.updateProperty({ property: 'messages', value: transformedMessages })
 
       this._messages.push({ client: 'go-bot', message: actionResponse, type: 'chat' })
       return actionResponse.action
@@ -316,7 +322,7 @@ class ConversationController {
   }
 
   #transformActionMessages ({ action, incomingMessage }) {
-    let messages = { ...action.get.messages }
+    let messages = action.get.messages.slice()
 
     messages.map(message => {
       message.body = message.body.replace('{{INCOMING_MESSAGE}}', incomingMessage.body)

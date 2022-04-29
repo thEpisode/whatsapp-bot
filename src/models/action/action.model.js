@@ -19,10 +19,14 @@ class ActionModel extends baseModel {
     this.status = { value: args.status || ActionModel.statuses.active, type: dependencies.dal.types.object }
 
     /* Custom fields */
-    this.messages = { value: args.messages, type: dependencies.dal.types.string }
+    this.messages = { value: args.messages.slice(), type: dependencies.dal.types.array }
     this.services = { value: args.services, type: dependencies.dal.types.string }
     this.inputType = { value: args.inputType, type: dependencies.dal.types.string }
     this.validOptions = { value: args.validOptions, type: dependencies.dal.types.string }
+  }
+
+  updateProperty ({ property, value }) {
+    this[property] = { value, type: this[property].type }
   }
 
   // Return entity sanitized
