@@ -903,6 +903,10 @@
             {
               "body": "https://www.gobot.site",
               "behavior": "simple"
+            },
+            {
+              "body": "https://www.gobot.site/img/OpenGraphBanner.jpg",
+              "behavior": "image"
             }
           ],
           "services": {
@@ -1533,6 +1537,10 @@
             {
               "body": "https://www.miretail.com.co",
               "behavior": "simple"
+            },
+            {
+              "body": "https://www.miretail.com.co/img/OpenGraphBanner.jpg",
+              "behavior": "image"
             }
           ],
           "services": {
