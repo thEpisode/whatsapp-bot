@@ -45,37 +45,37 @@
           "inputType": "option-number",
           "intents": [
             {
+              "key": "1",
               "scope": "external",
               "service": "bot",
-              "key": "1",
               "botId": "bot-002",
               "actionId": "start"
             },
             {
+              "key": "2",
               "scope": "external",
               "service": "bot",
-              "key": "2",
               "botId": "bot-004",
               "actionId": "start"
             },
             {
+              "key": "3",
               "scope": "external",
               "service": "bot",
-              "key": "3",
               "botId": "bot-011",
               "actionId": "start"
             },
             {
+              "key": "4",
               "scope": "external",
               "service": "bot",
-              "key": "4",
               "botId": "bot-003",
               "actionId": "start"
             },
             {
+              "key": "5",
               "scope": "external",
               "service": "bot",
-              "key": "5",
               "botId": "bot-005",
               "actionId": "start"
             }
@@ -121,9 +121,9 @@
           "inputType": "any",
           "intents": [
             {
+              "key": "",
               "scope": "internal",
               "service": "actions",
-              "key": "",
               "botId": "bot-005",
               "actionId": "intent-0"
             }
@@ -143,9 +143,9 @@
           "inputType": "any",
           "intents": [
             {
+              "key": "",
               "scope": "internal",
               "service": "actions",
-              "key": "",
               "botId": "bot-005",
               "actionId": "intent-1"
             }
@@ -165,9 +165,9 @@
           "inputType": "any",
           "intents": [
             {
+              "key": "",
               "scope": "internal",
               "service": "actions",
-              "key": "",
               "botId": "bot-005",
               "actionId": "eoi-success"
             }
@@ -190,9 +190,9 @@
           "inputType": "any",
           "intents": [
             {
+              "key": "",
               "scope": "external",
               "service": "bot",
-              "key": "",
               "botId": "bot-001",
               "actionId": "start"
             }
@@ -215,9 +215,9 @@
           "inputType": "any",
           "intents": [
             {
+              "key": "",
               "scope": "external",
               "service": "bot",
-              "key": "",
               "botId": "bot-001",
               "actionId": "start"
             }
@@ -263,30 +263,30 @@
           "inputType": "option-number",
           "intents": [
             {
+              "key": "1",
               "scope": "external",
               "service": "bot",
-              "key": "1",
               "botId": "bot-006",
               "actionId": "start"
             },
             {
+              "key": "2",
               "scope": "external",
               "service": "bot",
-              "key": "2",
               "botId": "bot-008",
               "actionId": "start"
             },
             {
+              "key": "3",
               "scope": "external",
               "service": "bot",
-              "key": "3",
               "botId": "bot-012",
               "actionId": "start"
             },
             {
+              "key": "else",
               "scope": "internal",
               "service": "actions",
-              "key": "else",
               "botId": "bot-003",
               "actionId": "eoi-failed"
             }
@@ -309,9 +309,9 @@
           "inputType": "any",
           "intents": [
             {
+              "key": "",
               "scope": "external",
               "service": "bot",
-              "key": "",
               "botId": "bot-001",
               "actionId": "start"
             }
@@ -334,9 +334,9 @@
           "inputType": "any",
           "intents": [
             {
+              "key": "",
               "scope": "internal",
               "service": "bot",
-              "key": "",
               "botId": "bot-003",
               "actionId": "start"
             }
@@ -388,9 +388,9 @@
           "inputType": "any",
           "intents": [
             {
+              "key": "",
               "scope": "external",
               "service": "bot",
-              "key": "",
               "botId": "bot-001",
               "actionId": "start"
             }
@@ -442,9 +442,9 @@
           "inputType": "any",
           "intents": [
             {
+              "key": "",
               "scope": "external",
               "service": "bot",
-              "key": "",
               "botId": "bot-001",
               "actionId": "start"
             }
@@ -490,9 +490,9 @@
           "inputType": "echo",
           "intents": [
             {
+              "key": "",
               "scope": "internal",
               "service": "actions",
-              "key": "",
               "botId": "bot-005",
               "actionId": "start"
             }
@@ -541,30 +541,30 @@
           "inputType": "option-number",
           "intents": [
             {
+              "key": "1",
               "scope": "external",
               "service": "bot",
-              "key": "1",
               "botId": "bot-007",
               "actionId": "start"
             },
             {
+              "key": "2",
               "scope": "internal",
               "service": "actions",
-              "key": "2",
               "botId": "bot-006",
               "actionId": "intent-0"
             },
             {
+              "key": "3",
               "scope": "external",
               "service": "bot",
-              "key": "3",
               "botId": "bot-006",
               "actionId": "intent-1"
             },
             {
+              "key": "else",
               "scope": "internal",
               "service": "actions",
-              "key": "else",
               "botId": "bot-006",
               "actionId": "eoi-failed"
             }
@@ -587,9 +587,9 @@
           "inputType": "any",
           "intents": [
             {
+              "key": "",
               "scope": "internal",
               "service": "actions",
-              "key": "",
               "botId": "bot-006",
               "actionId": "eoi-success"
             }
@@ -612,9 +612,9 @@
           "inputType": "any",
           "intents": [
             {
+              "key": "",
               "scope": "internal",
               "service": "actions",
-              "key": "",
               "botId": "bot-006",
               "actionId": "eoi-success"
             }
@@ -637,9 +637,9 @@
           "inputType": "any",
           "intents": [
             {
+              "key": "",
               "scope": "external",
               "service": "bot",
-              "key": "",
               "botId": "bot-001",
               "actionId": "start"
             }
@@ -662,9 +662,9 @@
           "inputType": "any",
           "intents": [
             {
+              "key": "",
               "scope": "external",
               "service": "bot",
-              "key": "",
               "botId": "bot-001",
               "actionId": "start"
             }
@@ -725,9 +725,9 @@
           "inputType": "any",
           "intents": [
             {
+              "key": "",
               "scope": "external",
               "service": "bot",
-              "key": "",
               "botId": "bot-012",
               "actionId": "start"
             }
@@ -776,30 +776,30 @@
           "inputType": "option-number",
           "intents": [
             {
+              "key": "1",
               "scope": "external",
               "service": "bot",
-              "key": "1",
               "botId": "bot-009",
               "actionId": "start"
             },
             {
+              "key": "2",
               "scope": "internal",
               "service": "actions",
-              "key": "2",
               "botId": "bot-008",
               "actionId": "intent-0"
             },
             {
+              "key": "3",
               "scope": "external",
               "service": "bot",
-              "key": "3",
               "botId": "bot-008",
               "actionId": "intent-1"
             },
             {
+              "key": "else",
               "scope": "internal",
               "service": "actions",
-              "key": "else",
               "botId": "bot-008",
               "actionId": "eoi-failed"
             }
@@ -822,9 +822,9 @@
           "inputType": "any",
           "intents": [
             {
+              "key": "",
               "scope": "internal",
               "service": "actions",
-              "key": "",
               "botId": "bot-005",
               "actionId": "eoi-success"
             }
@@ -847,9 +847,9 @@
           "inputType": "any",
           "intents": [
             {
+              "key": "",
               "scope": "internal",
               "service": "actions",
-              "key": "",
               "botId": "bot-005",
               "actionId": "eoi-success"
             }
@@ -872,9 +872,9 @@
           "inputType": "any",
           "intents": [
             {
+              "key": "",
               "scope": "external",
               "service": "bot",
-              "key": "",
               "botId": "bot-001",
               "actionId": "start"
             }
@@ -897,9 +897,9 @@
           "inputType": "any",
           "intents": [
             {
+              "key": "",
               "scope": "external",
               "service": "bot",
-              "key": "",
               "botId": "bot-001",
               "actionId": "start"
             }
@@ -960,9 +960,9 @@
           "inputType": "any",
           "intents": [
             {
+              "key": "",
               "scope": "external",
               "service": "bot",
-              "key": "",
               "botId": "bot-012",
               "actionId": "start"
             }
@@ -1004,9 +1004,9 @@
           "inputType": "any",
           "intents": [
             {
+              "key": "",
               "scope": "internal",
               "service": "actions",
-              "key": "",
               "botId": "bot-010",
               "actionId": "intent-0"
             }
@@ -1035,24 +1035,24 @@
           "inputType": "option-string",
           "intents": [
             {
+              "key": "SI",
               "scope": "internal",
               "service": "actions",
               "botId": "bot-005",
-              "key": "SI",
               "actionId": "intent-1"
             },
             {
+              "key": "NO",
               "scope": "internal",
               "service": "actions",
               "botId": "bot-005",
-              "key": "NO",
               "actionId": "eoi-failed"
             },
             {
+              "key": "YES",
               "scope": "internal",
               "service": "actions",
               "botId": "bot-005",
-              "key": "YES",
               "actionId": "intent-1"
             }
           ]
@@ -1071,9 +1071,9 @@
           "inputType": "any-number",
           "intents": [
             {
+              "key": "",
               "scope": "internal",
               "service": "actions",
-              "key": "",
               "botId": "bot-005",
               "actionId": "intent-2"
             }
@@ -1096,24 +1096,24 @@
           "inputType": "option-string",
           "intents": [
             {
+              "key": "SI",
               "scope": "internal",
               "service": "actions",
               "botId": "bot-005",
-              "key": "SI",
               "actionId": "intent-3"
             },
             {
+              "key": "NO",
               "scope": "internal",
               "service": "actions",
               "botId": "bot-005",
-              "key": "NO",
               "actionId": "intent-6"
             },
             {
+              "key": "YES",
               "scope": "internal",
               "service": "actions",
               "botId": "bot-005",
-              "key": "YES",
               "actionId": "intent-3"
             }
           ]
@@ -1153,24 +1153,24 @@
           "inputType": "option-string",
           "intents": [
             {
+              "key": "SI",
               "scope": "internal",
               "service": "actions",
               "botId": "bot-005",
-              "key": "SI",
               "actionId": "intent-4"
             },
             {
+              "key": "NO",
               "scope": "internal",
               "service": "actions",
               "botId": "bot-005",
-              "key": "NO",
               "actionId": "no-end"
             },
             {
+              "key": "YES",
               "scope": "internal",
               "service": "actions",
               "botId": "bot-005",
-              "key": "YES",
               "actionId": "intent-4"
             }
           ]
@@ -1192,24 +1192,24 @@
           "inputType": "option-string",
           "intents": [
             {
-              "scope": "internal",
-              "service": "actions",
-              "botId": "bot-005",
               "key": "SI",
-              "actionId": "eoi-success"
-            },
-            {
               "scope": "internal",
               "service": "actions",
               "botId": "bot-005",
+              "actionId": "eoi-success"
+            },
+            {
               "key": "NO",
-              "actionId": "eoi-success"
-            },
-            {
               "scope": "internal",
               "service": "actions",
               "botId": "bot-005",
+              "actionId": "eoi-success"
+            },
+            {
               "key": "YES",
+              "scope": "internal",
+              "service": "actions",
+              "botId": "bot-005",
               "actionId": "eoi-success"
             }
           ]
@@ -1231,9 +1231,9 @@
           "inputType": "any",
           "intents": [
             {
+              "key": "",
               "scope": "internal",
               "service": "actions",
-              "key": "",
               "botId": "bot-005",
               "actionId": "start"
             }
@@ -1256,9 +1256,9 @@
           "inputType": "any",
           "intents": [
             {
+              "key": "",
               "scope": "internal",
               "service": "actions",
-              "key": "",
               "botId": "bot-005",
               "actionId": "start"
             }
@@ -1299,9 +1299,9 @@
           "inputType": "any",
           "intents": [
             {
+              "key": "",
               "scope": "internal",
               "service": "actions",
-              "key": "",
               "botId": "bot-005",
               "actionId": "start"
             }
@@ -1362,30 +1362,30 @@
           "inputType": "option-number",
           "intents": [
             {
+              "key": "1",
               "scope": "external",
               "service": "bot",
-              "key": "1",
               "botId": "bot-009",
               "actionId": "start"
             },
             {
+              "key": "2",
               "scope": "internal",
               "service": "actions",
-              "key": "2",
               "actionId": "intent-0",
               "botId": "bot-012"
             },
             {
+              "key": "3",
               "scope": "external",
               "service": "bot",
-              "key": "3",
               "actionId": "intent-1",
               "botId": "bot-012"
             },
             {
+              "key": "else",
               "scope": "internal",
               "service": "actions",
-              "key": "else",
               "actionId": "eoi-failed",
               "botId": "bot-012"
             }
@@ -1408,9 +1408,9 @@
           "inputType": "any",
           "intents": [
             {
+              "key": "",
               "scope": "internal",
               "service": "actions",
-              "key": "",
               "botId": "bot-005",
               "actionId": "eoi-success"
             }
@@ -1433,9 +1433,9 @@
           "inputType": "any",
           "intents": [
             {
+              "key": "",
               "scope": "internal",
               "service": "actions",
-              "key": "",
               "botId": "bot-005",
               "actionId": "eoi-success"
             }
@@ -1458,9 +1458,9 @@
           "inputType": "any",
           "intents": [
             {
+              "key": "",
               "scope": "external",
               "service": "bot",
-              "key": "",
               "botId": "bot-001",
               "actionId": "start"
             }
@@ -1483,9 +1483,9 @@
           "inputType": "any",
           "intents": [
             {
+              "key": "",
               "scope": "external",
               "service": "bot",
-              "key": "",
               "botId": "bot-001",
               "actionId": "start"
             }
@@ -1546,9 +1546,9 @@
           "inputType": "any",
           "intents": [
             {
+              "key": "",
               "scope": "external",
               "service": "bot",
-              "key": "",
               "botId": "bot-012",
               "actionId": "start"
             }

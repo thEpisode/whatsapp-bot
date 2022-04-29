@@ -19,9 +19,9 @@ class IntentModel extends baseModel {
     this.status = { value: args.status || IntentModel.statuses.active, type: dependencies.dal.types.object }
 
     /* Custom fields */
+    this.key = { value: args.key, type: dependencies.dal.types.string }
     this.scope = { value: args.scope, type: dependencies.dal.types.string }
     this.service = { value: args.service, type: dependencies.dal.types.string }
-    this.key = { value: args.key, type: dependencies.dal.types.string }
     this.botId = { value: args.key, type: dependencies.dal.types.string }
     this.actionId = { value: args.actionId, type: dependencies.dal.types.string }
   }
