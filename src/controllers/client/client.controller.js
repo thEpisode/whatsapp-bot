@@ -1,4 +1,4 @@
-const { Client, LocalAuth, List, Buttons } = require('whatsapp-web.js')
+const { Client, MessageMedia, List, Buttons } = require('whatsapp-web.js')
 const qrcode = require('qrcode-terminal')
 
 class ClientController {
@@ -121,18 +121,21 @@ class ClientController {
    * @param {Object} chat Is the related chat of incoming message
    * @param {Object} action Is the action related to incoming message
    */
-  sendActionMessages ({ chat, action, incomingMessage }) {
+  async sendActionMessages ({ chat, action, incomingMessage }) {
     try {
       // Send all messages in action
       for (const message of action.get.messages) {
         switch (message.behavior) {
-          case 'simple':
-            chat.sendMessage(message.body)
-            break
           case 'reply':
             incomingMessage.reply(message.body)
             break
+          case 'image':
+            const media = await MessageMedia.fromUrl(message.body)
+            chat.sendMessage(media)
+            break
+          case 'simple':
           default:
+            chat.sendMessage(message.body)
             break;
         }
 

@@ -650,6 +650,10 @@
             {
               "body": "https://www.virtualcapitalofamerica.com",
               "behavior": "simple"
+            },
+            {
+              "body": "https://www.virtualcapitalofamerica.com/img/OpenGraphBanner.jpg",
+              "behavior": "image"
             }
           ],
           "services": {
