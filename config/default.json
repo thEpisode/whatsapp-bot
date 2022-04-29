@@ -48,10 +48,12 @@
           "id": "start",
           "messages": [
             {
-              "body": "Bienvenido a *Inversiones Von Croften*"
+              "body": "Bienvenido a *Inversiones Von Croften*",
+              "behavior": "simple"
             },
             {
-              "body": "Selecciona una opción:\n\n1) Solicitud de propuesta (RFP)\n2) Legal\n3) Agendar cita\n4) Proyectos\n5) Echo"
+              "body": "Selecciona una opción:\n\n1) Solicitud de propuesta (RFP)\n2) Legal\n3) Agendar cita\n4) Proyectos\n5) Echo",
+              "behavior": "simple"
             }
           ],
           "services": {
@@ -127,7 +129,8 @@
           "id": "start",
           "messages": [
             {
-              "body": "Para iniciar escribe tu email:"
+              "body": "Para iniciar escribe tu email:",
+              "behavior": "simple"
             }
           ],
           "services": {
@@ -149,7 +152,8 @@
           "id": "intent-0",
           "messages": [
             {
-              "body": "Ahora, escribe al detalle qué necesitas decirnos:"
+              "body": "Ahora, escribe al detalle qué necesitas decirnos:",
+              "behavior": "simple"
             }
           ],
           "services": {
@@ -171,7 +175,8 @@
           "id": "intent-1",
           "messages": [
             {
-              "body": "Para finalizar escribe en una frase un resumen de todo lo que acabas de escribir anteriormente:"
+              "body": "Para finalizar escribe en una frase un resumen de todo lo que acabas de escribir anteriormente:",
+              "behavior": "simple"
             }
           ],
           "services": {
@@ -193,10 +198,12 @@
           "id": "eoi-success",
           "messages": [
             {
-              "body": "Gracias, estaremos comunicandonos contigo brindandote información y acompañamiento."
+              "body": "Gracias, estaremos comunicandonos contigo brindandote información y acompañamiento.",
+              "behavior": "simple"
             },
             {
-              "body": "*-- END OF INTERACTION --*"
+              "body": "*-- END OF INTERACTION --*",
+              "behavior": "simple"
             }
           ],
           "services": {
@@ -218,10 +225,12 @@
           "id": "eoi-failed",
           "messages": [
             {
-              "body": "Gracias, Si necesitas algo más de nosotros puedes volver a escribirnos."
+              "body": "Gracias, Si necesitas algo más de nosotros puedes volver a escribirnos.",
+              "behavior": "simple"
             },
             {
-              "body": "*-- END OF INTERACTION --*"
+              "body": "*-- END OF INTERACTION --*",
+              "behavior": "simple"
             }
           ],
           "services": {
@@ -269,7 +278,8 @@
           "id": "start",
           "messages": [
             {
-              "body": "Para conocer más detalles selecciona una opción:\n1) Virtual capital of America\n2) Mi Retail\n3) Go Bot\n4) Salir"
+              "body": "Para conocer más detalles selecciona una opción:\n\n1) Virtual capital of America\n2) Mi Retail\n3) Go Bot\n4) Salir",
+              "behavior": "simple"
             }
           ],
           "services": {
@@ -312,10 +322,12 @@
           "id": "eoi-success",
           "messages": [
             {
-              "body": "Gracias, estaremos comunicandonos contigo brindandote información y acompañamiento."
+              "body": "Gracias, estaremos comunicandonos contigo brindandote información y acompañamiento.",
+              "behavior": "simple"
             },
             {
-              "body": "*-- END OF INTERACTION --*"
+              "body": "*-- END OF INTERACTION --*",
+              "behavior": "simple"
             }
           ],
           "services": {
@@ -337,10 +349,12 @@
           "id": "eoi-failed",
           "messages": [
             {
-              "body": "No he entendido tu respuesta, por favor sigue las instrucciones correctamente."
+              "body": "No he entendido tu respuesta, por favor sigue las instrucciones correctamente.",
+              "behavior": "simple"
             },
             {
-              "body": "*-- END OF INTERACTION --*"
+              "body": "*-- END OF INTERACTION --*",
+              "behavior": "simple"
             }
           ],
           "services": {
@@ -388,13 +402,16 @@
           "id": "start",
           "messages": [
             {
-              "body": "Entendemos que necesitas información más estructurada, para continuar, sigue el siguiente enlace:"
+              "body": "Entendemos que necesitas información más estructurada, para continuar, sigue el siguiente enlace:",
+              "behavior": "simple"
             },
             {
-              "body": "https://www.dremind.com/us/about"
+              "body": "https://www.dremind.com/us/about",
+              "behavior": "simple"
             },
             {
-              "body": "Si ya visitaste el sitio, cómo más podemos ayudarte?, escribe algo para continuar."
+              "body": "Si ya visitaste el sitio, cómo más podemos ayudarte?, escribe algo para continuar.",
+              "behavior": "simple"
             }
           ],
           "services": {
@@ -442,13 +459,16 @@
           "id": "start",
           "messages": [
             {
-              "body": "Siempre estamos disponibles para ti, por eso queremos que confirmes una cita con nosotros en el siguiente enlace:"
+              "body": "Siempre estamos disponibles para ti, por eso queremos que confirmes una cita con nosotros en el siguiente enlace:",
+              "behavior": "simple"
             },
             {
-              "body": "https://calendly.com/camiepisode/30min"
+              "body": "https://calendly.com/camiepisode/30min",
+              "behavior": "simple"
             },
             {
-              "body": "Si ya agendaste la llamada, cómo más podemos ayudarte?, escribe algo para continuar."
+              "body": "Si ya agendaste la llamada, cómo más podemos ayudarte?, escribe algo para continuar.",
+              "behavior": "simple"
             }
           ],
           "services": {
@@ -496,10 +516,12 @@
           "id": "start",
           "messages": [
             {
-              "body": "Tu mensaje: _{{INCOMING_MESSAGE}}_"
+              "body": "Tu mensaje: _{{INCOMING_MESSAGE}}_",
+              "behavior": "reply"
             },
             {
-              "body": "Escribeme algo..."
+              "body": "Escribeme algo...",
+              "behavior": "simple"
             }
           ],
           "services": {
@@ -547,10 +569,12 @@
           "id": "start",
           "messages": [
             {
-              "body": "Bienvenido a *Virtual capital of America*"
+              "body": "Bienvenido a *Virtual capital of America*",
+              "behavior": "simple"
             },
             {
-              "body": "Selecciona una opción:\n\n1) Activar cuenta\n2) Crear cuenta\n3) Conoce más\n4) Salir"
+              "body": "Selecciona una opción:\n\n1) Activar cuenta\n2) Crear cuenta\n3) Conoce más\n4) Salir",
+              "behavior": "simple"
             }
           ],
           "services": {
@@ -593,10 +617,12 @@
           "id": "intent-0",
           "messages": [
             {
-              "body": "Para crear una cuenta dirigete a la siguiente dirección:"
+              "body": "Para crear una cuenta dirigete a la siguiente dirección:",
+              "behavior": "simple"
             },
             {
-              "body": "https://app.virtualcapitalofamerica.com/signup/"
+              "body": "https://app.virtualcapitalofamerica.com/signup/",
+              "behavior": "simple"
             }
           ],
           "services": {
@@ -618,10 +644,12 @@
           "id": "intent-1",
           "messages": [
             {
-              "body": "VCA es una fintech que revoluciona el sector financiero con novedosas tecnologías y servicios"
+              "body": "VCA es una fintech que revoluciona el sector financiero con novedosas tecnologías y servicios",
+              "behavior": "simple"
             },
             {
-              "body": "https://www.virtualcapitalofamerica.com"
+              "body": "https://www.virtualcapitalofamerica.com",
+              "behavior": "simple"
             }
           ],
           "services": {
@@ -643,10 +671,12 @@
           "id": "eoi-success",
           "messages": [
             {
-              "body": "Gracias, estamos junto a ti."
+              "body": "Gracias, estamos junto a ti.",
+              "behavior": "simple"
             },
             {
-              "body": "*-- END OF INTERACTION --*"
+              "body": "*-- END OF INTERACTION --*",
+              "behavior": "simple"
             }
           ],
           "services": {
@@ -668,10 +698,12 @@
           "id": "eoi-failed",
           "messages": [
             {
-              "body": "Gracias, Si necesitas algo más de nosotros puedes volver a escribirnos."
+              "body": "Gracias, Si necesitas algo más de nosotros puedes volver a escribirnos.",
+              "behavior": "simple"
             },
             {
-              "body": "*-- END OF INTERACTION --*"
+              "body": "*-- END OF INTERACTION --*",
+              "behavior": "simple"
             }
           ],
           "services": {
@@ -719,16 +751,20 @@
           "id": "start",
           "messages": [
             {
-              "body": "Hi!, welcome to *Virtual capital of America* activation"
+              "body": "Hi!, welcome to *Virtual capital of America* activation",
+              "behavior": "simple"
             },
             {
-              "body": "Your account with associate phone number _{{INCOMING_PHONE}}_ has been activated."
+              "body": "Your account with associate phone number _{{INCOMING_PHONE}}_ has been activated.",
+              "behavior": "simple"
             },
             {
-              "body": "Please visit https://www.virtualcapitalofamerica.com to go to online banking"
+              "body": "Please visit https://www.virtualcapitalofamerica.com to go to online banking",
+              "behavior": "simple"
             },
             {
-              "body": "Do you have any other request?"
+              "body": "Do you have any other request?",
+              "behavior": "simple"
             }
           ],
           "services": {
@@ -782,10 +818,12 @@
           "id": "start",
           "messages": [
             {
-              "body": "Bienvenido a *Go Bot*"
+              "body": "Bienvenido a *Go Bot*",
+              "behavior": "simple"
             },
             {
-              "body": "Selecciona una opción:\n\n1) Activar cuenta\n2) Crear cuenta\n3) Conoce más\n4) Salir"
+              "body": "Selecciona una opción:\n\n1) Activar cuenta\n2) Crear cuenta\n3) Conoce más\n4) Salir",
+              "behavior": "simple"
             }
           ],
           "services": {
@@ -828,10 +866,12 @@
           "id": "intent-0",
           "messages": [
             {
-              "body": "Para crear una cuenta dirigete a la siguiente dirección:"
+              "body": "Para crear una cuenta dirigete a la siguiente dirección:",
+              "behavior": "simple"
             },
             {
-              "body": "https://app.gobot.site/signup/"
+              "body": "https://app.gobot.site/signup/",
+              "behavior": "simple"
             }
           ],
           "services": {
@@ -853,10 +893,12 @@
           "id": "intent-1",
           "messages": [
             {
-              "body": "Go Bot es una tecnología que potencia tus canales de comunicación para que seas una empresa omnicanal"
+              "body": "Go Bot es una tecnología que potencia tus canales de comunicación para que seas una empresa omnicanal",
+              "behavior": "simple"
             },
             {
-              "body": "https://www.gobot.site"
+              "body": "https://www.gobot.site",
+              "behavior": "simple"
             }
           ],
           "services": {
@@ -878,10 +920,12 @@
           "id": "eoi-success",
           "messages": [
             {
-              "body": "Gracias, Go Bot está junto a ti."
+              "body": "Gracias, Go Bot está junto a ti.",
+              "behavior": "simple"
             },
             {
-              "body": "*-- END OF INTERACTION --*"
+              "body": "*-- END OF INTERACTION --*",
+              "behavior": "simple"
             }
           ],
           "services": {
@@ -903,10 +947,12 @@
           "id": "eoi-failed",
           "messages": [
             {
-              "body": "Gracias, Si necesitas algo más de nosotros puedes volver a escribirnos."
+              "body": "Gracias, Si necesitas algo más de nosotros puedes volver a escribirnos.",
+              "behavior": "simple"
             },
             {
-              "body": "*-- END OF INTERACTION --*"
+              "body": "*-- END OF INTERACTION --*",
+              "behavior": "simple"
             }
           ],
           "services": {
@@ -954,16 +1000,20 @@
           "id": "start",
           "messages": [
             {
-              "body": "Hi!, welcome to *Go Bot* activation"
+              "body": "Hi!, welcome to *Go Bot* activation",
+              "behavior": "simple"
             },
             {
-              "body": "Your account with associate phone number _{{INCOMING_PHONE}}_ has been activated."
+              "body": "Your account with associate phone number _{{INCOMING_PHONE}}_ has been activated.",
+              "behavior": "simple"
             },
             {
-              "body": "Please visit https://www.gobot.site to configure your bots"
+              "body": "Please visit https://www.gobot.site to configure your bots",
+              "behavior": "simple"
             },
             {
-              "body": "Do you have any other request?"
+              "body": "Do you have any other request?",
+              "behavior": "simple"
             }
           ],
           "services": {
@@ -1035,16 +1085,20 @@
           "id": "intent-0",
           "messages": [
             {
-              "body": "Hola!, soy *Covid Bot*,"
+              "body": "Hola!, soy *Covid Bot*,",
+              "behavior": "simple"
             },
             {
-              "body": "Me gustaría ayudarte a idenficar si tienes algunos sintomas de COVID-19 para prevenir posibles riesgos"
+              "body": "Me gustaría ayudarte a idenficar si tienes algunos sintomas de COVID-19 para prevenir posibles riesgos",
+              "behavior": "simple"
             },
             {
-              "body": "Estas de acuerdo?"
+              "body": "Estas de acuerdo?",
+              "behavior": "simple"
             },
             {
-              "body": "Responde *SI* o *NO*"
+              "body": "Responde *SI* o *NO*",
+              "behavior": "simple"
             }
           ],
           "services": {
@@ -1080,7 +1134,8 @@
           "id": "intent-1",
           "messages": [
             {
-              "body": "Escribe tu número de documento de identidad (sin puntos, ni simbolos especiales), a continuación:"
+              "body": "Escribe tu número de documento de identidad (sin puntos, ni simbolos especiales), a continuación:",
+              "behavior": "simple"
             }
           ],
           "services": {
@@ -1102,10 +1157,12 @@
           "id": "intent-2",
           "messages": [
             {
-              "body": "En los ultimos dias has tenido gripa?"
+              "body": "En los ultimos dias has tenido gripa?",
+              "behavior": "simple"
             },
             {
-              "body": "Responde *SI* o *NO*"
+              "body": "Responde *SI* o *NO*",
+              "behavior": "simple"
             }
           ],
           "services": {
@@ -1141,28 +1198,36 @@
           "id": "intent-3",
           "messages": [
             {
-              "body": "La gripa estuvo acompañada de sintomas como:"
+              "body": "La gripa estuvo acompañada de sintomas como:",
+              "behavior": "simple"
             },
             {
-              "body": "- Dolor de cabeza,"
+              "body": "- Dolor de cabeza,",
+              "behavior": "simple"
             },
             {
-              "body": "- Perdida del olfato,"
+              "body": "- Perdida del olfato,",
+              "behavior": "simple"
             },
             {
-              "body": "- Dolores musculares,"
+              "body": "- Dolores musculares,",
+              "behavior": "simple"
             },
             {
-              "body": "- Tos,"
+              "body": "- Tos,",
+              "behavior": "simple"
             },
             {
-              "body": "- Dolor de garganta,"
+              "body": "- Dolor de garganta,",
+              "behavior": "simple"
             },
             {
-              "body": "- Dolor en el pecho?"
+              "body": "- Dolor en el pecho?",
+              "behavior": "simple"
             },
             {
-              "body": "Responde *SI* si has presentado alguno de los sintomas anteriores o *NO* si no los has presentado"
+              "body": "Responde *SI* si has presentado alguno de los sintomas anteriores o *NO* si no los has presentado",
+              "behavior": "simple"
             }
           ],
           "services": {
@@ -1198,10 +1263,12 @@
           "id": "intent-7",
           "messages": [
             {
-              "body": "Ademas de estos síntomas has sentido fatiga?"
+              "body": "Ademas de estos síntomas has sentido fatiga?",
+              "behavior": "simple"
             },
             {
-              "body": "Responde *SI* o *NO*"
+              "body": "Responde *SI* o *NO*",
+              "behavior": "simple"
             }
           ],
           "services": {
@@ -1237,10 +1304,12 @@
           "id": "eoi-success",
           "messages": [
             {
-              "body": "Gracias, estaremos comunicandonos contigo brindandote información y acompañamiento."
+              "body": "Gracias, estaremos comunicandonos contigo brindandote información y acompañamiento.",
+              "behavior": "simple"
             },
             {
-              "body": "*-- END OF INTERACTION --*"
+              "body": "*-- END OF INTERACTION --*",
+              "behavior": "simple"
             }
           ],
           "services": {
@@ -1262,10 +1331,12 @@
           "id": "eoi-failed",
           "messages": [
             {
-              "body": "Gracias, estaremos comunicandonos contigo brindandote información y acompañamiento."
+              "body": "Gracias, estaremos comunicandonos contigo brindandote información y acompañamiento.",
+              "behavior": "simple"
             },
             {
-              "body": "*-- END OF INTERACTION --*"
+              "body": "*-- END OF INTERACTION --*",
+              "behavior": "simple"
             }
           ],
           "services": {
@@ -1287,28 +1358,36 @@
           "id": "no-end",
           "messages": [
             {
-              "body": "Gracias, estaremos junto a ti brindandote información y acompañamiento."
+              "body": "Gracias, estaremos junto a ti brindandote información y acompañamiento.",
+              "behavior": "simple"
             },
             {
-              "body": "Lávate las manos con frecuencia"
+              "body": "Lávate las manos con frecuencia",
+              "behavior": "simple"
             },
             {
-              "body": "No saludes a la gente con besos o apretones de mano"
+              "body": "No saludes a la gente con besos o apretones de mano",
+              "behavior": "simple"
             },
             {
-              "body": "Si toses, cúbrete la boca con el codo flexionado o con un pañuelo desechable"
+              "body": "Si toses, cúbrete la boca con el codo flexionado o con un pañuelo desechable",
+              "behavior": "simple"
             },
             {
-              "body": "Evita tocarte los ojos, la nariz y la boca"
+              "body": "Evita tocarte los ojos, la nariz y la boca",
+              "behavior": "simple"
             },
             {
-              "body": "Si tienes fiebre o dificultad para respirar, busca atención médica, pero llama primero a la línea 123"
+              "body": "Si tienes fiebre o dificultad para respirar, busca atención médica, pero llama primero a la línea 123",
+              "behavior": "simple"
             },
             {
-              "body": "Sigue las indicaciones de las autoridades locales y nacionale"
+              "body": "Sigue las indicaciones de las autoridades locales y nacionale",
+              "behavior": "simple"
             },
             {
-              "body": "*-- END OF INTERACTION --*"
+              "body": "*-- END OF INTERACTION --*",
+              "behavior": "simple"
             }
           ],
           "services": {
@@ -1330,7 +1409,8 @@
           "id": "no-key",
           "messages": [
             {
-              "body": "No entiendo tu respuesta, revisa qué información te solicité"
+              "body": "No entiendo tu respuesta, revisa qué información te solicité",
+              "behavior": "simple"
             }
           ],
           "services": {
@@ -1368,10 +1448,12 @@
           "id": "start",
           "messages": [
             {
-              "body": "Bienvenido a *Mi Retail*"
+              "body": "Bienvenido a *Mi Retail*",
+              "behavior": "simple"
             },
             {
-              "body": "Selecciona una opción:\n\n1) Activar cuenta\n2) Crear cuenta\n3) Conoce más\n4) Salir"
+              "body": "Selecciona una opción:\n\n1) Activar cuenta\n2) Crear cuenta\n3) Conoce más\n4) Salir",
+              "behavior": "simple"
             }
           ],
           "services": {
@@ -1414,10 +1496,12 @@
           "id": "intent-0",
           "messages": [
             {
-              "body": "Para crear una cuenta dirigete a la siguiente dirección:"
+              "body": "Para crear una cuenta dirigete a la siguiente dirección:",
+              "behavior": "simple"
             },
             {
-              "body": "https://app.miretail.com.co/signup/"
+              "body": "https://app.miretail.com.co/signup/",
+              "behavior": "simple"
             }
           ],
           "services": {
@@ -1439,10 +1523,12 @@
           "id": "intent-1",
           "messages": [
             {
-              "body": "Mi Retail es el ecosistema para tu negocio donde encontrarás todo lo que necesites"
+              "body": "Mi Retail es el ecosistema para tu negocio donde encontrarás todo lo que necesites",
+              "behavior": "simple"
             },
             {
-              "body": "https://www.miretail.com.co"
+              "body": "https://www.miretail.com.co",
+              "behavior": "simple"
             }
           ],
           "services": {
@@ -1464,10 +1550,12 @@
           "id": "eoi-success",
           "messages": [
             {
-              "body": "Gracias, Mi Retail está junto a ti."
+              "body": "Gracias, Mi Retail está junto a ti.",
+              "behavior": "simple"
             },
             {
-              "body": "*-- END OF INTERACTION --*"
+              "body": "*-- END OF INTERACTION --*",
+              "behavior": "simple"
             }
           ],
           "services": {
@@ -1489,10 +1577,12 @@
           "id": "eoi-failed",
           "messages": [
             {
-              "body": "Gracias, Si necesitas algo más de nosotros puedes volver a escribirnos."
+              "body": "Gracias, Si necesitas algo más de nosotros puedes volver a escribirnos.",
+              "behavior": "simple"
             },
             {
-              "body": "*-- END OF INTERACTION --*"
+              "body": "*-- END OF INTERACTION --*",
+              "behavior": "simple"
             }
           ],
           "services": {
@@ -1540,16 +1630,20 @@
           "id": "start",
           "messages": [
             {
-              "body": "Hi!, welcome to *Mi Retail* activation"
+              "body": "Hi!, welcome to *Mi Retail* activation",
+              "behavior": "simple"
             },
             {
-              "body": "Your account with associate phone number _{{INCOMING_PHONE}}_ has been activated."
+              "body": "Your account with associate phone number _{{INCOMING_PHONE}}_ has been activated.",
+              "behavior": "simple"
             },
             {
-              "body": "Please visit https://www.miretail.com.co to open your store"
+              "body": "Please visit https://www.miretail.com.co to open your store",
+              "behavior": "simple"
             },
             {
-              "body": "Do you have any other request?"
+              "body": "Do you have any other request?",
+              "behavior": "simple"
             }
           ],
           "services": {

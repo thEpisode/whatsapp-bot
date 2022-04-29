@@ -63,7 +63,7 @@ class ClientController {
           default:
             const action = await this.digestIncomingMessage(message, chat)
 
-            this.sendActionMessages(chat, action)
+            this.sendActionMessages({ chat, action, incomingMessage: message })
             break
         }
       } catch (error) {
@@ -121,11 +121,21 @@ class ClientController {
    * @param {Object} chat Is the related chat of incoming message
    * @param {Object} action Is the action related to incoming message
    */
-  sendActionMessages (chat, action) {
+  sendActionMessages ({ chat, action, incomingMessage }) {
     try {
       // Send all messages in action
       for (const message of action.get.messages) {
-        chat.sendMessage(message.body)
+        switch (message.behavior) {
+          case 'simple':
+            chat.sendMessage(message.body)
+            break
+          case 'reply':
+            incomingMessage.reply(message.body)
+            break
+          default:
+            break;
+        }
+
       }
     } catch (error) {
       this._console.error(error)

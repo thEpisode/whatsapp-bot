@@ -20,13 +20,17 @@ class MessageModel extends baseModel {
 
     /* Custom fields */
     this.body = { value: args.body, type: dependencies.dal.types.string }
+    this.behavior = { value: args.behavior, type: dependencies.dal.types.string }
+    this.imageAttachment = { value: args.imageAttachment, type: dependencies.dal.types.string }
   }
 
   // Return entity sanitized
   get sanitized () {
     return {
       id: this.id.value || this.id.type.default,
-      body: this.body.value || this.body.type.default
+      body: this.body.value || this.body.type.default,
+      behavior: this.behavior.value || this.behavior.type.default,
+      imageAttachment: this.imageAttachment.value || this.imageAttachment.type.default
     }
   }
 
@@ -37,7 +41,9 @@ class MessageModel extends baseModel {
       last_modification: this.last_modification.value || this.last_modification.type.default,
       last_user_modification: this.last_user_modification.value || this.last_user_modification.type.default,
       status: this.status.value || this.status.type.default,
-      body: this.body.value || this.body.type.default
+      body: this.body.value || this.body.type.default,
+      behavior: this.behavior.value || this.behavior.type.default,
+      imageAttachment: this.imageAttachment.value || this.imageAttachment.type.default
     }
   }
 }
