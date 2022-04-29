@@ -10,7 +10,7 @@
  */
 
 class InputTypeValidator {
-  constructor () { /* Default constructor */  }
+  constructor () { /* Default constructor */ }
 
   invalidInput ({ messages }) {
     return {
@@ -47,9 +47,9 @@ class InputTypeValidator {
       case 'option-string':
         input = this.validateInputTypeOptionString({ action, message })
         break
-        case 'option-number':
-          // TODO: Implementar
-          break
+      case 'option-number':
+        // TODO: Implementar
+        break
       case 'any':
         input = this.validateInputTypeAny({ action, message })
         break
@@ -112,7 +112,6 @@ class InputTypeValidator {
    * @returns {InputTypeResult} result - Is the result of given input type.
    */
   validateInputTypeAny ({ action, message }) {
-    let intent = {}
     let isValid = false
 
     if (!message || !message.body) {
@@ -138,7 +137,7 @@ class InputTypeValidator {
     isValid = true
 
     return {
-      intent,
+      intent: action.intents[0],
       isValid
     }
   }

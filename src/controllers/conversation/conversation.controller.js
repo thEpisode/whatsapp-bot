@@ -40,10 +40,20 @@ class ConversationController {
           response = {
             isTrigger: true,
             botId: bot.id,
-            triggerId: trigger.id
+            triggerId: trigger.id,
+            trigger,
+            bot
           }
 
           return response
+        } else if (trigger.condition.inputType === 'starting-point' && !this._state.botId && !this._state.actionId) {
+          response = {
+            isTrigger: true,
+            botId: bot.id,
+            triggerId: trigger.id,
+            trigger,
+            bot
+          }
         }
       }
     }
@@ -75,12 +85,12 @@ class ConversationController {
       return this._currentBot.actions.find(action => action.id === this._state.actionId)
     }
 
-    return this.#getDefaultAction()
+    return this.#getDefaultState()
   }
 
   #processTrigger (botByTrigger) {
     if (!botByTrigger) {
-      return this.#getDefaultAction()
+      return this.#getDefaultState()
     }
 
     const trigger = this.#getTriggerById(botByTrigger.triggerId)
@@ -91,7 +101,7 @@ class ConversationController {
     return this._bots.find(bot => bot.isDefault === true)
   }
 
-  #getDefaultAction () {
+  #getDefaultState () {
     if (!this._currentBot) {
       this._currentBot = this.#getDefaultBot()
     }
@@ -176,6 +186,12 @@ class ConversationController {
 
       const actionHandlerResponse = this.#actionHandler({ message })
 
+      // Return action by default processed by #actionHandler
+      if (!actionHandlerResponse || !actionHandlerResponse.isMatched) {
+        response.action = actionHandlerResponse.action
+        return response
+      }
+
       actionRaw = this.#getActionByState()
       const action = new this._models.Action(actionRaw, this._dependencies)
 
@@ -197,14 +213,14 @@ class ConversationController {
     // Send to current stack memory the incoming message
     this._messages.push({ client: this._chat.id, message: message.body, type: message.type })
 
-    if (!this._state || !this._state.botId || !this._state.actionId) {
+    /* if (!this._state || !this._state.botId || !this._state.actionId) {
       this.#setDefaultState()
-    }
+    } */
 
     const triggerResponse = this.#handleTrigger({ message })
 
     if (triggerResponse && triggerResponse.isTriggered) {
-      this._console.info('Incoming message is triggered')
+      this._console.info('Incoming message is triggered: ' + message.body)
 
       this._messages.push({ client: 'go-bot', message: triggerResponse, type: 'chat' })
       return triggerResponse.action
@@ -213,13 +229,16 @@ class ConversationController {
     const actionResponse = this.#handleAction({ message })
 
     if (actionResponse && actionResponse.isMatched) {
-      this._console.info('Incoming message is matched from action')
+      this._console.info('Incoming message is matched from action: ' + message.body)
 
       this._messages.push({ client: 'go-bot', message: actionResponse, type: 'chat' })
       return actionResponse.action
     }
 
-    return action
+    // Setup and return default state TODO: Puteandose
+    this._console.info('Incoming message is not matched and not triggered: ' + message.body)
+    this.#setDefaultState()
+    return this.#getActionByState()
   }
 
   async #preflightChatActionHandler ({ intentAction }) {
@@ -249,30 +268,56 @@ class ConversationController {
     }
   }
 
-  async #actionHandler ({ message }) {
+  #actionHandler ({ message }) {
     const inputValidator = new InputTypeValidator()
-    const defaultAction = this.#getDefaultAction()
+    const defaultState = this.#getDefaultState()
     let action = this.#getActionByState()
+    let response = {
+      isMatched: false,
+      botId: null,
+      actionId: null
+    }
 
     if (message.type !== 'chat') {
-      return defaultAction
+      response = {
+        isMatched: false,
+        botId: this._currentBot.id,
+        actionId: defaultState.id
+      }
+      return response
     }
 
     // No incidence
     if (!action) {
-      return defaultAction
+      response = {
+        isMatched: false,
+        botId: this._currentBot.id,
+        actionId: defaultState.actionId
+      }
+      return response
     }
 
     // Validate the input message for current options
     const actionValidationResponse = inputValidator.validate({ action, message })
 
     if (!actionValidationResponse.isValid) {
-      return defaultAction
+      response = {
+        isMatched: false,
+        botId: this._currentBot.id,
+        actionId: defaultState.actionId
+      }
+      return response
     }
 
     this.#setState(actionValidationResponse.intent)
 
-    return action
+    response = {
+      isMatched: true,
+      botId: actionValidationResponse.intent.botId,
+      actionId: actionValidationResponse.intent.actionId
+    }
+
+    return response
   }
 
   get chat () {

@@ -16,8 +16,24 @@
           "title": "",
           "isDefault": true,
           "condition": {
-            "inputType": "any",
+            "inputType": "starting-point",
             "key": ""
+          },
+          "then": {
+            "scope": "internal",
+            "service": "actions",
+            "botId": "bot-001",
+            "actionId": "start"
+          }
+        },
+        {
+          "id": "trigger-002",
+          "name": "",
+          "title": "",
+          "isDefault": true,
+          "condition": {
+            "inputType": "exact-match",
+            "key": "#welcome"
           },
           "then": {
             "scope": "internal",
@@ -146,13 +162,13 @@
               "key": "",
               "scope": "internal",
               "service": "actions",
-              "botId": "bot-005",
+              "botId": "bot-002",
               "actionId": "intent-1"
             }
           ]
         },
         {
-          "id": "intent-2",
+          "id": "intent-1",
           "messages": [
             {
               "body": "Para finalizar escribe en una frase un resumen de todo lo que acabas de escribir anteriormente:"
@@ -168,7 +184,7 @@
               "key": "",
               "scope": "internal",
               "service": "actions",
-              "botId": "bot-005",
+              "botId": "bot-002",
               "actionId": "eoi-success"
             }
           ]
@@ -728,7 +744,7 @@
               "key": "",
               "scope": "external",
               "service": "bot",
-              "botId": "bot-012",
+              "botId": "bot-006",
               "actionId": "start"
             }
           ]
@@ -963,7 +979,7 @@
               "key": "",
               "scope": "external",
               "service": "bot",
-              "botId": "bot-012",
+              "botId": "bot-008",
               "actionId": "start"
             }
           ]
