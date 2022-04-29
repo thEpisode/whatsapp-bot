@@ -67,7 +67,8 @@ class ClientController {
             break
         }
       } catch (error) {
-        this._console.info(error)
+        this._console.error(error)
+        console.log(error.stack)
       }
     })
   }
@@ -121,9 +122,14 @@ class ClientController {
    * @param {Object} action Is the action related to incoming message
    */
   sendActionMessages (chat, action) {
-    // Send all messages in action
-    for (const message of action.get.messages) {
-      chat.sendMessage(message.body)
+    try {
+      // Send all messages in action
+      for (const message of action.get.messages) {
+        chat.sendMessage(message.body)
+      }
+    } catch (error) {
+      this._console.error(error)
+      console.log(error.stack)
     }
   }
 }

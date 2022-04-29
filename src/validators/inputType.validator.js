@@ -48,7 +48,7 @@ class InputTypeValidator {
         input = this.validateInputTypeOptionString({ action, message })
         break
       case 'option-number':
-        // TODO: Implementar
+        input = this.validateInputTypeOptionNumber({ action, message })
         break
       case 'any':
         input = this.validateInputTypeAny({ action, message })
@@ -59,6 +59,53 @@ class InputTypeValidator {
     }
 
     return input
+  }
+
+  /**
+   * Validate the type "Option Number" and return current error messages
+   * @param {InputTypeArgs} args - Arguments to validate given input type.
+   * @returns {InputTypeResult} result - Is the result of given input type.
+   */
+  validateInputTypeOptionNumber ({ action, message }) {
+    let intent = {}
+    let isValid = false
+
+    if (!action.intents || !action.intents.length) {
+      return this.invalidInput({
+        messages: [
+          {
+            body: 'Error: Input not match with valid options'
+          }
+        ]
+      })
+    }
+
+    if (!message || !message.body) {
+      return this.invalidInput({
+        messages: [
+          {
+            body: 'Error: Input has not a valid body'
+          }
+        ]
+      })
+    }
+
+    // Iterate over every valid options
+    intent = action.intents.find(option => {
+      // Transforming option to string to prevent type misuse
+      option.key += ''
+
+      // Validation if message is exactly of option
+      if (message.body.toLocaleLowerCase().trim() === option.key.toLocaleLowerCase().trim()) {
+        isValid = true
+        return true
+      }
+    })
+
+    return {
+      intent,
+      isValid
+    }
   }
 
   /**

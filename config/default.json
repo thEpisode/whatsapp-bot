@@ -269,7 +269,7 @@
           "id": "start",
           "messages": [
             {
-              "body": "Para conocer más detalles selecciona una opción:\n1) Virtual capital of America\n2) Mi Retail\n3) Go Bot"
+              "body": "Para conocer más detalles selecciona una opción:\n1) Virtual capital of America\n2) Mi Retail\n3) Go Bot\n4) Salir"
             }
           ],
           "services": {
@@ -289,22 +289,22 @@
               "key": "2",
               "scope": "external",
               "service": "bot",
-              "botId": "bot-008",
+              "botId": "bot-012",
               "actionId": "start"
             },
             {
               "key": "3",
               "scope": "external",
               "service": "bot",
-              "botId": "bot-012",
+              "botId": "bot-008",
               "actionId": "start"
             },
             {
-              "key": "else",
-              "scope": "internal",
-              "service": "actions",
-              "botId": "bot-003",
-              "actionId": "eoi-failed"
+              "key": "4",
+              "scope": "external",
+              "service": "bot",
+              "botId": "bot-001",
+              "actionId": "start"
             }
           ]
         },
@@ -496,14 +496,17 @@
           "id": "start",
           "messages": [
             {
-              "body": "Escribe algo"
+              "body": "Tu mensaje: _{{INCOMING_MESSAGE}}_"
+            },
+            {
+              "body": "Escribeme algo..."
             }
           ],
           "services": {
             "preflight": null,
             "callback": null
           },
-          "inputType": "echo",
+          "inputType": "any",
           "intents": [
             {
               "key": "",
@@ -547,7 +550,7 @@
               "body": "Bienvenido a *Virtual capital of America*"
             },
             {
-              "body": "Selecciona una opción:\n\n1) Activar cuenta\n2) Crear cuenta\n3) Conoce más"
+              "body": "Selecciona una opción:\n\n1) Activar cuenta\n2) Crear cuenta\n3) Conoce más\n4) Salir"
             }
           ],
           "services": {
@@ -578,11 +581,11 @@
               "actionId": "intent-1"
             },
             {
-              "key": "else",
-              "scope": "internal",
-              "service": "actions",
-              "botId": "bot-006",
-              "actionId": "eoi-failed"
+              "key": "4",
+              "scope": "external",
+              "service": "bot",
+              "botId": "bot-001",
+              "actionId": "start"
             }
           ]
         },
@@ -782,7 +785,7 @@
               "body": "Bienvenido a *Go Bot*"
             },
             {
-              "body": "Selecciona una opción:\n\n1) Activar cuenta\n2) Crear cuenta\n3) Conoce más"
+              "body": "Selecciona una opción:\n\n1) Activar cuenta\n2) Crear cuenta\n3) Conoce más\n4) Salir"
             }
           ],
           "services": {
@@ -813,11 +816,11 @@
               "actionId": "intent-1"
             },
             {
-              "key": "else",
-              "scope": "internal",
-              "service": "actions",
-              "botId": "bot-008",
-              "actionId": "eoi-failed"
+              "key": "4",
+              "scope": "external",
+              "service": "bot",
+              "botId": "bot-001",
+              "actionId": "start"
             }
           ]
         },
@@ -1368,7 +1371,7 @@
               "body": "Bienvenido a *Mi Retail*"
             },
             {
-              "body": "Selecciona una opción:\n\n1) Activar cuenta\n2) Crear cuenta\n3) Conoce más"
+              "body": "Selecciona una opción:\n\n1) Activar cuenta\n2) Crear cuenta\n3) Conoce más\n4) Salir"
             }
           ],
           "services": {
@@ -1399,11 +1402,11 @@
               "botId": "bot-012"
             },
             {
-              "key": "else",
-              "scope": "internal",
-              "service": "actions",
-              "actionId": "eoi-failed",
-              "botId": "bot-012"
+              "key": "4",
+              "scope": "external",
+              "service": "bot",
+              "botId": "bot-001",
+              "actionId": "start"
             }
           ]
         },

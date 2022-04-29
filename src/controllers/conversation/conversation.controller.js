@@ -108,36 +108,29 @@ class ConversationController {
 
     return {
       scope: 'internal',
-      service: 'action',
-      intent: 'start',
-      actionId: this._currentBot.id,
+      service: 'actions',
+      actionId: 'start',
+      botId: this._currentBot.id
     }
   }
 
   #setDefaultState () {
-    if (!this._currentBot) {
-      this._currentBot = this.#getDefaultBot()
-    }
-
-    this._state = {
-      scope: 'internal',
-      service: 'action',
-      intent: 'start',
-      actionId: this._currentBot.id,
-    }
+    this._state = this.#getDefaultState()
   }
 
   #setState ({ scope, service, actionId, botId }) {
-    if (!this._currentBot) {
-      this._currentBot = this.#getDefaultBot()
-    }
-
     this._state = {
       scope,
       service,
       botId,
       actionId
     }
+  }
+
+  #getDefaultAction () {
+    this.#setDefaultState()
+    const actionRaw = this.#getActionByState()
+    return new this._models.Action(actionRaw, this._dependencies)
   }
 
   #handleTrigger ({ message }) {
@@ -213,32 +206,34 @@ class ConversationController {
     // Send to current stack memory the incoming message
     this._messages.push({ client: this._chat.id, message: message.body, type: message.type })
 
-    /* if (!this._state || !this._state.botId || !this._state.actionId) {
-      this.#setDefaultState()
-    } */
-
+    // Try to catch a trigger with incomming message
     const triggerResponse = this.#handleTrigger({ message })
 
     if (triggerResponse && triggerResponse.isTriggered) {
       this._console.info('Incoming message is triggered: ' + message.body)
 
+      triggerResponse.action.messages = this.#transformActionMessages({ action: triggerResponse.action, incomingMessage: message })
+
       this._messages.push({ client: 'go-bot', message: triggerResponse, type: 'chat' })
       return triggerResponse.action
     }
 
+    // Try to catch an action with incoming message
     const actionResponse = this.#handleAction({ message })
 
     if (actionResponse && actionResponse.isMatched) {
       this._console.info('Incoming message is matched from action: ' + message.body)
 
+      actionResponse.action.messages = this.#transformActionMessages({ action: actionResponse.action, incomingMessage: message })
+
       this._messages.push({ client: 'go-bot', message: actionResponse, type: 'chat' })
       return actionResponse.action
     }
 
-    // Setup and return default state TODO: Puteandose
+    // Setup and return default state
     this._console.info('Incoming message is not matched and not triggered: ' + message.body)
-    this.#setDefaultState()
-    return this.#getActionByState()
+
+    return this.#getDefaultAction()
   }
 
   async #preflightChatActionHandler ({ intentAction }) {
@@ -318,6 +313,17 @@ class ConversationController {
     }
 
     return response
+  }
+
+  #transformActionMessages ({ action, incomingMessage }) {
+    let messages = { ...action.get.messages }
+
+    messages.map(message => {
+      message.body = message.body.replace('{{INCOMING_MESSAGE}}', incomingMessage.body)
+      message.body = message.body.replace('{{INCOMING_PHONE}}', this._chat.id)
+    })
+
+    return messages
   }
 
   get chat () {
