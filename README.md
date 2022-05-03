@@ -41,7 +41,7 @@ This project was developed to automate some daily tasks and including NLP (Natur
 | MVC | ✅ |
 | Websockets | ✅ |
 | Reactive conversations | ✅ |
-| NLP connections | ✅ |
+| NLP connections (Microsoft Azure) | ✅ |
 | Preflight connections (Backend) | ✅ |
 
 Something missing? Make an issue and let us know!
