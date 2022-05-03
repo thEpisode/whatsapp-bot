@@ -48,7 +48,7 @@ Something missing? Make an issue and let us know!
 
 ## Documentation
 
-Go to full documentation in the next URI: https://github.com/thEpisode/whatsapp-bot/blob/master/README.md
+Go to full documentation in the next URI: https://github.com/thEpisode/whatsapp-bot/blob/master/documentation/index.md
 
 ## Development
 
