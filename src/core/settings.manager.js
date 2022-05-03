@@ -87,7 +87,7 @@ class SettingsManager {
       enumerable: true,
       configurable: false,
       value: function (search, replacement) {
-        var target = this
+        const target = this
         return target.replace(new RegExp(search, 'g'), replacement)
       }
     })

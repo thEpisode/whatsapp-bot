@@ -4,7 +4,7 @@ class BackendController {
     this._request = this._dependencies.request
   }
 
-   async request (data) {
+  async request (data) {
     if (!data || !data.route || typeof data.route !== 'string' || data.route.length <= 0) {
       return null
     }
@@ -19,14 +19,14 @@ class BackendController {
     }
   }
 
-   async doRequest ({ route, method, parameters }) {
+  async doRequest ({ route, method, parameters }) {
     return new Promise(function (resolve, reject) {
       this._request({
-        method: method,
+        method,
         uri: route,
         gzip: true,
         body: parameters || {},
-        json: true,
+        json: true
       }, function (error, res, body) {
         if (!error && res.statusCode === 200) {
           resolve(body)
@@ -36,7 +36,6 @@ class BackendController {
       })
     })
   }
-
 }
 
 module.exports = BackendController

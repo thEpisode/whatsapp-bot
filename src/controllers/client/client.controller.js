@@ -47,23 +47,16 @@ class ClientController {
 
         switch (message.body) {
           case '!ping':
-            message.reply('pong')
+            this.handleTestPingMessage({ message })
             break
           case '!buttons':
-            let buttons = new Buttons("Button body", [{ body: "bt1" }, { body: "bt2" }, { body: "bt3" }], "title", "footer")
-            chat.sendMessage('Sending buttons')
-            chat.sendMessage(buttons)
+            this.handleTestButtonsMessage({ chat })
             break
           case '!list':
-            let sections = [{ title: 'sectionTitle', rows: [{ id: 'customId', title: 'ListItem1', description: 'desc' }, { title: 'ListItem2' }] }]
-            let list = new List('aaa', 'btnText', sections, 'Title', 'footer')
-            chat.sendMessage('Sending list')
-            chat.sendMessage(list)
+            this.handleTestListMessage({ chat })
             break
           default:
-            const action = await this.digestIncomingMessage(message, chat)
-
-            this.sendActionMessages({ chat, action, incomingMessage: message })
+            this.handleMessage({ chat, message })
             break
         }
       } catch (error) {
@@ -73,9 +66,32 @@ class ClientController {
     })
   }
 
+  handleTestPingMessage ({ message }) {
+    message.reply('pong')
+  }
+
+  handleTestButtonsMessage ({ chat }) {
+    const buttons = new Buttons('Button body', [{ body: 'bt1' }, { body: 'bt2' }, { body: 'bt3' }], 'title', 'footer')
+    chat.sendMessage('Sending buttons')
+    chat.sendMessage(buttons)
+  }
+
+  handleTestListMessage ({ chat }) {
+    const sections = [{ title: 'sectionTitle', rows: [{ id: 'customId', title: 'ListItem1', description: 'desc' }, { title: 'ListItem2' }] }]
+    const list = new List('aaa', 'btnText', sections, 'Title', 'footer')
+    chat.sendMessage('Sending list')
+    chat.sendMessage(list)
+  }
+
+  async handleMessage ({ chat, message }) {
+    const action = await this.digestIncomingMessage({ message, chat })
+
+    this.sendActionMessages({ chat, action, incomingMessage: message })
+  }
+
   /**
    * Find if exist current conversation in memory to prevent memory misuse
-   * @param {Object} chat 
+   * @param {Object} chat
    * @returns Conversation or null if not exist en memory
    */
   findConversationInMemory (chat) {
@@ -94,7 +110,7 @@ class ClientController {
    * @param {Object} chat Is the related chat of incoming message
    * @returns Action, in other words, what need to response to incoming message
    */
-  digestIncomingMessage (message, chat) {
+  digestIncomingMessage ({ message, chat }) {
     try {
       let conversation = this.findConversationInMemory(chat)
 
@@ -125,20 +141,20 @@ class ClientController {
     try {
       // Send all messages in action
       for (const message of action.get.messages) {
+        let media = null
         switch (message.behavior) {
           case 'reply':
             incomingMessage.reply(message.body)
             break
           case 'image':
-            const media = await MessageMedia.fromUrl(message.body)
+            media = await MessageMedia.fromUrl(message.body)
             chat.sendMessage(media)
             break
           case 'simple':
           default:
             chat.sendMessage(message.body)
-            break;
+            break
         }
-
       }
     } catch (error) {
       this._console.error(error)

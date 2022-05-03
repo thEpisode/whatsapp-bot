@@ -1,5 +1,4 @@
 class AgentController {
-
   constructor (dependencies) {
     this._dependencies = dependencies
     this._config = this._dependencies.config

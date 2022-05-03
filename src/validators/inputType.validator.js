@@ -10,7 +10,9 @@
  */
 
 class InputTypeValidator {
-  constructor () { /* Default constructor */ }
+  constructor (dependencies) {
+    this._dependencies = dependencies
+  }
 
   invalidInput ({ messages }) {
     return {
@@ -18,7 +20,7 @@ class InputTypeValidator {
         id: 'no-key',
         messages: [
           {
-            'body': 'I can\'t process this message, please validate your information'
+            body: 'I can\'t process this message, please validate your information'
           },
           ...messages
         ],
@@ -100,6 +102,8 @@ class InputTypeValidator {
         isValid = true
         return true
       }
+
+      return false
     })
 
     return {
@@ -141,10 +145,13 @@ class InputTypeValidator {
     intent = action.intents.find(option => {
       // Regex for whole word in options, NOT CONTAINS
       const regex = new RegExp('\\b(' + option.key.toLocaleLowerCase().trim() + ')\\b', 'g')
+
       if (message.body.toLocaleLowerCase().trim().match(regex)) {
         isValid = true
         return true
       }
+
+      return false
     })
 
     return {
@@ -195,7 +202,7 @@ class InputTypeValidator {
    * @returns {InputTypeResult} Action of given input type.
    */
   validateInputTypeAnyNumber ({ action, message }) {
-    let intent = {}
+    const intent = {}
     let isValid = false
 
     if (!message || !message.body) {

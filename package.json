@@ -4,7 +4,9 @@
   "description": "A minimal Chatbot application",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "test": "standard",
+    "standard-fix": "standard --fix"
   },
   "repository": "https://github.com/virtualcapitalofamerica/whatsapp-bot",
   "keywords": [
@@ -28,5 +30,17 @@
     "request": "^2.88.2",
     "socket.io-client": "^2.3.0",
     "whatsapp-web.js": "^1.16.6"
+  },
+  "devDependencies": {
+    "standard": "^17.0.0"
+  },
+  "standard": {
+    "ignore": [
+      "/node_modules/**/*.js",
+      "/static/private/js/**/*.js",
+      "/static/public/js/**/*.js",
+      "/src/views/*",
+      "/ui-template/*"
+    ]
   }
 }

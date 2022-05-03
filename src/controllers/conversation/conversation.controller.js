@@ -148,7 +148,7 @@ class ConversationController {
   #processAction ({ message }) {
     const inputValidator = new InputTypeValidator()
     const defaultState = this.#getDefaultState()
-    let action = this.#getActionByState()
+    const action = this.#getActionByState()
     let response = {
       isMatched: false,
       botId: null,
@@ -200,9 +200,11 @@ class ConversationController {
   #transformActionMessages ({ action, incomingMessage }) {
     let messages = action.get.messages.slice()
 
-    messages.map(message => {
+    messages = messages.map(message => {
       message.body = message.body.replace('{{INCOMING_MESSAGE}}', incomingMessage.body)
       message.body = message.body.replace('{{INCOMING_PHONE}}', this._chat.id.user)
+
+      return message
     })
 
     return messages
@@ -314,13 +316,15 @@ class ConversationController {
       this.#backendServiceHandler({ intentAction })
     }
 
-    intentAction.messages.map(message => {
+    intentAction.messages = intentAction.messages.map(message => {
       message.body = message.body.replace('{{INCOMING_MESSAGE}}', message.body)
       message.body = message.body.replace('{{INCOMING_PHONE}}', this._chat.id)
+
+      return message
     })
   }
 
-  async #backendServiceHandler ({ intentAction }) {
+  async #backendServiceHandler ({ intentAction, message }) {
     const response = await this._backendController.request({
       route: intentAction.services.preflight.route,
       method: intentAction.services.preflight.method,

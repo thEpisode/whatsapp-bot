@@ -33,7 +33,7 @@ class UtilitiesManager {
 
   throwError (message) {
     if (message) {
-      return { success: false, message: message, result: null }
+      return { success: false, message, result: null }
     }
 
     return { success: false, message: 'Something was wrong while you make this action', result: null }
@@ -148,7 +148,7 @@ class UtilitiesManager {
   }
 
   isEmpty (obj) {
-    for (var key in obj) {
+    for (const key in obj) {
       if (Object.prototype.hasOwnProperty.call(obj, key)) {
         return false
       }

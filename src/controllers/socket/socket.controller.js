@@ -1,5 +1,4 @@
 class SocketController {
-
   constructor (dependencies) {
     this._eventBus = dependencies.eventBus
     this._console = dependencies.console
@@ -15,7 +14,7 @@ class SocketController {
 
     // This event is executed when socket is connected to node
     this._eventBus.on('initialize-event-engine', () => {
-      initialize()
+      this.initialize()
     })
   }
 
@@ -64,7 +63,7 @@ class SocketController {
       return
     }
 
-    const socket = getSocketById({
+    const socket = this.getSocketById({
       socketId: data.context.sender.socketId
     })
 
@@ -84,7 +83,7 @@ class SocketController {
       return
     }
 
-    const socket = getFirstSocketByNativeId()
+    const socket = this.getFirstSocketByNativeId()
 
     data.context.receiver = {
       socketId: socket.id,
@@ -96,7 +95,7 @@ class SocketController {
   getAllNodes (data) {
     const nodes = []
 
-    for (var key in this._socket.sockets.connected) {
+    for (const key in this._socket.sockets.connected) {
       const client = this._socket.sockets.connected[key]
 
       if (client.nativeId) {
@@ -108,11 +107,11 @@ class SocketController {
       }
     }
 
-    data.values = { nodes: nodes }
+    data.values = { nodes }
     data.context.receiver = data.context.sender
     data.command = `${data.command.split('#request')[0]}#response`
 
-    directActionHandler(data)
+    this.directActionHandler(data)
   }
 
   async nodeActionHandler (payload) {
@@ -121,10 +120,10 @@ class SocketController {
       case 'create-bot#response':
       case 'qr-changed#response':
       case 'app-loaded#response':
-        responseSuccess(payload)
+        this.responseSuccess(payload)
         break
       case 'register-node#request':
-        registerNode(payload)
+        this.registerNode(payload)
         break
       default:
         break
@@ -135,7 +134,7 @@ class SocketController {
     switch (payload.command) {
       case 'create-bot#request':
       case 'qr-bot#request':
-        botRequest(payload)
+        this.botRequest(payload)
         break
       default:
         break
@@ -151,7 +150,7 @@ class SocketController {
       return
     }
 
-    const socket = getSocketById({
+    const socket = this.getSocketById({
       socketId: data.context.sender.socketId
     })
 
@@ -161,13 +160,13 @@ class SocketController {
   async gatewayMessageHandler (payload) {
     switch (payload.command) {
       case 'getAllNodes#request':
-        getAllNodes(payload)
+        this.getAllNodes(payload)
         break
       case 'getCurrentJob#response':
       case 'stopCurrentJob#response':
       case 'restartCurrentJob#response':
       case 'scriptFinished#request':
-        responseSuccess(payload)
+        this.responseSuccess(payload)
         break
       default:
         break
@@ -182,10 +181,10 @@ class SocketController {
 
     switch (payload.context.channel.toLocaleLowerCase().trim()) {
       case 'ws':
-        webSocketHandler({ payload, stakeholder })
+        this.webSocketHandler({ payload, stakeholder })
         break
       case 'api':
-        apiHandler(payload, stakeholder)
+        this.apiHandler(payload, stakeholder)
         break
       default:
         break
@@ -195,13 +194,13 @@ class SocketController {
   webSocketHandler ({ payload, stakeholder }) {
     switch (stakeholder.name.toLocaleLowerCase().trim()) {
       case this._stackeholders.node.name.toLocaleLowerCase().trim():
-        onNodeEvent(payload)
+        this.onNodeEvent(payload)
         break
       case this._stackeholders.admin.name.toLocaleLowerCase().trim():
-        onAdminEvent(payload)
+        this.onAdminEvent(payload)
         break
       case this._stackeholders.client.name.toLocaleLowerCase().trim():
-        onClientEvent(payload)
+        this.onClientEvent(payload)
         break
       default:
         break
@@ -215,13 +214,13 @@ class SocketController {
   async onNodeEvent (payload) {
     switch (payload.context.type.toLocaleLowerCase()) {
       case 'direct-action':
-        directActionHandler(payload, 'reversebytes.beat.api#node-response')
+        this.directActionHandler(payload, 'reversebytes.beat.api#node-response')
         break
       case 'gateway-message':
-        nodeActionHandler(payload)
+        this.nodeActionHandler(payload)
         break
       case 'bot-action':
-        nodeActionHandler(payload)
+        this.nodeActionHandler(payload)
         break
       default:
         break
@@ -231,10 +230,10 @@ class SocketController {
   async onAdminEvent (payload) {
     switch (payload.context.type.toLocaleLowerCase()) {
       case 'direct-message':
-        directActionHandler(payload, 'reversebytes.beat.api#admin-request')
+        this.directActionHandler(payload, 'reversebytes.beat.api#admin-request')
         break
       case 'gateway-message':
-        gatewayMessageHandler(payload)
+        this.gatewayMessageHandler(payload)
         break
       default:
         break
@@ -244,16 +243,15 @@ class SocketController {
   async onClientEvent (payload) {
     switch (payload.context.type) {
       case 'direct-message':
-        directActionHandler(payload, 'reversebytes.beat.api#admin-request')
+        this.directActionHandler(payload, 'reversebytes.beat.api#admin-request')
         break
       case 'client-action':
-        clientActionHandler(payload)
+        this.clientActionHandler(payload)
         break
       default:
         break
     }
   }
-
 }
 
 module.exports = SocketController

@@ -1,7 +1,6 @@
 const { SettingsManager } = require('./settings.manager')
 const { ConsoleManager } = require('./console.manager')
 class ServerManager {
-
   constructor (args) {
     this._settings = new SettingsManager(args)
     this._console = new ConsoleManager(this._settings.dependencies.core.get())
@@ -13,7 +12,7 @@ class ServerManager {
     this.agent.load()
     this.agent.setup()
     this.agent.start()
-    //this.connectWS()
+    // this.connectWS()
   }
 
   async loadServer () {
@@ -121,14 +120,12 @@ class ServerManager {
 
   connectWS () {
     this._config = this._settings.dependencies.core.get().config
-    let uri = this._config.SOCKET.port
+    const uri = this._config.SOCKET.port
       ? `${this._config.SOCKET.url}:${this._config.SOCKET.port}`
       : `${this._config.SOCKET.url}`
     this.socketClient = this.socketClient(uri)
 
-    //this.setupSocketEvents()
-
-
+    // this.setupSocketEvents()
   }
 
   setupSocketSettings () {
@@ -149,7 +146,7 @@ class ServerManager {
 
     this.socketClient.on('reconnect_attempt', () => {
       this.socketClient.io.opts.transports = ['polling', 'websocket']
-      console.log(`Socket connect attempt`)
+      console.log('Socket connect attempt')
     })
 
     this.socketClient.on('connect', (param) => {
