@@ -43,6 +43,7 @@ This project was developed to automate some daily tasks and including NLP (Natur
 | Reactive conversations | ✅ |
 | NLP connections (Microsoft Azure) | ✅ |
 | Preflight connections (Backend) | ✅ |
+| Implementation of [whatsapp-web.js](https://github.com/pedroslopez/whatsapp-web.js) | ✅ |
 
 Something missing? Make an issue and let us know!
 
