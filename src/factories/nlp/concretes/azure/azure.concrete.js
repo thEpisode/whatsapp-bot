@@ -14,7 +14,7 @@ class AzureConcrete extends BaseProduct {
     let intent = null
     const serviceResponse = await super.predict({ message })
 
-    this._console.info('NLP service response:')
+    this._console.info('Azure NLP service response:')
     console.log(serviceResponse)
 
     // Validate if service response succesfully

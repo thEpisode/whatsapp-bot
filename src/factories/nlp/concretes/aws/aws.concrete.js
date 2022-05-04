@@ -8,6 +8,9 @@ class AwsConcrete extends BaseProduct {
   predict ({ message }) {
     const serviceResponse = super.predict({ message })
 
+    this._console.info('AWS NLP service response:')
+    console.log(serviceResponse)
+
     return {
       isPredicted: false,
       prediction: null

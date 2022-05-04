@@ -8,6 +8,9 @@ class GoogleConcrete extends BaseProduct {
   predict ({ message }) {
     const serviceResponse = super.predict({ message })
 
+    this._console.info('Google NLP service response:')
+    console.log(serviceResponse)
+
     return {
       isPredicted: false,
       prediction: null
