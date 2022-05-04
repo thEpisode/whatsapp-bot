@@ -2,6 +2,14 @@
   "AGENT_VERSION": "4.0.0",
   "AGENT_NAME": "Bot Agent",
   "MACHINE_ID": "bot-2b9cb",
+  "NLP": {
+    "serviceUrl": "https://ivc-cognitive-services-dev.cognitiveservices.azure.com/luis/prediction/v3.0/apps/a1622828-4a53-4e0f-8464-1f2d5ef92789/slots/production/predict",
+    "serviceMethod": "GET",
+    "serviceParameters": "?verbose=true&show-all-intents=true&log=true&subscription-key=3cfde4a20a7546038627e4e2a1885057&query=",
+    "provider": "azure",
+    "threshold": "0.15",
+    "isEnabled": true
+  },
   "BOTS": [
     {
       "id": "bot-001",
@@ -128,6 +136,10 @@
         {
           "id": "start",
           "messages": [
+            {
+              "body": "Entendemos que tienes una necesidad única y especial, por ello vamos a crear una solicitud y la atenderemos lo más pronto posible",
+              "behavior": "simple"
+            },
             {
               "body": "Para iniciar escribe tu email:",
               "behavior": "simple"

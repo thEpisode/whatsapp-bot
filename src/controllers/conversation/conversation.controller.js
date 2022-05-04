@@ -1,4 +1,5 @@
 const InputTypeValidator = require('../../validators/inputType.validator')
+const { NLPFactory } = require('./../../factories/index')
 
 class ConversationController {
   constructor (dependencies, { bots, chat }) {
@@ -21,16 +22,22 @@ class ConversationController {
     }
 
     this._backendController = new this._controllers.BackendController(this._dependencies)
+    this._nlpFactory = new NLPFactory(this._dependencies)
+    this._nlp = this._nlpFactory.create()
   }
 
   processMessage (args) {
+    if (!args) {
+      throw new Error('Required args to process this message')
+    }
+
+    // Send to current stack memory the incoming message
+    this._messages.push({ client: this._chat.id, message: args.message.body, type: args.message.type })
+
     return this.#analizeMessage(args)
   }
 
   async #analizeMessage ({ message }) {
-    // Send to current stack memory the incoming message
-    this._messages.push({ client: this._chat.id, message: message.body, type: message.type })
-
     // Try to catch a trigger with incomming message
     const triggerResponse = this.#triggerHandler({ message })
 
@@ -55,6 +62,17 @@ class ConversationController {
 
       this._messages.push({ client: 'go-bot', message: actionResponse, type: 'chat' })
       return actionResponse.action
+    }
+
+    const nlpResponse = await this.#nlpHandler({ message })
+
+    if (nlpResponse && nlpResponse.isPredicted) {
+      this._console.info('Incoming message is predicted from action: ' + message.body)
+      const nlpTriggerResponse = await this.#analizeMessage({ message: {body: nlpResponse.prediction} })
+
+      this._messages.push({ client: 'go-bot', message: nlpTriggerResponse, type: 'chat' })
+
+      return nlpTriggerResponse
     }
 
     // Setup and return default state
@@ -134,6 +152,23 @@ class ConversationController {
       this._console.error(error)
       console.log(error.stack)
     }
+  }
+
+  async #nlpHandler ({ message }) {
+    try {
+      let response = {
+        isPredicted: false,
+        action: null
+      }
+
+      response = await this._nlp.predict({ message })
+
+      return response
+    } catch (error) {
+      this._console.error(error)
+      console.log(error.stack)
+    }
+
   }
 
   #processTrigger (botByTrigger) {

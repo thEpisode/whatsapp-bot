@@ -17,7 +17,7 @@ class DependenciesManager {
       cors: require('cors'),
       path: require('path'),
       config: require('config'),
-      request: require('request'),
+      request: require('axios'),
       colors: require('colors/safe'),
       moment: require('moment')
     }

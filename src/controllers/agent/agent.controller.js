@@ -6,6 +6,7 @@ class AgentController {
     this._controllers = this._dependencies.controllers
     this._client = null
     this._clientBots = null
+    this._nlp = null
   }
 
   updateConfig (config) {
@@ -21,7 +22,9 @@ class AgentController {
   }
 
   async setup () {
-    this._client = new this._controllers.ClientController(this._dependencies, { bots: this._clientBots })
+    this._client = new this._controllers.ClientController(this._dependencies, {
+      bots: this._clientBots
+    })
   }
 
   async start () {
