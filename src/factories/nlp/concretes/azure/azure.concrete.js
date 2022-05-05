@@ -31,7 +31,7 @@ class AzureConcrete extends BaseProduct {
     }
 
     // Validate if NLP is sufficient to minimum threshold
-    if (+intent.score < +this._nlp.threshold) {
+    if (+intent.score < +this._nlpEngineApp.threshold) {
       return response
     }
 

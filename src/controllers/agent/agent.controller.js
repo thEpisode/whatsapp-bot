@@ -18,13 +18,7 @@ class AgentController {
   }
 
   async load () {
-    this._clientBots = this._dependencies.config.BOTS
-  }
-
-  async setup () {
-    this._client = new this._controllers.ClientController(this._dependencies, {
-      bots: this._clientBots
-    })
+    this._client = new this._controllers.ClientController(this._dependencies)
   }
 
   async start () {

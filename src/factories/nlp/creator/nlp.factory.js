@@ -14,10 +14,12 @@ class NlpFactory {
     this._dependencies = dependencies
     this._config = this._dependencies.config
     this._console = this._dependencies.console
+    this._apps = this._dependencies.apps
+    this._nlpEngineApp = this._apps.getAppByName({ name: 'nlp-engine' })
   }
 
   create () {
-    const provider = this._config.NLP.provider
+    const provider = this._nlpEngineApp.settings.provider
 
     this._concrete = null
 

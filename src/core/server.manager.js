@@ -10,7 +10,6 @@ class ServerManager {
   start () {
     this.agent = new this._controllers.AgentController(this._settings.dependencies.core.get())
     this.agent.load()
-    this.agent.setup()
     this.agent.start()
     // this.connectWS()
   }

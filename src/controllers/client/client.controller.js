@@ -2,12 +2,13 @@ const { Client, MessageMedia, List, Buttons } = require('whatsapp-web.js')
 const qrcode = require('qrcode-terminal')
 
 class ClientController {
-  constructor (dependencies, { bots }) {
+  constructor (dependencies) {
     this._dependencies = dependencies
     this._config = this._dependencies.config
     this._console = this._dependencies.console
     this._controllers = this._dependencies.controllers
-    this._bots = bots
+    this._appController = null
+    this._bots = null
 
     this.nextChatActionId = null
     this.conversations = []
@@ -21,27 +22,42 @@ class ClientController {
   }
 
   async startSession () {
-    this._waClient = new Client()
+    // TODO: Change _config values to backend values
+    // Load apps
+    this._appController = new this._controllers.AppController(this._dependencies)
 
+    // Setup apps
+    this._appController.loadApps({ apps: this._config.USER.apps })
+    this._dependencies.apps = this._appController
+
+    this._bots = this.#getBotsByUserId({ user: this._config.USER })
+
+    // Load WhatsApp client
+    this._whatsappClient = new Client()
+
+    // Setup Whatsapp Client
     this.defineEvents()
+    this._whatsappClient.initialize()
+  }
 
-    this._waClient.initialize()
+  #getBotsByUserId ({ user }) {
+    return this._config.USER.bots
   }
 
   /**
    * Define all WhatsApp events
    */
   async defineEvents () {
-    this._waClient.on('qr', (qr) => {
+    this._whatsappClient.on('qr', (qr) => {
       this._console.info('QR Received')
       qrcode.generate(qr, { small: true })
     })
 
-    this._waClient.on('ready', () => {
+    this._whatsappClient.on('ready', () => {
       this._console.info('Client is ready!')
     })
 
-    this._waClient.on('message', async (message) => {
+    this._whatsappClient.on('message', async (message) => {
       try {
         const chat = await message.getChat()
 
