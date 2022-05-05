@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+  <meta name="generator" content="Hugo 0.88.1">
+  <title>Starter Template · Bootstrap v5.1</title>
+
+  <!-- Bootstrap core CSS -->
+  <!-- CSS only -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+  <!-- Custom styles for this template -->
+  <link href="/assets/styles/main.css" rel="stylesheet">
+</head>
+
+<body>
+  <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+    <symbol id="home" viewBox="0 0 16 16">
+      <path
+        d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4H2.5z" />
+    </symbol>
+    <symbol id="people-circle" viewBox="0 0 16 16">
+      <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+      <path fill-rule="evenodd"
+        d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
+    </symbol>
+  </svg>
+  <main>
+    <aside class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark">
+      <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+        <img src="/assets/img/icon.svg" alt="icon" class="bi me-2" width="50">
+
+        <span class="fs-4">Whatsapp-bot</span>
+      </a>
+      <hr>
+      <ul class="nav nav-pills flex-column mb-auto">
+        <li class="nav-item">
+          <a href="/" class="nav-link text-white" aria-current="page">
+            <svg class="bi me-2" width="16" height="16">
+              <use xlink:href="#home" />
+            </svg>
+            Home
+          </a>
+        </li>
+        <li>
+          <a href="/single-session/" class="nav-link active">
+            <svg class="bi me-2" width="16" height="16">
+              <use xlink:href="#people-circle" />
+            </svg>
+            Single session
+          </a>
+        </li>
+      </ul>
+      <hr>
+      <div class="dropdown">
+        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1"
+          data-bs-toggle="dropdown" aria-expanded="false">
+          <img src="https://github.com/thEpisode.png" alt="" width="32" height="32" class="rounded-circle me-2">
+          <strong>More info</strong>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+          <li><a class="dropdown-item" href="https://github.com/thEpisode/whatsapp-bot" target="_blank">Project</a></li>
+          <li><a class="dropdown-item"
+              href="https://github.com/thEpisode/whatsapp-bot/blob/master/documentation/index.md"
+              target="_blank">Documentation</a></li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+          <li><a class="dropdown-item" href="https://wa.me/message/M2SNZWJAVLVMK1" target="_blank">Contact me</a></li>
+          <li><a class="dropdown-item" href="https://github.com/thEpisode" target="_blank">Profile</a></li>
+        </ul>
+      </div>
+    </aside>
+
+    <section class="col-lg-8 mx-auto p-3 py-md-5">
+      <header class="d-flex align-items-center pb-3 mb-5 border-bottom">
+        <a href="/" class="d-flex align-items-center text-dark text-decoration-none">
+          <img src="/assets/img/icon.svg" alt="icon" class="bi me-2" width="50">
+          <span class="fs-4">Examples</span>
+        </a>
+      </header>
+
+      <section>
+        <h1>Single session</h1>
+        <p class="fs-5 col-md-8">Click in the next button to start a single session.
+        </p>
+
+        <div class="mb-5">
+          <a href="../examples/" class="btn btn-primary px-4">Start single session</a>
+        </div>
+
+        <hr class="col-3 col-md-2 mb-5">
+
+        <div class="row g-5">
+          <div class="col-md-6">
+            <h2>QR Code</h2>
+            <p>When appeara QR Code scan in your WhatsApp account to start.</p>
+            <section class="col-12 h-100">
+              <!-- Logs -->
+              <img src="/assets/img/icon.svg" alt="icon" class="bi me-2">
+            </section>
+          </div>
+
+          <div class="col-md-6">
+            <h2>Logs</h2>
+            <p>Every event is showed in the next window</p>
+            <section class="col-12 bg-light log-window">
+              <!-- Logs -->
+
+            </section>
+          </div>
+        </div>
+      </section>
+      <footer class="pt-5 my-5 text-muted border-top">
+        All rights reserved &middot; &copy; 2022
+      </footer>
+    </section>
+  </main>
+
+
+  <!-- JavaScript Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+    crossorigin="anonymous"></script>
+  <script>
+    /* global bootstrap: false */
+    (function () {
+      'use strict'
+      var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+      tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+        new bootstrap.Tooltip(tooltipTriggerEl)
+      })
+    })()
+
+  </script>
+</body>
+
+</html>
