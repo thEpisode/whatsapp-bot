@@ -1,19 +1,4 @@
-const _example = {
-    settings: {
-        socket: {
-            url: "http://localhost:3500/"
-        },
-        selectors: [
-            { name: 'startSessionBtn', domSelector: '.start-session' },
-            { name: 'qrVisorImg', domSelector: '.qr-visor' },
-            { name: 'qrDoneImg', domSelector: '.qr-done' },
-            { name: 'logsContainer', domSelector: '.logs-container' }
-        ]
-    },
-    socket: {},
-    selectors: {}
-}
-
+/* config variable is imported from config.js */
 
 document.addEventListener("DOMContentLoaded", () => {
     setup();
@@ -28,19 +13,19 @@ function setup() {
  * Load in memory all selectors by given name
  */
 function selectorsSetup() {
-    for (const selector of _example.settings.selectors) {
-        _example.selectors[selector.name] = document.querySelector(selector.domSelector)
+    for (const selector of config.settings.selectors) {
+        config.selectors[selector.name] = document.querySelector(selector.domSelector)
     }
 }
 
 function socketSetup() {
-    _example.socket = io(_example.settings.socket.url);
+    config.socket = io(config.settings.socket.url);
 
-    _example.socket.on("connect", () => {
-        console.log(_example.socket.id);
+    config.socket.on("connect", () => {
+        console.log(config.socket.id);
     });
 
-    _example.socket.on("disconnect", () => {
-        console.log(_example.socket.id);
+    config.socket.on("disconnect", () => {
+        console.log(config.socket.id);
     });
 }
