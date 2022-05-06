@@ -1,17 +1,16 @@
+/* start () {
+  this.agent = new this._controllers.AgentController(this._settings.dependencies.core.get())
+  this.agent.load()
+  this.agent.start()
+  // this.connectWS()
+} */
+
 const { SettingsManager } = require('./settings.manager')
 const { ConsoleManager } = require('./console.manager')
 class ServerManager {
   constructor (args) {
     this._settings = new SettingsManager(args)
     this._console = new ConsoleManager(this._settings.dependencies.core.get())
-    this._controllers = null
-  }
-
-  start () {
-    this.agent = new this._controllers.AgentController(this._settings.dependencies.core.get())
-    this.agent.load()
-    this.agent.start()
-    // this.connectWS()
   }
 
   async loadServer () {
@@ -20,7 +19,15 @@ class ServerManager {
 
       this.registerConsole()
 
+      this.registerAuth()
+
       this.registerDal()
+
+      await this.registerDatabase()
+
+      await this.registerStorage()
+
+      await this.registerPushNotifications()
 
       this.socketSetup()
 
@@ -32,7 +39,11 @@ class ServerManager {
 
       this.registerFunctions()
 
+      this.registerApi()
+
       this._console.success('Server manager loaded')
+
+      this.registerServer()
 
       this.executeStartupFunctions()
 
@@ -65,12 +76,47 @@ class ServerManager {
     this._settings.dependencies.core.add(this._console, 'console')
   }
 
+  registerAuth () {
+    const { AuthManager } = require('./auth.manager')
+    const _auth = new AuthManager(this._settings.dependencies.get())
+
+    this._settings.dependencies.core.add(_auth, 'auth')
+  }
+
+  registerDatabase () {
+    const { DatabaseManager } = require('./database.manager')
+    const _databaseManager = new DatabaseManager(this._settings.dependencies.get())
+
+    return _databaseManager
+  }
+
+  registerStorage () {
+    const { StorageManager } = require('./storage.manager')
+    const _storageManager = new StorageManager(this._settings.dependencies.get())
+
+    return _storageManager.loadStorage()
+  }
+
+  async registerPushNotifications () {
+    const { PushManager } = require('./push.manager')
+    const _pushManager = new PushManager(this._settings.dependencies.get())
+    await _pushManager.loadPushNotifications()
+
+    this._settings.dependencies.core.add(_pushManager.push, 'pushNotificationManager')
+  }
+
   registerControllers () {
     const { ControllerManager } = require('./controller.manager')
     const _controllersManager = new ControllerManager(this._settings.dependencies.get())
 
     this._settings.dependencies.core.add(_controllersManager.controllers, 'controllers')
-    this._controllers = this._settings.dependencies.core.get().controllers
+  }
+
+  registerApi () {
+    const { ApiManager } = require('./api.manager')
+    const _apiManager = new ApiManager(this._settings.dependencies.get())
+
+    this._settings.dependencies.core.add(_apiManager, 'apiManager')
   }
 
   registerFunctions () {
@@ -82,7 +128,8 @@ class ServerManager {
 
   socketSetup () {
     // Listening and setup socket
-    // TODO: Improve this
+    const socket = this._settings.dependencies.get().socketModule(this._settings.dependencies.get().httpServer, {})
+    this._settings.dependencies.core.add(socket, 'socket')
 
     const { SocketManager } = require('./socket.manager')
     const _socketManager = new SocketManager(this._settings.dependencies.get())
@@ -92,9 +139,20 @@ class ServerManager {
 
   registerSocket () {
     // Initialize socket when controllers are initialized
-    const controllers = this._settings.dependencies.core.get().controllers
-    const socketController = new controllers.SocketController(this._settings.dependencies.core.get())
+    const dependencies = this._settings.dependencies.get()
+    const socketController = new dependencies.controllers.SocketController(dependencies)
     socketController.initialize()
+  }
+
+  registerServer () {
+    // Listening on port
+    const port = this.normalizePort(process.env.PORT || this._settings.dependencies.get().config.SERVER_PORT)
+    if (port) {
+      this._settings.dependencies.get().httpServer.listen(port)
+    } else {
+      this._console.error('Failed to find a port for this app, please setup on PORT environment variable or default config file')
+      process.exit(0)
+    }
   }
 
   executeStartupFunctions () {
@@ -116,82 +174,7 @@ class ServerManager {
   get settings () {
     return this._settings
   }
-
-  connectWS () {
-    this._config = this._settings.dependencies.core.get().config
-    const uri = this._config.SOCKET.port
-      ? `${this._config.SOCKET.url}:${this._config.SOCKET.port}`
-      : `${this._config.SOCKET.url}`
-    this.socketClient = this.socketClient(uri)
-
-    // this.setupSocketEvents()
-  }
-
-  setupSocketSettings () {
-    this.socketEventTypes = {
-      botMessage: {
-        name: 'botMessage'
-      }
-    }
-    this.socketChannels = {
-      ws: {
-        name: 'ws'
-      }
-    }
-  }
-
-  setupSocketEvents () {
-    this.setupSocketSettings()
-
-    this.socketClient.on('reconnect_attempt', () => {
-      this.socketClient.io.opts.transports = ['polling', 'websocket']
-      console.log('Socket connect attempt')
-    })
-
-    this.socketClient.on('connect', (param) => {
-      if (!this.eventsIsInitialized) {
-        this.eventBus.emit('initializeEvents')
-        this.eventsIsInitialized = true
-      }
-
-      // Register node into network
-      this.socketClient.emit('reversebytes.gobot.physical#connect', {
-        context: {
-          channel: this.socketChannels.ws.name,
-          type: this.socketEventTypes.botMessage.name,
-          sender: { socketId: this.socketClient.id },
-          nativeId: this._config.MACHINE_ID
-        },
-        command: 'registerNode#request',
-        values: {}
-      })
-
-      console.log(`Connected to ${this._config.SOCKET.url}:${this._config.SOCKET.port} as ${this.socketClient.id} with native id ${this._config.MACHINE_ID}`)
-    })
-
-    this.socketClient.on('reversebytes.gobot.bot#EVENT', (data) => {
-      console.log('reversebytes.gobot.bot#EVENT')
-      if (data.context.receiver.socketId === this.socketClient.id) {
-        console.log('Emitting serverEvent')
-        this.eventBus.emit(
-          'onAdminEvent',
-          {
-            context: data.context || {},
-            command: data.command || '',
-            values: data.values || {}
-          }
-        )
-      }
-    })
-
-    this.socketClient.on('disconnect', () => {
-      console.error(`Disconnected from ${this._config.SOCKET_URL}:${this._config.SOCKET_PORT}`)
-    })
-  }
-
-  updatePhysical (config) {
-    this.agent.updateConfig(config)
-  }
 }
 
 module.exports = { ServerManager }
+

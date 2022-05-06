@@ -33,23 +33,21 @@ class UtilitiesManager {
 
   throwError (message) {
     if (message) {
-      return { success: false, message, result: null }
+      return { success: false, message: message, result: null }
     }
 
     return { success: false, message: 'Something was wrong while you make this action', result: null }
   }
 
   throwSuccess (data, message) {
-    const succesResponse = {
+    return {
       success: true,
       message: message || 'Operation completed successfully',
       result: data || {}
     }
-
-    return succesResponse
   }
 
-  badRequestView (req, res, payload) {
+  badRequestView (_req, res, payload) {
     res.render('maintenance/maintenance.view.jsx', payload)
   }
 
@@ -65,20 +63,20 @@ class UtilitiesManager {
 
   // Search an object in a simple array
   findObject (query, _array) {
-    return _array.find(function (element, index) {
+    return _array.find(function (element) {
       return element === query
     })
   }
 
   // Search an item by an object key
   findObjectByKey (query, key, _array) {
-    return _array.find(function (element, index) {
+    return _array.find(function (element) {
       return element[key] === query
     })
   }
 
   findDeepObjectByKey (query, key, _array) {
-    return _array.find(function (element, index) {
+    return _array.find(function (element) {
       const deepObject = this.searchDotStyle(element, key)
       return deepObject === query
     })
@@ -86,20 +84,20 @@ class UtilitiesManager {
 
   // Return index otherwise -1 is returned
   findIndexByKey (query, key, _array) {
-    return _array.findIndex(function (element, index) {
+    return _array.findIndex(function (element) {
       return element[key] === query
     })
   }
 
   // Return index otherwise -1 is returned
   findIndex (query, _array) {
-    return _array.findIndex(function (element, index) {
+    return _array.findIndex(function (element) {
       return element === query
     })
   }
 
   findAndRemove (query, _array) {
-    const index = _array.findIndex(function (element, index) {
+    const index = _array.findIndex(function (element) {
       return element === query
     })
 
@@ -110,7 +108,7 @@ class UtilitiesManager {
   }
 
   findAndRemoveByKey (query, key, _array) {
-    const index = _array.findIndex(function (element, index) {
+    const index = _array.findIndex(function (element) {
       return element[key] === query
     })
 
@@ -123,15 +121,15 @@ class UtilitiesManager {
   serializerOjectToQueryString (obj, prefix) {
     if (obj && typeof obj === 'object') {
       const serializedArr = []
-      let key = {}
+      let objKey = {}
 
-      for (key in obj) {
-        if (Object.prototype.hasOwnProperty.call(obj, key)) {
-          const k = prefix ? prefix + '[' + key + ']' : key
-          const value = obj[key] || null
+      for (objKey in obj) {
+        if (Object.prototype.hasOwnProperty.call(obj, objKey)) {
+          const key = prefix ? (prefix + '[' + objKey + ']') : objKey
+          const value = obj[objKey] || null
           serializedArr.push((value !== null && typeof value === 'object')
-            ? this.serializerOjectToQueryString(value, k)
-            : encodeURIComponent(k) + '=' + encodeURIComponent(value))
+            ? this.serializerOjectToQueryString(value, key)
+            : encodeURIComponent(key) + '=' + encodeURIComponent(value))
         }
       }
       return serializedArr.join('&')

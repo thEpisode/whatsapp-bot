@@ -7,34 +7,31 @@
   "FRONTEND_URI": "http://localhost:3500",
   "BACKEND_URI": "http://localhost:3500",
   "TOKEN_EXPIRE": 24,
-  "USE_DATABASE": true,
+  "USE_DATABASE": false,
   "USE_STORAGE": true,
   "DATABASE_NAME": "firebase",
-  "STORAGE_NAME": "firebase",
+  "STORAGE_NAME": "spaces",
   "PUSH_NAME": "firebase",
-  "GEOIP_DATABASE": {
-    "PATH": "/databases/GeoLite2-City.mmdb"
-  },
   "FIREBASE_ADMIN": {
     "type": "service_account",
-    "project_id": "beat-test-f99c9",
-    "private_key_id": "e56d188dc4fc786dde60485b77df013b3ad56bff",
-    "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCXvBj6UNLzloKJ\nOsJBzuF102sL2SlwMPJDfyU5mMXaamjV1Dc/ssXSbMuiuMc8seGr3Hv3FMcfmFDB\nNqI/NpwrxAzOnrisPOMDR3NO+GGMR1DRlAOPngFAFLc0yODwet5U2jll7rWChSsR\nFbvI8EXBcEu8UTTgS8hSXFNLCo9xYoKAWCo31/QaMpR4P5Zd/unjcfKUSgqA0ZIf\nvrAfPTBmqgN5Z1B/pNVupIftM/T+5hsdU3d3ubAWwj50MH1uc7/832smTyP1C4tY\nkTlMjqe6pjbdUjsa/SnjNlw5pRIEC6o2OabsxiLinswT8uXYgQL/ngZblNy62URP\n2BnTmGClAgMBAAECggEAF75iwjjc6dUxlBEnzhh2MMk777IJyU6Uz88Y9MxdREfG\neT9+GG+nLmhr7TNbqg8ZMJrjTc9ojB8k8+HSvcWT5p1adl1hVJfVMPGAr74vtZMr\nUxWwVkxJXHe2u4HRATtDiKT6umKs8JcEyDr4aax/neeD/RylWOaYRZsWRaCKFcSF\n+0iBg6oE+iRwcBogMXwWyZBQvfWutafpSK3LgreMhouTTfF6acFetH+DJyxUyYZA\ndKzJnL6rYUspQZcvCHBH03cQkEXo+lHpA+SJC14nekS0D9qdAWGoUwQW+AsVPBJd\nBks9dxM7UH5vvrLI55KDb0hHJqKFY0Z76CxM3DCyOQKBgQDVS6er+9FHAKHWBU8R\nNXX2jVXWhyEN2wXPePFJ2L8p+aWMhr+d8bAks0CNUUZ4qy3WtAnpsvV30wlT9nm3\nKaIv2Hdn3c7+c6yLj5zcAI8IeGRhcHxBtsSV9+tX1fIFZDr59qmoFlmgTg3YqnnG\nyiXy9nPmGjmfiENbSn+3QHdPOwKBgQC2HS3aJIGcATdpx2Yi+1Q0v0IUErl4cgqP\nOwDiZLQyPcCadOx8Tg6Sy/oYoV2iqBWLcsrAzcvBYHc74jxb3vR4iK8ShuUyfy98\npyZVNh40hlWDO/m3Qd9eZipVSBspVfPXfWFFfZbnTZQoHxJAf0BPlD8vAqiSm65x\npl2Z9n3RnwKBgAq8ozUaGP/M/ViLrd485bJCjRaeeMB8zP8TpHnGKmFPitDXG6A0\nwVwnldFHTRfX7hfHulQESSz995M9bgUVWG+2ItScqsXORtpDoW7FrG2NuefZxLd+\nHsk50KP8RhGVaQ6aJxIqBdr28uV8N2MVW/GuDEmB+nKYZmObDXDJEvhvAoGBAKLg\nWf/+IoVaeSr8EZc73UYHwJufW44jwNn1VYclthwxKq9534AVd+dG03lv6QTu+8Xq\ndvgVlyRumHVQk9c/ArtC1AHn79lH8zqzbA9OBZnIg3aKD38dRR9ylG4NvW0s2Jdk\nJbk2594bfmSb1YElzmjeF9x9rjLhVhWDS7fFwyXVAoGBAMWN98DQbBqxeaGTwVzT\nDvAmK6+97t15F2tR/Mw1qY9ocgn2xtv9fJNDPca+Q5F3bwKCyBVrWgr2OHMkzwqE\ntJIdbYG3mSu4es5o5gpT5VKFMisZwGgE/Lu4hDtsNv7oHVigCvJkFrq4j3x4Uwj3\nAPQeytcg7dGk2dXoZjFA3DB7\n-----END PRIVATE KEY-----\n",
-    "client_email": "firebase-adminsdk-u1wak@beat-test-f99c9.iam.gserviceaccount.com",
-    "client_id": "106181997693428011645",
+    "project_id": "xxxx",
+    "private_key_id": "27756dd1fba76427899afa2380a26ccc3c42bf2b",
+    "private_key": "-----BEGIN PRIVATE KEY-----\nxxxx\n-----END PRIVATE KEY-----\n",
+    "client_email": "firebase-adminsdk-dn31i@xxxx.iam.gserviceaccount.com",
+    "client_id": "105079062454853884302",
     "auth_uri": "https://accounts.google.com/o/oauth2/auth",
     "token_uri": "https://oauth2.googleapis.com/token",
     "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-    "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-u1wak%40beat-test-f99c9.iam.gserviceaccount.com"
+    "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-dn31i%40xxxx.iam.gserviceaccount.com"
   },
   "FIREBASE": {
-    "apiKey": "AIzaSyBPJ1t_4naSogIaJisrz_xkHud-Vw9vN_4",
-    "authDomain": "beat-test-f99c9.firebaseapp.com",
-    "databaseURL": "https://beat-test-f99c9.firebaseio.com",
-    "projectId": "beat-test-f99c9",
-    "storageBucket": "beat-test-f99c9.appspot.com",
-    "messagingSenderId": "850329928138",
-    "appId": "1:850329928138:web:5f2682a2966f380a754f33"
+    "apiKey": "AIzaSyA5HkZeMu0EYpmFmqVgKtdusS6uwDdRhsdfnY",
+    "authDomain": "xxxx.firebaseapp.com",
+    "databaseURL": "https://xxxx.firebaseio.com",
+    "projectId": "xxxx",
+    "storageBucket": "xxxx.appspot.com",
+    "messagingSenderId": "992690359753",
+    "appId": "1:992690359753:web:2a6f1941aec4871b6f2c18"
   },
   "POSTGRESQL": {
     "user": "user",

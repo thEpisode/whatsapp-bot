@@ -8,6 +8,7 @@ class SettingsManager {
   loadSettings () {
     this.globalDependencies()
     this.languageExtensions()
+    this.setupMiddlewares()
   }
 
   globalDependencies () {
@@ -232,7 +233,22 @@ class SettingsManager {
       this.stringReplaceAllExtension()
     }
 
-    console.log(` ${this._dependencies.core.get().colors.green(`${this._dependencies.core.get().config.AGENT_NAME}:`)} Language extended`)
+    console.log(` ${this._dependencies.core.get().colors.green(`${this._dependencies.core.get().config.SERVER_NAME}:`)} Language extended`)
+  }
+
+  setupMiddlewares () {
+    // Security
+    this._dependencies.core.get().express.use(this._dependencies.core.get().helmet())
+    this._dependencies.core.get().express.disable('x-powered-by')
+    this._dependencies.core.get().express.use(this._dependencies.core.get().compress())
+
+    // use body parser so we can get info from POST and/or URL parameters
+    this._dependencies.core.get().express.use(this._dependencies.core.get().bodyParser.urlencoded({ extended: true })) // support encoded bodies
+    this._dependencies.core.get().express.use(this._dependencies.core.get().bodyParser.json()) // support json encoded bodies
+    this._dependencies.core.get().express.use(this._dependencies.core.get().cors())
+    this._dependencies.core.get().express.use(this._dependencies.core.get().cookieParser())
+
+    console.log(` ${this._dependencies.core.get().colors.green(`${this._dependencies.core.get().config.SERVER_NAME}:`)} Configured middlewares`)
   }
 
   get dependencies () {

@@ -8,23 +8,49 @@ class DependenciesManager {
 
   loadDependencies () {
     const root = this._args.root
+    const http = require('http')
     const events = require('events')
+    const expressModule = require('express')
+    const express = expressModule()
+    const httpServer = http.createServer(express)
+    const socketModule = require('socket.io')
     const eventBus = new events.EventEmitter()
+    const multerModule = require('multer')
 
     this._dependencies = {
       root,
+      http,
+      multerModule,
+      express,
       eventBus,
+      httpServer,
+      socketModule,
+      expressModule,
       cors: require('cors'),
       path: require('path'),
+      aesjs: require('aes-js'),
+      moment: require('moment'),
+      crypto: require('crypto'),
       config: require('config'),
+      helmet: require('helmet'),
+      maxmind: require('maxmind'),
+      bcrypt: require('bcryptjs'),
       request: require('axios'),
+      jwt: require('jsonwebtoken'),
       colors: require('colors/safe'),
-      moment: require('moment')
+      compress: require('compression'),
+      unfluff: require('html-to-text'),
+      nodemailer: require('nodemailer'),
+      bodyParser: require('body-parser'),
+      firebase: require('firebase-admin'),
+      cookieParser: require('cookie-parser'),
+      exceljs: require('exceljs'),
+      aws: require('aws-sdk')
     }
 
     this.importCustomDependencies()
 
-    console.log(` ${this._dependencies.colors.green(`${this._dependencies.config.AGENT_NAME}:`)} Dependencies manager loaded`)
+    console.log(` ${this._dependencies.colors.green(`${this._dependencies.config.SERVER_NAME}:`)} Dependencies manager loaded`)
   }
 
   importCustomDependencies () {
