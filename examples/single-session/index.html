@@ -91,7 +91,7 @@
         </p>
 
         <div class="mb-5">
-          <a href="../examples/" class="btn btn-primary px-4">Start single session</a>
+          <a href="#" class="btn btn-primary px-4 start-session">Start single session</a>
         </div>
 
         <hr class="col-3 col-md-2 mb-5">
@@ -101,8 +101,9 @@
             <h2>QR Code</h2>
             <p>When appeara QR Code scan in your WhatsApp account to start.</p>
             <section class="col-12 h-100">
-              <!-- Logs -->
-              <img src="/assets/img/icon.svg" alt="icon" class="bi me-2">
+              <!-- QR -->
+              <img src="/assets/img/qr.svg" alt="icon" class="bi me-2 qr-visor">
+              <img src="/assets/img/icon.svg" alt="icon" class="bi me-2 qr-done">
             </section>
           </div>
 
@@ -127,17 +128,11 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
     crossorigin="anonymous"></script>
-  <script>
-    /* global bootstrap: false */
-    (function () {
-      'use strict'
-      var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-      tooltipTriggerList.forEach(function (tooltipTriggerEl) {
-        new bootstrap.Tooltip(tooltipTriggerEl)
-      })
-    })()
-
-  </script>
+  <script src="https://cdn.socket.io/4.5.0/socket.io.min.js"
+    integrity="sha384-7EyYLQZgWBi67fBtVxw60/OWl1kjsfrPFcaU0pp0nAh+i8FD068QogUvg85Ewy1k"
+    crossorigin="anonymous"></script>
+  <script src="/assets/scripts/main.js"></script>
+  <script src="/single-session/single-session.js"></script>
 </body>
 
 </html>
