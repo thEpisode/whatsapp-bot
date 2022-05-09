@@ -8,9 +8,9 @@ class SocketManager {
 
   loadSocketEvents () {
     this._socket.on('connection', (client) => {
-      client.on('reversebytes.beat.api', (data) => {
+      client.on('reversebytes.beat.server', (data) => {
         this._eventBus.emit(
-          'admin-event',
+          'server-event',
           {
             context: data.context || {},
             command: data.command || '',
