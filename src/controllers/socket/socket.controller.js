@@ -77,7 +77,7 @@ class SocketController {
   async #onNodeEvent (payload) {
     switch (payload.context.type.toLocaleLowerCase()) {
       case 'direct-action':
-        this.#directActionHandler(payload, 'reversebytes.beat.api#node-response')
+        this.#directActionHandler('reversebytes.beat.api#node-response', payload)
         break
       case 'gateway-message':
         this.#nodeActionHandler(payload)
@@ -90,10 +90,10 @@ class SocketController {
   async #onServerEvent (payload) {
     switch (payload.context.type.toLocaleLowerCase()) {
       case 'direct-message':
-        this.#directActionHandler(payload, 'reversebytes.beat.api#server-request')
+        this.#directActionHandler('reversebytes.beat.api#server-request', payload)
         break
-      case 'gateway-message':
-        this.#gatewayMessageHandler(payload)
+      case 'internal-message':
+        this.#internalMessageHandler(payload)
         break
       default:
         break
@@ -103,7 +103,7 @@ class SocketController {
   async #onClientEvent (payload) {
     switch (payload.context.type) {
       case 'direct-message':
-        this.#directActionHandler(payload, 'reversebytes.beat.api#server-request')
+        this.#directActionHandler('reversebytes.beat.api#server-request', payload)
         break
       case 'client-action':
         this.#clientActionHandler(payload)
@@ -113,7 +113,7 @@ class SocketController {
     }
   }
 
-  async #directActionHandler (payload, type) {
+  async #directActionHandler (type, payload) {
     if (!payload || !payload.context || !payload.context.sender || !payload.context.sender.socketId) {
       return
     }
@@ -129,16 +129,19 @@ class SocketController {
     socket.emit(type, payload)
   }
 
-  async #gatewayMessageHandler (payload) {
+  async #internalMessageHandler (payload) {
     switch (payload.command) {
-      case 'register-connection#request':
-        this.#registerConnection(payload)
+      case 'create-agent#response':
+        this.#emitEvent(payload)
         break
-      case 'getAllNodes#request':
-        this.#getAllNodes(payload)
+      case 'create-client#response':
+        this.#emitEvent(payload)
         break
-      case 'example-gateway-command#request':
-        this.#responseSuccess(payload)
+      case 'wh-client-qr#event':
+        this.#emitEvent(payload)
+        break
+      case 'wh-client-ready#event':
+        this.#emitEvent(payload)
         break
       default:
         break
@@ -150,11 +153,11 @@ class SocketController {
       case 'register-connection#request':
         this.#registerConnection(payload)
         break
-      case 'start-session#request':
-        this.#startSession(payload)
+      case 'create-agent#request':
+        this.#createAgent(payload)
         break
-      case 'example-client#request':
-        this.#responseSuccess(payload)
+      case 'create-client#request':
+        this.createClient(payload)
         break
       default:
         break
@@ -167,7 +170,7 @@ class SocketController {
         this.#registerConnection(payload)
         break
       case 'example-node-command#response':
-        this.#responseSuccess(payload)
+        this.#emitEvent(payload)
         break
       default:
         break
@@ -194,43 +197,36 @@ class SocketController {
     }
 
     socket.nativeId = payload.context.nativeId
-    this.#responseSuccess(payload)
+    this.#emitEvent(payload)
   }
 
-  async #responseSuccess (payload) {
+  async #emitEvent (payload) {
     if (!payload || !payload.context || !payload.context || !payload.context.sender) {
       return
     }
 
-    payload.command = `${payload.command.split('#request')[0]}#response`
+    if (payload.command.includes('#request')) {
+      payload.command = `${payload.command.split('#request')[0]}#response`
+    }
+
     payload.context.receiver = payload.context.sender
     this._socket.emit('reversebytes.beat.server', payload)
   }
 
-  async #getAllNodes (payload) {
-    const connectedSockets = await this._socket.fetchSockets()
-    const nodes = connectedSockets.map(client => {
-      if (client.nativeId) {
-        connectedSockets.push({
-          nativeId: client.nativeId,
-          socketId: client.id,
-          status: client.status || this._controllers.job.status.stopped
-        })
-      }
-    })
-
-    payload.values = { nodes }
-    payload.context.receiver = payload.context.sender
-    payload.command = `${payload.command.split('#request')[0]}#response`
-
-    this.#directActionHandler(payload)
+  #createAgent () {
+    this._agent = new this._controllers.AgentController(this._dependencies)
+    this._agent.load()
   }
 
-  #startSession (payload) {
-    this.agent = new this._controllers.AgentController(this._dependencies)
-    this.agent.load()
-    this.agent.start({ data: payload.values })
-    this.#responseSuccess(payload)
+  async createClient (payload) {
+    const socket = await this.#getSocketById({
+      socketId: payload.context.sender.socketId
+    })
+
+    this._agent.createClient({
+      data: payload.values,
+      socket
+    })
   }
 }
 

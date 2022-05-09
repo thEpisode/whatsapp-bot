@@ -3,6 +3,7 @@
   "SERVER_PORT": "3500",
   "SERVER_VERSION": "4.0.0",
   "SERVER_NAME": "whatsapp-bot agent #1",
+  "MACHINE_ID": "whatsapp-bot-agent-1",
   "BACKEND_SECRET": "zih9cVFnC0J0otOAFXrj",
   "FRONTEND_URI": "http://localhost:3500",
   "BACKEND_URI": "http://localhost:3500",

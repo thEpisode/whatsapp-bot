@@ -1,28 +1,54 @@
 class AgentController {
   constructor (dependencies) {
+    /* Base Properties */
     this._dependencies = dependencies
     this._config = this._dependencies.config
-    this._socket = this._dependencies.socket
     this._controllers = this._dependencies.controllers
-    this._client = null
-    this._clientBots = null
-    this._nlp = null
+
+    /* Custom Properties */
+    this._eventBus = dependencies.eventBus
+    this._socket = this._dependencies.socket
+
+    /* Assigments */
+    this._clients = []
   }
 
-  updateConfig (config) {
-    if (!config) {
-      return
+  #sendEvent (command, values) {
+    const payload = {
+      context: {
+        channel: 'ws',
+        type: 'internal-message',
+        sender: { socketId: this._socket.id },
+        nativeId: this._config.MACHINE_ID
+      },
+      command,
+      values
     }
 
-    this._config = config
+    this._eventBus.emit('server-event', payload)
   }
 
-  async load () {
-    this._client = new this._controllers.ClientController(this._dependencies)
+  load () {
+    this.#sendEvent('create-agent#response', {})
   }
 
-  async start ({ data }) {
-    await this._client.startEngine({ data })
+  async createClient ({ data, socket }) {
+    let client = this.#getClientByUserId({ user: data.user.id })
+
+    if (!client) {
+      client = new this._controllers.ClientController(this._dependencies, {
+        socket,
+        user: data.user
+      })
+
+      this._clients.push(client)
+    }
+
+    await client.startEngine()
+  }
+
+  #getClientByUserId ({ user }) {
+    return this._clients.find(client => client.user.id === user.id)
   }
 }
 

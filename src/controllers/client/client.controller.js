@@ -2,38 +2,71 @@ const { Client, MessageMedia, List, Buttons } = require('whatsapp-web.js')
 const qrcode = require('qrcode-terminal')
 
 class ClientController {
-  constructor (dependencies) {
+  constructor (dependencies, { socket, user }) {
+    /* Base Properties */
     this._dependencies = dependencies
     this._config = this._dependencies.config
     this._console = this._dependencies.console
     this._controllers = this._dependencies.controllers
-    this._appController = null
-    this._bots = null
 
+    /* Custom Properties */
+    this._appController = null
+    this._eventBus = dependencies.eventBus
+
+    /* Assigments */
+    this._bots = null
+    this._apps = null
+    this._user = user || null
+    this._socket = socket
     this.nextChatActionId = null
     this.conversations = []
+  }
+
+  set socket (newSocket) {
+    this._socket = newSocket
+  }
+
+  get client () {
+    return this._whatsappClient
+  }
+
+  get user () {
+    return this._user
+  }
+
+  set user (newUser) {
+    this._user = newUser
+  }
+
+  get bots () {
+    return this._bots
+  }
+
+  get apps () {
+    return this._apps
   }
 
   /**
    * Initial point process
    */
-  async startEngine ({ data }) {
-    await this.startSession({ user: data.user })
+  async startEngine () {
+    await this.#startSession()
   }
 
-  async startSession ({ user }) {
-    if (!user) {
+  async #startSession () {
+    if (!this._user) {
       throw new Error('Required user data to process this message')
     }
+
+    this._apps = this._user.apps
+    this._bots = this._user.bots
 
     // Load apps
     this._appController = new this._controllers.AppController(this._dependencies)
 
     // Setup apps
-    this._appController.loadApps({ apps: user.apps })
+    this._appController.loadApps({ apps: this._apps })
     this._dependencies.apps = this._appController
-
-    this._bots = this.#getBotsByUserId({ user })
 
     // Load WhatsApp client
     this._whatsappClient = new Client()
@@ -41,10 +74,8 @@ class ClientController {
     // Setup Whatsapp Client
     this.defineEvents()
     this._whatsappClient.initialize()
-  }
 
-  #getBotsByUserId ({ user }) {
-    return user.bots
+    this.#sendEvent('create-client#response', {})
   }
 
   /**
@@ -54,10 +85,12 @@ class ClientController {
     this._whatsappClient.on('qr', (qr) => {
       this._console.info('QR Received')
       qrcode.generate(qr, { small: true })
+      this.#sendEvent('wh-client-qr#event', { qr })
     })
 
     this._whatsappClient.on('ready', () => {
       this._console.info('Client is ready!')
+      this.#sendEvent('wh-client-ready#event', { success: true })
     })
 
     this._whatsappClient.on('message', async (message) => {
@@ -83,6 +116,21 @@ class ClientController {
         console.log(error.stack)
       }
     })
+  }
+
+  #sendEvent (command, values) {
+    const payload = {
+      context: {
+        channel: 'ws',
+        type: 'internal-message',
+        sender: { socketId: this._socket.id },
+        nativeId: this._config.MACHINE_ID
+      },
+      command,
+      values
+    }
+
+    this._eventBus.emit('server-event', payload)
   }
 
   handleTestPingMessage ({ message }) {
