@@ -1,10 +1,3 @@
-/* start () {
-  this.agent = new this._controllers.AgentController(this._settings.dependencies.core.get())
-  this.agent.load()
-  this.agent.start()
-  // this.connectWS()
-} */
-
 const { SettingsManager } = require('./settings.manager')
 const { ConsoleManager } = require('./console.manager')
 class ServerManager {

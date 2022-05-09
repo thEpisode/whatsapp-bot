@@ -1,19 +1,24 @@
 class SocketController {
   constructor (dependencies) {
-    this._eventBus = dependencies.eventBus
+    /* Base Properties */
+    this._dependencies = dependencies
     this._console = dependencies.console
-    this._socket = dependencies.socket
     this._utilities = dependencies.utilities
     this._controllers = dependencies.controllers
 
+    /* Custom Properties */
+    this._socket = dependencies.socket
+    this._eventBus = dependencies.eventBus
+
+    /* Assigments */
     this._stakeholders = {
       node: { name: 'node' },
       server: { name: 'server' },
       client: { name: 'client' }
     }
 
-    // This event is executed when socket is connected to node
     this._eventBus.on('initialize-event-engine', () => {
+      // This event is executed when socket is connected to node
       this.initialize()
     })
   }
@@ -146,7 +151,7 @@ class SocketController {
         this.#registerConnection(payload)
         break
       case 'start-session#request':
-        this.#responseSuccess(payload)
+        this.#startSession(payload)
         break
       case 'example-client#request':
         this.#responseSuccess(payload)
@@ -219,6 +224,13 @@ class SocketController {
     payload.command = `${payload.command.split('#request')[0]}#response`
 
     this.#directActionHandler(payload)
+  }
+
+  #startSession (payload) {
+    this.agent = new this._controllers.AgentController(this._dependencies)
+    this.agent.load()
+    this.agent.start({ data: payload.values })
+    this.#responseSuccess(payload)
   }
 }
 

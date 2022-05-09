@@ -17,20 +17,23 @@ class ClientController {
   /**
    * Initial point process
    */
-  async startEngine () {
-    await this.startSession()
+  async startEngine ({ data }) {
+    await this.startSession({ user: data.user })
   }
 
-  async startSession () {
-    // TODO: Change _config values to backend values
+  async startSession ({ user }) {
+    if (!user) {
+      throw new Error('Required user data to process this message')
+    }
+
     // Load apps
     this._appController = new this._controllers.AppController(this._dependencies)
 
     // Setup apps
-    this._appController.loadApps({ apps: this._config.USER.apps })
+    this._appController.loadApps({ apps: user.apps })
     this._dependencies.apps = this._appController
 
-    this._bots = this.#getBotsByUserId({ user: this._config.USER })
+    this._bots = this.#getBotsByUserId({ user })
 
     // Load WhatsApp client
     this._whatsappClient = new Client()
@@ -41,7 +44,7 @@ class ClientController {
   }
 
   #getBotsByUserId ({ user }) {
-    return this._config.USER.bots
+    return user.bots
   }
 
   /**

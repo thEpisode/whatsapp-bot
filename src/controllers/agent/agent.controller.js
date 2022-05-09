@@ -21,8 +21,8 @@ class AgentController {
     this._client = new this._controllers.ClientController(this._dependencies)
   }
 
-  async start () {
-    await this._client.startEngine()
+  async start ({ data }) {
+    await this._client.startEngine({ data })
   }
 }
 
