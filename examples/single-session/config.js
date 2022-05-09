@@ -8,7 +8,8 @@ const config = {
       contextChannel: "ws"
     },
     selectors: [
-      { name: 'startSessionBtn', domSelector: '.start-session' },
+      { name: 'createAgentBtn', domSelector: '.create-agent' },
+      { name: 'createClientBtn', domSelector: '.create-client' },
       { name: 'qrVisorImg', domSelector: '.qr-visor' },
       { name: 'qrDoneImg', domSelector: '.qr-done' },
       { name: 'logsContainer', domSelector: '.logs-container' }
@@ -1744,7 +1745,8 @@ const config = {
 const global = {
   socket: {},
   selectors: {},
-  isSessionStarted: false,
+  isCreatedAgent: false,
+  isCreatedClient: false
 }
 
 export { config, global }

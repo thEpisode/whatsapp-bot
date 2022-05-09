@@ -45,11 +45,20 @@ function onServerEvent (payload) {
   }
 
   switch (payload.command) {
-    case "start-session#response":
-
-      break;
     case "register-connection#response":
       logWebsocket('Socket registered')
+      break;
+    case "create-agent#response":
+      logWebsocket('Agent created')
+      break;
+    case "create-client#response":
+      logWebsocket('Client created')
+      break;
+    case "wh-client-qr#event":
+      logWebsocket('Client QR generated')
+      break;
+    case "wh-client-ready#event":
+      logWebsocket('Client ready')
       break;
     default:
       logWebsocket('Unhandled event: ' + payload.command, payload)
@@ -58,14 +67,24 @@ function onServerEvent (payload) {
 }
 
 function actionsSetup () {
-  global.selectors.startSessionBtn.onclick = () => {
-    if (global.isSessionStarted) {
+  global.selectors.createAgentBtn.onclick = () => {
+    if (global.isCreatedAgent) {
       alert('Session is started')
       return
     }
 
-    global.isSessionStarted = true
-    emitEvent('start-session#request', { user: config.user })
+    global.isCreatedAgent = true
+    emitEvent('create-agent#request', { user: config.user })
+  }
+
+  global.selectors.createClientBtn.onclick = () => {
+    if (global.isCreatedClient) {
+      alert('Client is created')
+      return
+    }
+
+    global.isCreatedClient = true
+    emitEvent('create-client#request', { user: config.user })
   }
 }
 
