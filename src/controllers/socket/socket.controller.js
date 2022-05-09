@@ -140,7 +140,13 @@ class SocketController {
       case 'wh-client-qr#event':
         this.#emitEvent(payload)
         break
+      case 'wh-client-qr-destroyed#event':
+        this.#emitEvent(payload)
+        break
       case 'wh-client-ready#event':
+        this.#emitEvent(payload)
+        break
+      case 'conversation-message#event':
         this.#emitEvent(payload)
         break
       default:

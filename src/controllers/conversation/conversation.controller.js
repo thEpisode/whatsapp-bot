@@ -3,12 +3,18 @@ const { NLPFactory } = require('./../../factories/index')
 
 class ConversationController {
   constructor (dependencies, { bots, chat }) {
+    /* Base Properties */
     this._dependencies = dependencies
     this._config = this._dependencies.config
     this._console = this._dependencies.console
     this._utilities = this._dependencies.utilities
     this._controllers = this._dependencies.controllers
     this._models = this._dependencies.models
+
+    /* Custom Properties */
+    this._eventBus = dependencies.eventBus
+
+    /* Assigments */
     this._nextChatIntentId = null
     this._messages = []
     this._bots = bots
@@ -26,6 +32,21 @@ class ConversationController {
     this._nlp = this._nlpFactory.create()
   }
 
+  #sendEvent (command, values) {
+    const payload = {
+      context: {
+        channel: 'ws',
+        type: 'internal-message',
+        sender: { socketId: this._socket.id },
+        nativeId: this._config.MACHINE_ID
+      },
+      command,
+      values
+    }
+
+    this._eventBus.emit('server-event', payload)
+  }
+
   processMessage (args) {
     if (!args) {
       throw new Error('Required args to process this message')
@@ -33,6 +54,7 @@ class ConversationController {
 
     // Send to current stack memory the incoming message
     this._messages.push({ client: this._chat.id, message: args.message.body, type: args.message.type })
+    this.#sendEvent('conversation-message#event', { client: this._chat.id, message: args.message.body, type: args.message.type })
 
     return this.#analizeMessage(args)
   }
@@ -48,6 +70,7 @@ class ConversationController {
       triggerResponse.action.updateProperty({ property: 'messages', value: transformedMessages })
 
       this._messages.push({ client: 'go-bot', message: triggerResponse, type: 'chat' })
+      this.#sendEvent('conversation-message#event', { client: 'go-bot', message: triggerResponse, type: 'chat' })
       return triggerResponse.action
     }
 
@@ -61,6 +84,8 @@ class ConversationController {
       actionResponse.action.updateProperty({ property: 'messages', value: transformedMessages })
 
       this._messages.push({ client: 'go-bot', message: actionResponse, type: 'chat' })
+      this.#sendEvent('conversation-message#event', { client: 'go-bot', message: actionResponse, type: 'chat' })
+
       return actionResponse.action
     }
 
@@ -71,6 +96,7 @@ class ConversationController {
       const nlpTriggerResponse = await this.#analizeMessage({ message: {body: nlpResponse.prediction} })
 
       this._messages.push({ client: 'go-bot', message: nlpTriggerResponse, type: 'chat' })
+      this.#sendEvent('conversation-message#event', { client: 'go-bot', message: nlpTriggerResponse, type: 'chat' })
 
       return nlpTriggerResponse
     }

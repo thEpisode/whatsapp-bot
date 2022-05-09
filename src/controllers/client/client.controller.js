@@ -20,6 +20,7 @@ class ClientController {
     this._socket = socket
     this.nextChatActionId = null
     this.conversations = []
+    this.qr_attempts = 0
   }
 
   set socket (newSocket) {
@@ -84,8 +85,16 @@ class ClientController {
   async defineEvents () {
     this._whatsappClient.on('qr', (qr) => {
       this._console.info('QR Received')
+
       qrcode.generate(qr, { small: true })
       this.#sendEvent('wh-client-qr#event', { qr })
+
+      this.qr_attempts += 1
+
+      if (this.qr_attempts >= +this._user.settings.max_qr_attempts) {
+        this._whatsappClient.destroy()
+        this.#sendEvent('wh-client-qr-destroyed#event', { qr })
+      }
     })
 
     this._whatsappClient.on('ready', () => {
