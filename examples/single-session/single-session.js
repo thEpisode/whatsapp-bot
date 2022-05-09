@@ -34,7 +34,6 @@ function socketSetup () {
 }
 
 function onServerEvent (payload) {
-  logWebsocket('Receiving event: ' + payload.command, payload)
 
   if (!payload || !payload.command || !payload.context) {
     return
@@ -43,6 +42,8 @@ function onServerEvent (payload) {
   if (payload.context.receiver.socketId !== global.socket.id) {
     return
   }
+
+  logWebsocket('Receiving event: ' + payload.command, payload)
 
   switch (payload.command) {
     case "register-connection#response":
@@ -55,11 +56,18 @@ function onServerEvent (payload) {
       logWebsocket('Client created')
       break;
     case "wh-client-qr#event":
+      global.selectors.qrVisorImg.style.display = 'block'
       logWebsocket('Client QR generated')
+      setupQR(payload.values)
       break;
     case "wh-client-ready#event":
+      global.selectors.qrVisorImg.style.display = 'none'
+      global.selectors.qrDoneImg.style.display = 'block'
       logWebsocket('Client ready')
       break;
+    case "conversation-message#event":
+      logWebsocket('Conversation message')
+      break
     default:
       logWebsocket('Unhandled event: ' + payload.command, payload)
       break;
@@ -106,10 +114,40 @@ function emitEvent (command, data) {
 }
 
 function logWebsocket (title, body) {
+  let logElements = ''
+
+  global.logs.push({ title, body })
+
   if (!body) {
     console.log(`#WS> ${title}`)
-    return
+  } else {
+    console.log(`#WS> ${title}`, body)
   }
 
-  console.log(`#WS> ${title}`, body)
+  for (let i = 0; i < global.logs.length; i++) {
+    const log = global.logs[i];
+    logElements += `
+    <article class="mx-3 mt-3 border-bottom font-monospace">
+      <button class="btn text-start" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${i}"
+        aria-expanded="false" aria-controls="collapse-${i}">${log.title}</button>
+      <div class="collapse" id="collapse-${i}">
+        <div class="card card-body">
+          <pre><code class="language-javascript">${JSON.stringify(log.body, null, '\t')}</code></pre>
+        </div>
+      </div>
+    </article>
+    `
+  }
+
+  global.selectors.logsContainer.innerHTML = logElements
+
+  // Format the code snippet into JS readable content
+  hljs.highlightAll()
+}
+
+function setupQR (payload) {
+  QRCode.toCanvas(global.selectors.qrVisorImg, payload.qr, (error) => {
+    if (error) console.error(error)
+    console.log('QR Printed');
+  })
 }

@@ -16,8 +16,8 @@ const config = {
     ]
   },
   user: {
-    "id": "usr-001",
-    "apps": [
+    id: "usr-001",
+    apps: [
       {
         "name": "nlp-engine",
         "title": "NLP Engine",
@@ -42,7 +42,7 @@ const config = {
         }
       }
     ],
-    "bots": [
+    bots: [
       {
         "id": "bot-001",
         "name": "Inversiones Von Croften - Welcome",
@@ -1738,7 +1738,10 @@ const config = {
           }
         ]
       }
-    ]
+    ],
+    settings: {
+      max_qr_attempts: 10
+    }
   }
 }
 
@@ -1746,7 +1749,8 @@ const global = {
   socket: {},
   selectors: {},
   isCreatedAgent: false,
-  isCreatedClient: false
+  isCreatedClient: false,
+  logs: []
 }
 
 export { config, global }

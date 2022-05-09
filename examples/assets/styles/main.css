@@ -13,7 +13,12 @@ main {
   height: 100vh;
   max-height: 100vh;
   overflow-x: auto;
-  overflow-y: hidden;
+  overflow-y: auto;
+}
+
+.page-container {
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .b-example-divider {
