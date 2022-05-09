@@ -1,7 +1,11 @@
 const config = {
   settings: {
+    machineId: "example-ws",
     socket: {
-      url: "http://localhost:3500/"
+      url: "http://localhost:3500/",
+      eventContext: "reversebytes.beat.client",
+      contextType: "client-action",
+      contextChannel: "ws"
     },
     selectors: [
       { name: 'startSessionBtn', domSelector: '.start-session' },
@@ -10,8 +14,6 @@ const config = {
       { name: 'logsContainer', domSelector: '.logs-container' }
     ]
   },
-  socket: {},
-  selectors: {},
   user: {
     "id": "usr-001",
     "apps": [
@@ -1739,4 +1741,10 @@ const config = {
   }
 }
 
-export { config }
+const global = {
+  socket: {},
+  selectors: {},
+  isSessionStarted: false,
+}
+
+export { config, global }

@@ -133,8 +133,9 @@
     crossorigin="anonymous"></script>
   <script src="/assets/scripts/main.js"></script>
   <script type="module">
-    import { config } from "/single-session/config.js";
+    import { config, global } from "/single-session/config.js";
     window.config = config
+    window.global = global
   </script>
   <script src="/single-session/single-session.js"></script>
 </body>
