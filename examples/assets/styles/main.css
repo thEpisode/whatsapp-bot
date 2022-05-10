@@ -145,3 +145,40 @@ aside {
 .log-window {
   height: 400px;
 }
+
+.status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  padding: 0 16px;
+  border: 1px solid #dadce0;
+  border-radius: 18px;
+}
+
+.status .dot {
+  border-radius: 50%;
+  height: 12px;
+  width: 12px;
+}
+
+.status .online {
+  background-color: #1e8e3e;
+}
+
+.status .offline {
+  background-color: #ffffff;
+  border: 1px solid #7e7e7e;
+}
+
+.status .connecting {
+  background-color: #d93025;
+}
+
+.status .text {
+  font-size: .875rem;
+  color: #3c4043;
+  letter-spacing: .25px;
+  margin-left: 4px;
+  display: inline-block;
+}

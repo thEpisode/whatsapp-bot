@@ -1,5 +1,10 @@
 const config = {
   settings: {
+    status: {
+      online: { name: 'online', title: 'Online', cssClass: 'online' },
+      offline: { name: 'offline', title: 'Offline', cssClass: 'offline' },
+      connecting: { name: 'connecting', title: 'Connecting', cssClass: 'connecting' }
+    },
     machineId: "example-ws",
     socket: {
       url: "http://localhost:3500/",
@@ -12,7 +17,10 @@ const config = {
       { name: 'createClientBtn', domSelector: '.create-client' },
       { name: 'qrVisorImg', domSelector: '.qr-visor' },
       { name: 'qrDoneImg', domSelector: '.qr-done' },
-      { name: 'logsContainer', domSelector: '.logs-container' }
+      { name: 'logsContainer', domSelector: '.logs-container' },
+      { name: 'status', domSelector: '.status' },
+      { name: 'statusDot', domSelector: '.status .dot' },
+      { name: 'statusText', domSelector: '.status .text' }
     ]
   },
   user: {
@@ -1746,6 +1754,7 @@ const config = {
 }
 
 const global = {
+  status: {},
   socket: {},
   selectors: {},
   isCreatedAgent: false,

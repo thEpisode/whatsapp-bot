@@ -4,9 +4,9 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function setup () {
-  socketSetup();
   selectorsSetup();
   actionsSetup();
+  socketSetup();
 }
 
 /**
@@ -19,22 +19,41 @@ function selectorsSetup () {
 }
 
 function socketSetup () {
-  global.socket = io(config.settings.socket.url);
+  setStatus('connecting')
+  global.socket = io(config.settings.socket.url,{
+    reconnectionAttempts: 10
+  });
 
   global.socket.on("connect", () => {
     logWebsocket("SocketId: " + global.socket.id);
     emitEvent('register-connection#request', {});
+    setStatus('online')
+  });
+
+  global.socket.on("reconnect", () => {
+    logWebsocket("SocketId: " + global.socket.id);
+    setStatus('online')
+  });
+
+  global.socket.on("reconnect_attempt", () => {
+    logWebsocket("SocketId: " + global.socket.id);
+    setStatus('connecting')
+  });
+
+  global.socket.on("reconnect_failed", () => {
+    logWebsocket("reconnect_failed: " + global.socket.id);
+    setStatus('offline')
   });
 
   global.socket.on("disconnect", () => {
     logWebsocket("SocketId: " + global.socket.id);
+    setStatus('offline')
   });
 
   global.socket.on("reversebytes.beat.server", onServerEvent)
 }
 
 function onServerEvent (payload) {
-
   if (!payload || !payload.command || !payload.context) {
     return
   }
@@ -150,4 +169,14 @@ function setupQR (payload) {
     if (error) console.error(error)
     console.log('QR Printed');
   })
+}
+
+function setStatus (status) {
+  const state = config.settings.status[status]
+
+  global.selectors.statusDot.classList.remove('online')
+  global.selectors.statusDot.classList.remove('offline')
+  global.selectors.statusDot.classList.remove('connecting')
+  global.selectors.statusDot.classList.add(state.cssClass)
+  global.selectors.statusText.innerHTML = state.title
 }
