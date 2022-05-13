@@ -85,7 +85,7 @@ function onServerEvent (payload) {
       logWebsocket('Client ready')
       break;
     case "conversation-message#event":
-      logWebsocket('Conversation message')
+      logWebsocket('Conversation message', payload)
       break
     default:
       logWebsocket('Unhandled event: ' + payload.command, payload)
@@ -133,7 +133,7 @@ function emitEvent (command, data) {
 }
 
 function logWebsocket (title, body) {
-  let logElements = ''
+  let logElements = []
 
   global.logs.push({ title, body })
 
@@ -145,7 +145,7 @@ function logWebsocket (title, body) {
 
   for (let i = 0; i < global.logs.length; i++) {
     const log = global.logs[i];
-    logElements += `
+    logElements.unshift(`
     <article class="mx-3 mt-3 border-bottom font-monospace">
       <button class="btn text-start" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${i}"
         aria-expanded="false" aria-controls="collapse-${i}">${log.title}</button>
@@ -155,10 +155,10 @@ function logWebsocket (title, body) {
         </div>
       </div>
     </article>
-    `
+    `)
   }
 
-  global.selectors.logsContainer.innerHTML = logElements
+  global.selectors.logsContainer.innerHTML = logElements.join('')
 
   // Format the code snippet into JS readable content
   hljs.highlightAll()
