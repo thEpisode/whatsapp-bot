@@ -195,7 +195,7 @@ class ClientController {
       for (const message of action.get.messages) {
         switch (message.behavior) {
           case 'reply':
-            this.#sendReplyImage({ chat, action, incomingMessage, message })
+            this.#sendReplyMessage({ chat, action, incomingMessage, message })
             break
           case 'image':
             await this.#sendImageMessage({ chat, action, incomingMessage, message })
@@ -230,7 +230,7 @@ class ClientController {
     chat.sendMessage(media)
   }
 
-  #sendReplyImage ({ incomingMessage, message }) {
+  #sendReplyMessage ({ incomingMessage, message }) {
     incomingMessage.reply(message.body)
   }
 
