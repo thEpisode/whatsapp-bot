@@ -73,7 +73,7 @@ class ClientController {
     this._whatsappClient = new Client()
 
     // Setup Whatsapp Client
-    this.defineEvents()
+    this.#defineEvents()
     this._whatsappClient.initialize()
 
     this.#sendEvent('create-client#response', {})
@@ -82,7 +82,7 @@ class ClientController {
   /**
    * Define all WhatsApp events
    */
-  async defineEvents () {
+  async #defineEvents () {
     this._whatsappClient.on('qr', (qr) => {
       this._console.info('QR Received')
 
@@ -106,20 +106,7 @@ class ClientController {
       try {
         const chat = await message.getChat()
 
-        switch (message.body) {
-          case '!ping':
-            this.handleTestPingMessage({ message })
-            break
-          case '!buttons':
-            this.handleTestButtonsMessage({ chat })
-            break
-          case '!list':
-            this.handleTestListMessage({ chat })
-            break
-          default:
-            this.handleMessage({ chat, message })
-            break
-        }
+        this.#handleMessage({ chat, message })
       } catch (error) {
         this._console.error(error)
         console.log(error.stack)
@@ -142,27 +129,15 @@ class ClientController {
     this._eventBus.emit('server-event', payload)
   }
 
-  handleTestPingMessage ({ message }) {
-    message.reply('pong')
-  }
+  async #handleMessage ({ chat, message }) {
+    // Send to queue incomind message
+    this.#sendEvent('conversation-message#event', { client: chat.id, message: message.body, type: message.type })
 
-  handleTestButtonsMessage ({ chat }) {
-    const buttons = new Buttons('Button body', [{ body: 'bt1' }, { body: 'bt2' }, { body: 'bt3' }], 'title', 'footer')
-    chat.sendMessage('Sending buttons')
-    chat.sendMessage(buttons)
-  }
+    const action = await this.#digestIncomingMessage({ message, chat })
 
-  handleTestListMessage ({ chat }) {
-    const sections = [{ title: 'sectionTitle', rows: [{ id: 'customId', title: 'ListItem1', description: 'desc' }, { title: 'ListItem2' }] }]
-    const list = new List('aaa', 'btnText', sections, 'Title', 'footer')
-    chat.sendMessage('Sending list')
-    chat.sendMessage(list)
-  }
+    this.#sendEvent('conversation-message#event', { client: 'go-bot', message: action.get, type: 'chat' })
 
-  async handleMessage ({ chat, message }) {
-    const action = await this.digestIncomingMessage({ message, chat })
-
-    this.sendActionMessages({ chat, action, incomingMessage: message })
+    this.#sendActionMessages({ chat, action, incomingMessage: message })
   }
 
   /**
@@ -170,7 +145,7 @@ class ClientController {
    * @param {Object} chat
    * @returns Conversation or null if not exist en memory
    */
-  findConversationInMemory (chat) {
+  #findConversationInMemory (chat) {
     for (const conversation of this.conversations) {
       if (conversation.chat.id._serialized === chat.id._serialized) {
         return conversation
@@ -186,9 +161,9 @@ class ClientController {
    * @param {Object} chat Is the related chat of incoming message
    * @returns Action, in other words, what need to response to incoming message
    */
-  digestIncomingMessage ({ message, chat }) {
+  #digestIncomingMessage ({ message, chat }) {
     try {
-      let conversation = this.findConversationInMemory(chat)
+      let conversation = this.#findConversationInMemory(chat)
 
       if (conversation === null) {
         conversation = new this._controllers.ConversationController(
@@ -214,22 +189,29 @@ class ClientController {
    * @param {Object} chat Is the related chat of incoming message
    * @param {Object} action Is the action related to incoming message
    */
-  async sendActionMessages ({ chat, action, incomingMessage }) {
+  async #sendActionMessages ({ chat, action, incomingMessage }) {
     try {
       // Send all messages in action
       for (const message of action.get.messages) {
-        let media = null
         switch (message.behavior) {
           case 'reply':
-            incomingMessage.reply(message.body)
+            this.#sendReplyImage({ chat, action, incomingMessage, message })
             break
           case 'image':
-            media = await MessageMedia.fromUrl(message.body)
-            chat.sendMessage(media)
+            await this.#sendImageMessage({ chat, action, incomingMessage, message })
+            break
+          case '!ping':
+            this.#sendPingMessage({ chat, action, incomingMessage, message })
+            break
+          case '!buttons':
+            this.#sendButtonsMessage({ chat, action, incomingMessage, message })
+            break
+          case '!list':
+            this.#sendListMessage({ chat, action, incomingMessage, message })
             break
           case 'simple':
           default:
-            chat.sendMessage(message.body)
+            this.#sendSimpleMessage({ chat, action, incomingMessage, message })
             break
         }
       }
@@ -237,6 +219,36 @@ class ClientController {
       this._console.error(error)
       console.log(error.stack)
     }
+  }
+
+  #sendSimpleMessage ({ chat, message }) {
+    chat.sendMessage(message.body)
+  }
+
+  async #sendImageMessage ({ chat, message }) {
+    const media = await MessageMedia.fromUrl(message.body)
+    chat.sendMessage(media)
+  }
+
+  #sendReplyImage ({ incomingMessage, message }) {
+    incomingMessage.reply(message.body)
+  }
+
+  #sendPingMessage ({ message }) {
+    message.reply('pong: ' + message.body)
+  }
+
+  #sendButtonsMessage ({ chat, message }) {
+    const buttons = new Buttons('Button body', [{ body: 'bt1' }, { body: 'bt2' }, { body: 'bt3' }], 'title', 'footer')
+    chat.sendMessage(message.body)
+    chat.sendMessage(buttons)
+  }
+
+  #sendListMessage ({ chat, message }) {
+    const sections = [{ title: 'sectionTitle', rows: [{ id: 'customId', title: 'ListItem1', description: 'desc' }, { title: 'ListItem2' }] }]
+    const list = new List('aaa', 'btnText', sections, 'Title', 'footer')
+    chat.sendMessage(message.body)
+    chat.sendMessage(list)
   }
 }
 
