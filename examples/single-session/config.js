@@ -36,7 +36,9 @@ const config = {
           "serviceMethod": "GET",
           "serviceParameters": "?verbose=true&show-all-intents=true&log=true&subscription-key=3cfde4a20a7546038627e4e2a1885057&query=",
           "provider": "azure",
-          "threshold": "0.15",
+          "metadata": {
+            "threshold": "0.15",
+          },
           "isEnabled": true
         }
       },
