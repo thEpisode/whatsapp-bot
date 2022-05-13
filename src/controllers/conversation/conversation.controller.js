@@ -2,7 +2,7 @@ const InputTypeValidator = require('../../validators/inputType.validator')
 const { NLPFactory } = require('./../../factories/index')
 
 class ConversationController {
-  constructor (dependencies, { bots, chat }) {
+  constructor (dependencies, { bots, chat, socket }) {
     /* Base Properties */
     this._dependencies = dependencies
     this._config = this._dependencies.config
@@ -30,6 +30,7 @@ class ConversationController {
     this._backendController = new this._controllers.BackendController(this._dependencies)
     this._nlpFactory = new NLPFactory(this._dependencies)
     this._nlp = this._nlpFactory.create()
+    this._socket = socket
   }
 
   #sendEvent (command, values) {
@@ -54,7 +55,7 @@ class ConversationController {
 
     // Send to current stack memory the incoming message
     this._messages.push({ client: this._chat.id, message: args.message.body, type: args.message.type })
-    this.#sendEvent('conversation-message#event', { client: this._chat.id, message: args.message.body, type: args.message.type })
+    //this.#sendEvent('conversation-message#event', { client: this._chat.id, message: args.message.body, type: args.message.type })
 
     return this.#analizeMessage(args)
   }
@@ -70,7 +71,7 @@ class ConversationController {
       triggerResponse.action.updateProperty({ property: 'messages', value: transformedMessages })
 
       this._messages.push({ client: 'go-bot', message: triggerResponse, type: 'chat' })
-      this.#sendEvent('conversation-message#event', { client: 'go-bot', message: triggerResponse, type: 'chat' })
+      //this.#sendEvent('conversation-message#event', { client: 'go-bot', message: triggerResponse, type: 'chat' })
       return triggerResponse.action
     }
 
@@ -84,7 +85,7 @@ class ConversationController {
       actionResponse.action.updateProperty({ property: 'messages', value: transformedMessages })
 
       this._messages.push({ client: 'go-bot', message: actionResponse, type: 'chat' })
-      this.#sendEvent('conversation-message#event', { client: 'go-bot', message: actionResponse, type: 'chat' })
+      //this.#sendEvent('conversation-message#event', { client: 'go-bot', message: actionResponse, type: 'chat' })
 
       return actionResponse.action
     }
@@ -96,7 +97,7 @@ class ConversationController {
       const nlpTriggerResponse = await this.#analizeMessage({ message: {body: nlpResponse.prediction} })
 
       this._messages.push({ client: 'go-bot', message: nlpTriggerResponse, type: 'chat' })
-      this.#sendEvent('conversation-message#event', { client: 'go-bot', message: nlpTriggerResponse, type: 'chat' })
+      //this.#sendEvent('conversation-message#event', { client: 'go-bot', message: nlpTriggerResponse, type: 'chat' })
 
       return nlpTriggerResponse
     }

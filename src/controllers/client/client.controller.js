@@ -195,7 +195,8 @@ class ClientController {
           this._dependencies,
           {
             bots: this._bots,
-            chat
+            chat,
+            socket: this._socket
           }
         )
         this.conversations.push(conversation)
