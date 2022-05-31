@@ -28,24 +28,20 @@ class DependenciesManager {
       expressModule,
       cors: require('cors'),
       path: require('path'),
-      aesjs: require('aes-js'),
       moment: require('moment'),
       crypto: require('crypto'),
       config: require('config'),
       helmet: require('helmet'),
-      maxmind: require('maxmind'),
       bcrypt: require('bcryptjs'),
       request: require('axios'),
       jwt: require('jsonwebtoken'),
       colors: require('colors/safe'),
       compress: require('compression'),
-      unfluff: require('html-to-text'),
       nodemailer: require('nodemailer'),
       bodyParser: require('body-parser'),
-      firebase: require('firebase-admin'),
       cookieParser: require('cookie-parser'),
-      exceljs: require('exceljs'),
-      aws: require('aws-sdk')
+      firebase: require('firebase-admin'),
+      exceljs: require('exceljs')
     }
 
     this.importCustomDependencies()

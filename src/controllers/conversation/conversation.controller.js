@@ -2,7 +2,7 @@ const InputTypeValidator = require('../../validators/inputType.validator')
 const { NLPFactory } = require('./../../factories/index')
 
 class ConversationController {
-  constructor (dependencies, { bots, chat, socket }) {
+  constructor (dependencies, { bots, chat }) {
     /* Base Properties */
     this._dependencies = dependencies
     this._config = this._dependencies.config
@@ -30,22 +30,6 @@ class ConversationController {
     this._backendController = new this._controllers.BackendController(this._dependencies)
     this._nlpFactory = new NLPFactory(this._dependencies)
     this._nlp = this._nlpFactory.create()
-    this._socket = socket
-  }
-
-  #sendEvent (command, values) {
-    const payload = {
-      context: {
-        channel: 'ws',
-        type: 'internal-message',
-        sender: { socketId: this._socket.id },
-        nativeId: this._config.MACHINE_ID
-      },
-      command,
-      values
-    }
-
-    this._eventBus.emit('server-event', payload)
   }
 
   processMessage (args) {

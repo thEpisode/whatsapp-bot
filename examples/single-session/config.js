@@ -106,10 +106,9 @@ const config = {
                 "behavior": "simple"
               }
             ],
-            "services": {
-              "preflight": null,
-              "callback": null
-            },
+            "webhooks": [
+              { "uri": "" }
+            ],
             "inputType": "option-number",
             "intents": [
               {
@@ -187,10 +186,9 @@ const config = {
                 "behavior": "simple"
               }
             ],
-            "services": {
-              "preflight": null,
-              "callback": null
-            },
+            "webhooks": [
+              { "uri": "" }
+            ],
             "inputType": "any",
             "intents": [
               {
@@ -210,10 +208,9 @@ const config = {
                 "behavior": "simple"
               }
             ],
-            "services": {
-              "preflight": null,
-              "callback": null
-            },
+            "webhooks": [
+              { "uri": "" }
+            ],
             "inputType": "any",
             "intents": [
               {
@@ -237,10 +234,9 @@ const config = {
                 "behavior": "simple"
               }
             ],
-            "services": {
-              "preflight": null,
-              "callback": null
-            },
+            "webhooks": [
+              { "uri": "" }
+            ],
             "inputType": "any",
             "intents": [
               {
@@ -264,10 +260,9 @@ const config = {
                 "behavior": "simple"
               }
             ],
-            "services": {
-              "preflight": null,
-              "callback": null
-            },
+            "webhooks": [
+              { "uri": "" }
+            ],
             "inputType": "any",
             "intents": [
               {
@@ -317,10 +312,9 @@ const config = {
                 "behavior": "simple"
               }
             ],
-            "services": {
-              "preflight": null,
-              "callback": null
-            },
+            "webhooks": [
+              { "uri": "" }
+            ],
             "inputType": "option-number",
             "intents": [
               {
@@ -365,10 +359,9 @@ const config = {
                 "behavior": "simple"
               }
             ],
-            "services": {
-              "preflight": null,
-              "callback": null
-            },
+            "webhooks": [
+              { "uri": "" }
+            ],
             "inputType": "any",
             "intents": [
               {
@@ -392,10 +385,9 @@ const config = {
                 "behavior": "simple"
               }
             ],
-            "services": {
-              "preflight": null,
-              "callback": null
-            },
+            "webhooks": [
+              { "uri": "" }
+            ],
             "inputType": "any",
             "intents": [
               {
@@ -453,10 +445,9 @@ const config = {
                 "behavior": "simple"
               }
             ],
-            "services": {
-              "preflight": null,
-              "callback": null
-            },
+            "webhooks": [
+              { "uri": "" }
+            ],
             "inputType": "any",
             "intents": [
               {
@@ -514,10 +505,9 @@ const config = {
                 "behavior": "simple"
               }
             ],
-            "services": {
-              "preflight": null,
-              "callback": null
-            },
+            "webhooks": [
+              { "uri": "" }
+            ],
             "inputType": "any",
             "intents": [
               {
@@ -571,10 +561,9 @@ const config = {
                 "behavior": "simple"
               }
             ],
-            "services": {
-              "preflight": null,
-              "callback": null
-            },
+            "webhooks": [
+              { "uri": "" }
+            ],
             "inputType": "any",
             "intents": [
               {
@@ -624,10 +613,9 @@ const config = {
                 "behavior": "simple"
               }
             ],
-            "services": {
-              "preflight": null,
-              "callback": null
-            },
+            "webhooks": [
+              { "uri": "" }
+            ],
             "inputType": "option-number",
             "intents": [
               {
@@ -676,10 +664,9 @@ const config = {
                 "behavior": "simple"
               }
             ],
-            "services": {
-              "preflight": null,
-              "callback": null
-            },
+            "webhooks": [
+              { "uri": "" }
+            ],
             "inputType": "any",
             "intents": [
               {
@@ -711,10 +698,9 @@ const config = {
                 "behavior": "simple"
               }
             ],
-            "services": {
-              "preflight": null,
-              "callback": null
-            },
+            "webhooks": [
+              { "uri": "" }
+            ],
             "inputType": "any",
             "intents": [
               {
@@ -738,10 +724,9 @@ const config = {
                 "behavior": "simple"
               }
             ],
-            "services": {
-              "preflight": null,
-              "callback": null
-            },
+            "webhooks": [
+              { "uri": "" }
+            ],
             "inputType": "any",
             "intents": [
               {
@@ -765,10 +750,9 @@ const config = {
                 "behavior": "simple"
               }
             ],
-            "services": {
-              "preflight": null,
-              "callback": null
-            },
+            "webhooks": [
+              { "uri": "" }
+            ],
             "inputType": "any",
             "intents": [
               {
@@ -826,7 +810,7 @@ const config = {
                 "behavior": "simple"
               }
             ],
-            "services": {
+            "webhooks": {
               "preflight": {
                 "route": "http://api.virtualcapitalofamerica.com/api/validate-account-chatbot",
                 "method": "POST"
@@ -885,10 +869,9 @@ const config = {
                 "behavior": "simple"
               }
             ],
-            "services": {
-              "preflight": null,
-              "callback": null
-            },
+            "webhooks": [
+              { "uri": "" }
+            ],
             "inputType": "option-number",
             "intents": [
               {
@@ -937,10 +920,9 @@ const config = {
                 "behavior": "simple"
               }
             ],
-            "services": {
-              "preflight": null,
-              "callback": null
-            },
+            "webhooks": [
+              { "uri": "" }
+            ],
             "inputType": "any",
             "intents": [
               {
@@ -972,10 +954,9 @@ const config = {
                 "behavior": "simple"
               }
             ],
-            "services": {
-              "preflight": null,
-              "callback": null
-            },
+            "webhooks": [
+              { "uri": "" }
+            ],
             "inputType": "any",
             "intents": [
               {
@@ -999,10 +980,9 @@ const config = {
                 "behavior": "simple"
               }
             ],
-            "services": {
-              "preflight": null,
-              "callback": null
-            },
+            "webhooks": [
+              { "uri": "" }
+            ],
             "inputType": "any",
             "intents": [
               {
@@ -1026,10 +1006,9 @@ const config = {
                 "behavior": "simple"
               }
             ],
-            "services": {
-              "preflight": null,
-              "callback": null
-            },
+            "webhooks": [
+              { "uri": "" }
+            ],
             "inputType": "any",
             "intents": [
               {
@@ -1087,7 +1066,7 @@ const config = {
                 "behavior": "simple"
               }
             ],
-            "services": {
+            "webhooks": {
               "preflight": {
                 "route": "http://api.gobot.site/api/validate-account-chatbot",
                 "method": "POST"
@@ -1137,10 +1116,9 @@ const config = {
           {
             "id": "start",
             "messages": [],
-            "services": {
-              "preflight": null,
-              "callback": null
-            },
+            "webhooks": [
+              { "uri": "" }
+            ],
             "inputType": "any",
             "intents": [
               {
@@ -1172,10 +1150,9 @@ const config = {
                 "behavior": "simple"
               }
             ],
-            "services": {
-              "preflight": null,
-              "callback": null
-            },
+            "webhooks": [
+              { "uri": "" }
+            ],
             "inputType": "option-string",
             "intents": [
               {
@@ -1209,10 +1186,9 @@ const config = {
                 "behavior": "simple"
               }
             ],
-            "services": {
-              "preflight": null,
-              "callback": null
-            },
+            "webhooks": [
+              { "uri": "" }
+            ],
             "inputType": "any-number",
             "intents": [
               {
@@ -1236,10 +1212,9 @@ const config = {
                 "behavior": "simple"
               }
             ],
-            "services": {
-              "preflight": null,
-              "callback": null
-            },
+            "webhooks": [
+              { "uri": "" }
+            ],
             "inputType": "option-string",
             "intents": [
               {
@@ -1301,10 +1276,9 @@ const config = {
                 "behavior": "simple"
               }
             ],
-            "services": {
-              "preflight": null,
-              "callback": null
-            },
+            "webhooks": [
+              { "uri": "" }
+            ],
             "inputType": "option-string",
             "intents": [
               {
@@ -1342,10 +1316,9 @@ const config = {
                 "behavior": "simple"
               }
             ],
-            "services": {
-              "preflight": null,
-              "callback": null
-            },
+            "webhooks": [
+              { "uri": "" }
+            ],
             "inputType": "option-string",
             "intents": [
               {
@@ -1383,10 +1356,9 @@ const config = {
                 "behavior": "simple"
               }
             ],
-            "services": {
-              "preflight": null,
-              "callback": null
-            },
+            "webhooks": [
+              { "uri": "" }
+            ],
             "inputType": "any",
             "intents": [
               {
@@ -1410,10 +1382,9 @@ const config = {
                 "behavior": "simple"
               }
             ],
-            "services": {
-              "preflight": null,
-              "callback": null
-            },
+            "webhooks": [
+              { "uri": "" }
+            ],
             "inputType": "any",
             "intents": [
               {
@@ -1457,10 +1428,9 @@ const config = {
                 "behavior": "simple"
               }
             ],
-            "services": {
-              "preflight": null,
-              "callback": null
-            },
+            "webhooks": [
+              { "uri": "" }
+            ],
             "inputType": "any",
             "intents": [
               {
@@ -1480,7 +1450,7 @@ const config = {
                 "behavior": "simple"
               }
             ],
-            "services": {
+            "webhooks": {
               "preflight": null,
               "callback": null
             }
@@ -1523,10 +1493,9 @@ const config = {
                 "behavior": "simple"
               }
             ],
-            "services": {
-              "preflight": null,
-              "callback": null
-            },
+            "webhooks": [
+              { "uri": "" }
+            ],
             "inputType": "option-number",
             "intents": [
               {
@@ -1575,10 +1544,9 @@ const config = {
                 "behavior": "simple"
               }
             ],
-            "services": {
-              "preflight": null,
-              "callback": null
-            },
+            "webhooks": [
+              { "uri": "" }
+            ],
             "inputType": "any",
             "intents": [
               {
@@ -1610,10 +1578,9 @@ const config = {
                 "behavior": "simple"
               }
             ],
-            "services": {
-              "preflight": null,
-              "callback": null
-            },
+            "webhooks": [
+              { "uri": "" }
+            ],
             "inputType": "any",
             "intents": [
               {
@@ -1637,10 +1604,9 @@ const config = {
                 "behavior": "simple"
               }
             ],
-            "services": {
-              "preflight": null,
-              "callback": null
-            },
+            "webhooks": [
+              { "uri": "" }
+            ],
             "inputType": "any",
             "intents": [
               {
@@ -1664,10 +1630,9 @@ const config = {
                 "behavior": "simple"
               }
             ],
-            "services": {
-              "preflight": null,
-              "callback": null
-            },
+            "webhooks": [
+              { "uri": "" }
+            ],
             "inputType": "any",
             "intents": [
               {
@@ -1725,7 +1690,7 @@ const config = {
                 "behavior": "simple"
               }
             ],
-            "services": {
+            "webhooks": {
               "preflight": {
                 "route": "http://api.miretail.com.co/api/validate-account-chatbot",
                 "method": "POST"

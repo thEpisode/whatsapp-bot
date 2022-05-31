@@ -18,17 +18,17 @@ class ConsoleManager {
   }
 
   info (body, title) {
-    title = (title || this._serverName) + ': '
+    title = (title || this._serverName) + ':'
     console.log(` ${this._colors.cyan(title)}`, body)
   }
 
   warning (body, title) {
-    title = (title || this._serverName) + ': '
+    title = (title || this._serverName) + ':'
     console.log(` ${this._colors.yellow(title)}`, body)
   }
 
   success (body, title) {
-    title = (title || this._serverName) + ': '
+    title = (title || this._serverName) + ':'
     console.log(` ${this._colors.green(title)}`, body)
   }
 }
