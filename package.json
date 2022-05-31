@@ -1,7 +1,7 @@
 {
   "name": "chatbot-automation",
-  "version": "1.0.0",
-  "description": "A minimal Chatbot application",
+  "version": "2.0.0",
+  "description": "Omnichanel chatbot microservice implementation",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",

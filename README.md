@@ -5,7 +5,7 @@
 
 # Whatsapp bot
 
-This is a Node.js console app containing Whatsapp handler using reactive methods to response messages as chatbot. Simple but useful project to start developing a complex NON-OFFICIAL Whatsapp chatbots.
+This is a Node.js console app containing Whatsapp handler using reactive methods to response messages as chatbot. Simple but useful project to start developing a complex OFFICIAL Whatsapp chatbots.
 
 ## Table of contents
 [Purpose](https://github.com/thEpisode/whatsapp-bot#purpose)
@@ -28,6 +28,7 @@ This project was developed to automate some daily tasks including NLP (Natural L
 
 | Feature  | Status |
 | ------------- | ------------- |
+| WhatsApp Cloud API  | ✅  |
 | Multi Device  | ✅  |
 | Send messages  | ✅  |
 | Receive messages  | ✅  |
@@ -43,7 +44,7 @@ This project was developed to automate some daily tasks including NLP (Natural L
 | Reactive conversations | ✅ |
 | NLP connections (Microsoft Azure) | ✅ |
 | Preflight connections (Backend) | ✅ |
-| Implementation of [whatsapp-web.js](https://github.com/pedroslopez/whatsapp-web.js) | ✅ |
+| Implementation of [whatsapp-cloud-api.js](https://github.com/thEpisode/whatsapp-cloud-api.js) | ✅ |
 
 Something missing? Make an issue and let us know!
 
