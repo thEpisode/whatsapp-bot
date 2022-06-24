@@ -4,7 +4,7 @@ const router = {
     { httpRoute: '/services/backend-uri', route: '/routes/api/services/services.route', handler: 'getBackendUri', method: 'GET', protected: false }
   ],
   process: [
-    { httpRoute: '/message', route: '/routes/api/message/message.route', handler: 'handleMessage', method: 'POST', protected: false }
+    { httpRoute: '/message', route: '/routes/api/process/process.route', handler: 'handleMessage', method: 'POST', protected: false }
   ]
 }
 

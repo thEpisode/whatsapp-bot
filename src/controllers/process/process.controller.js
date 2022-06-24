@@ -1,4 +1,4 @@
-class TemplateController {
+class ProcessController {
   constructor (dependencies) {
     /* Base Properties */
     this._dependencies = dependencies
@@ -18,12 +18,11 @@ class TemplateController {
 
   async handleMessage (data) {
     try {
-      this._agent = new this._controllers.AgentController(this._dependencies)
-      this._agent.startEngine({
-        data
-      })
+      this._agent = new this._controllers.AgentController(this._dependencies, data)
+      this._agent.startSession()
+      await this._agent.handleMessage(data)
 
-      return this._utilities.response.success(entityCleaned)
+      return this._utilities.response.success(data)
     } catch (error) {
       this._console.error(error)
       return this._utilities.response.error()
@@ -31,4 +30,4 @@ class TemplateController {
   }
 }
 
-module.exports = TemplateController
+module.exports = ProcessController

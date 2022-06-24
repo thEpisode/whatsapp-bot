@@ -64,12 +64,8 @@
       "package": "socket.io-client"
     },
     {
-      "name": "whatsapp-web.js",
-      "package": "whatsapp-web.js"
-    },
-    {
-      "name": "qrcode-terminal",
-      "package": "qrcode-terminal"
+      "name": "whatsapp-cloud-api.js",
+      "package": "whatsapp-cloud-api.js"
     }
   ]
 }

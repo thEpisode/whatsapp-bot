@@ -1,7 +1,6 @@
 const AppController = require('./app/app.controller')
 const AgentController = require('./agent/agent.Controller')
 const BackendController = require('./backend/backend.Controller')
-const ClientController = require('./client/client.Controller')
 const ConversationController = require('./conversation/conversation.controller')
 const ProcessController = require('./process/process.controller')
 const ServicesController = require('./services/services.controller')
@@ -12,7 +11,6 @@ module.exports = {
   AppController,
   AgentController,
   BackendController,
-  ClientController,
   ConversationController,
   ProcessController,
   ServicesController,

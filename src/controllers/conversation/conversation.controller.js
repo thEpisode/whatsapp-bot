@@ -2,7 +2,7 @@ const InputTypeValidator = require('../../validators/inputType.validator')
 const { NLPFactory } = require('./../../factories/index')
 
 class ConversationController {
-  constructor (dependencies, { bots, chat }) {
+  constructor (dependencies, { bots }) {
     /* Base Properties */
     this._dependencies = dependencies
     this._config = this._dependencies.config
@@ -18,7 +18,6 @@ class ConversationController {
     this._nextChatIntentId = null
     this._messages = []
     this._bots = bots
-    this._chat = chat
     this._currentBot = null
     this._state = {
       scope: '',
@@ -38,7 +37,7 @@ class ConversationController {
     }
 
     // Send to current stack memory the incoming message
-    this._messages.push({ client: this._chat.id, message: args.message.body, type: args.message.type })
+    this._messages.push({ client: args.message.from.phoneNumber, message: args.message.body, type: args.message.type })
 
     return this.#analizeMessage(args)
   }
@@ -245,7 +244,7 @@ class ConversationController {
 
     messages = messages.map(message => {
       message.body = message.body.replace('{{INCOMING_MESSAGE}}', incomingMessage.body)
-      message.body = message.body.replace('{{INCOMING_PHONE}}', this._chat.id.user)
+      message.body = message.body.replace('{{INCOMING_PHONE}}', incomingMessage.from.phoneNumber)
 
       return message
     })
@@ -350,9 +349,9 @@ class ConversationController {
     return new this._models.Action(actionRaw, this._dependencies)
   }
 
-  async #preflightChatActionHandler ({ intentAction }) {
+  async #preflightChatActionHandler ({ intentAction,incomingMessage }) {
     console.log(JSON.stringify({
-      user: this._chat.id,
+      user: incomingMessage.from.phoneNumber,
       conversation: this._messages
     }))
     if (intentAction.services && intentAction.services.preflight) {
@@ -361,7 +360,7 @@ class ConversationController {
 
     intentAction.messages = intentAction.messages.map(message => {
       message.body = message.body.replace('{{INCOMING_MESSAGE}}', message.body)
-      message.body = message.body.replace('{{INCOMING_PHONE}}', this._chat.id)
+      message.body = message.body.replace('{{INCOMING_PHONE}}', incomingMessage.from.phoneNumber)
 
       return message
     })
@@ -371,16 +370,12 @@ class ConversationController {
     const response = await this._backendController.request({
       route: intentAction.services.preflight.route,
       method: intentAction.services.preflight.method,
-      parameters: { chat: this._chat, message }
+      parameters: { chat: incomingMessage.from.phoneNumber, message }
     })
 
     if (!this._utilities.response.isValid(response)) {
       intentAction.message = [{ body: response.body }]
     }
-  }
-
-  get chat () {
-    return this._chat
   }
 }
 

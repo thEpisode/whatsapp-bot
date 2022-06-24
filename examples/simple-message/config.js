@@ -1,30 +1,17 @@
 const config = {
   settings: {
-    status: {
-      online: { name: 'online', title: 'Online', cssClass: 'online' },
-      offline: { name: 'offline', title: 'Offline', cssClass: 'offline' },
-      connecting: { name: 'connecting', title: 'Connecting', cssClass: 'connecting' }
-    },
-    machineId: "example-ws",
-    socket: {
-      url: "http://localhost:3500/",
-      eventContext: "reversebytes.beat.client",
-      contextType: "client-action",
-      contextChannel: "ws"
+    backend: {
+      url: "http://localhost:3500",
+      endpoint: "/process/message"
     },
     selectors: [
-      { name: 'createAgentBtn', domSelector: '.create-agent' },
-      { name: 'createClientBtn', domSelector: '.create-client' },
-      { name: 'qrVisorImg', domSelector: '.qr-visor' },
-      { name: 'qrDoneImg', domSelector: '.qr-done' },
-      { name: 'logsContainer', domSelector: '.logs-container' },
-      { name: 'status', domSelector: '.status' },
-      { name: 'statusDot', domSelector: '.status .dot' },
-      { name: 'statusText', domSelector: '.status .text' }
+      { name: 'sendMessageBtn', domSelector: '.send-message' }
     ]
   },
-  user: {
-    id: "usr-001",
+  payload: {
+    user: {
+      id: "usr-001"
+    },
     apps: [
       {
         "name": "nlp-engine",
@@ -1715,7 +1702,15 @@ const config = {
       }
     ],
     settings: {
-      max_qr_attempts: 10
+      whatsapp: {
+        appToken: 'EAAKEQ6s6HQABAJcJs3DJ9dUqM7nHAr3PFP0qZCoHlZAHKaImkOWBOw0bLw6ZB4SVcV48VVKLEjjEuv3LqiZBm9Npd7AR0AcjMZBiDgAB5Hvfht52i4lyZC83Q473vGCPCDZBmFFOwaNFITqghdvyQoDxCUcB7LvhPZChkKP3EiZAU3cjaT1tyS0QsC9233Y7EJKg5u57t1HgYDgZDZD'
+      }
+    },
+    message: {
+      type: 'text',
+      from: { phoneNumberId: '109306758456618' },
+      to: { phoneNumber: '573103494806' },
+      body: 'Hello World!'
     }
   }
 }

@@ -7,7 +7,7 @@
   <meta name="description" content="">
   <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
   <meta name="generator" content="Hugo 0.88.1">
-  <title>Whatsapp-bot - Single Session</title>
+  <title>Whatsapp-bot - Simple Message</title>
 
   <!-- Bootstrap core CSS -->
   <!-- CSS only -->
@@ -50,11 +50,11 @@
           </a>
         </li>
         <li>
-          <a href="/single-session/" class="nav-link active">
+          <a href="/simple-message/" class="nav-link active">
             <svg class="bi me-2" width="16" height="16">
               <use xlink:href="#people-circle" />
             </svg>
-            Single session
+            Simple message
           </a>
         </li>
       </ul>
@@ -89,18 +89,13 @@
 
       <section>
         <div class="align-items-center d-flex">
-          <h1>Single session </h1>
-          <div class="status ms-2">
-            <div class="dot offline"></div>
-            <div class="text">Offline</div>
-          </div>
+          <h1>Simple message.</h1>
         </div>
-        <p class="fs-5 col-md-8">Click in the next button to start a single session.
+        <p class="fs-5 col-md-8">Click in the next button to send a simple message.
         </p>
 
         <div class="mb-5">
-          <a href="#" class="btn btn-primary px-4 create-agent">1) Create agent</a>
-          <a href="#" class="btn btn-primary px-4 create-client">2) Start session</a>
+          <a href="#" class="btn btn-primary px-4 send-message">Send Message</a>
         </div>
 
         <hr class="col-3 col-md-2 mb-5">
@@ -137,19 +132,16 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
     crossorigin="anonymous"></script>
-  <script src="https://cdn.socket.io/4.5.0/socket.io.min.js"
-    integrity="sha384-7EyYLQZgWBi67fBtVxw60/OWl1kjsfrPFcaU0pp0nAh+i8FD068QogUvg85Ewy1k"
-    crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.0/build/qrcode.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js"></script>
 
   <script src="/assets/scripts/main.js"></script>
   <script type="module">
-    import { config, global } from "/single-session/config.js";
+    import { config, global } from "/simple-message/config.js";
     window.config = config
     window.global = global
   </script>
-  <script src="/single-session/single-session.js"></script>
+  <script src="/simple-message/simple-message.js"></script>
 </body>
 
 </html>
